@@ -20,14 +20,14 @@ export const config: SiteConfig = {
   title: "Pensiero Aporetico",
   description: "A blog exploring the intersection of design, typography, and history",
   author: {
-    name: "Your Name",
+    name: "Pensiero Aporetico",
     bio: "Writer, designer, and explorer of aesthetic tensions between past and present.",
     avatar: "/images/avatar.jpg"
   },
   social: {
-    github: "https://github.com/yourusername",
-    twitter: "https://twitter.com/yourusername",
-    linkedin: "https://linkedin.com/in/yourusername",
+    github: "https://github.com/pensieroaporetico",
+    twitter: "https://twitter.com/pensieroaporetico",
+    linkedin: "https://linkedin.com/in/pensieroaporetico",
     email: "your.email@example.com"
   },
   siteUrl: "https://volks-typo.example.com"
