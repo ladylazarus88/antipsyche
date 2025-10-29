@@ -17,7 +17,7 @@ export interface SiteConfig {
 }
 
 export const config: SiteConfig = {
-  title: "Volks-Typo",
+  title: "Pensiero Aporetico",
   description: "A blog exploring the intersection of design, typography, and history",
   author: {
     name: "Your Name",
