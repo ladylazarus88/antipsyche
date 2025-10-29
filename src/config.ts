@@ -22,7 +22,7 @@ export const config: SiteConfig = {
   author: {
     name: "Your Name",
     bio: "Writer, designer, and explorer of aesthetic tensions between past and present.",
-    // avatar: "/images/avatar.jpg" // Uncomment and add your avatar image to public/images/
+    avatar: "/images/avatar.jpg"
   },
   social: {
     github: "https://github.com/yourusername",
