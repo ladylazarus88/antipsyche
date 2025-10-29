@@ -1,10 +1,10 @@
 ---
-title: "Minimalist Architecture in Digital Design"
-date: "2025-06-04"
-description: "How architectural minimalism shapes modern web interfaces"
-excerpt: "From Mies van der Rohe's 'Less is more' to modern UI design, minimalist architecture continues to influence how we build digital spaces."
-categories: ["Architecture", "Design", "UI/UX"]
-tags: ["Minimalism", "Architecture", "Interface Design", "Modernism"]
+title: "L'Acca Mutta: Fantasmi Ortografici nella Lingua Italiana"
+date: "2025-11-05"
+description: "Un'indagine metafisica sulla lettera più enigmatica dell'alfabeto italiano, tra presenza grafica e assenza fonetica"
+excerpt: "Tra il visibile e l'udibile, l'acca vive una doppia vita: segno sulla carta, fantasma nell'aria."
+categories: ["Linguistica", "Filosofia", "Grammatica"]
+tags: ["Acca", "Ortografia", "Fantasma", "Alfabeto"]
 ---
 
 # Minimalist Architecture in Digital Design

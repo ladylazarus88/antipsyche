@@ -1,10 +1,10 @@
 ---
-title: "The Evolution of Typography: From Gutenberg to Google Fonts"
-date: "2025-06-05"
-description: "Tracing the revolutionary changes in typography from movable type to variable fonts"
-excerpt: "Typography has evolved from hand-carved letters to algorithmic type design. This journey reveals how technological advances have democratized the written word."
-categories: ["Typography", "History", "Design"]
-tags: ["Fonts", "Type Design", "History", "Web Typography"]
+title: "La Semiotica del Segnalibro: Metafisica della Sospensione"
+date: "2025-11-12"
+description: "Trattato sull'oggetto-limite che segna il confine tra lettura e interruzione, tra memoria e attesa"
+excerpt: "Dal biglietto del tram alla ricevuta della lavanderia, ogni segnalibro racconta una storia di abbandono temporaneo."
+categories: ["Semiotica", "Oggetti", "Fenomenologia"]
+tags: ["Segnalibro", "Soglia", "Interruzione", "Memoria"]
 ---
 
 # The Evolution of Typography: From Gutenberg to Google Fonts

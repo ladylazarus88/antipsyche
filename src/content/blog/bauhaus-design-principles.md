@@ -1,10 +1,10 @@
 ---
-title: "Understanding Bauhaus: Form, Function, and the Modern Web"
-date: "2025-06-07"
-description: "A deep dive into how Bauhaus principles continue to shape contemporary digital design"
-excerpt: "From the workshops of Weimar to the screens of today, the Bauhaus movement's radical approach to design continues to influence how we think about digital spaces."
-categories: ["Design", "History", "Web Development"]
-tags: ["Bauhaus", "Design Theory", "Modernism", "UI Design"]
+title: "Fenomenologia della Copertina: Il Giudizio Precedente la Lettura"
+date: "2025-12-03"
+description: "Analisi esistenziale del primo incontro con il libro, prima ancora che la pagina uno venga voltata"
+excerpt: "La copertina è la soglia, il portale, la facciata che promette mondi mentre già comincia a tradirli."
+categories: ["Fenomenologia", "Design", "Psicologia della Lettura"]
+tags: ["Copertina", "Soglia", "Prima Impressione", "Design Editoriale"]
 ---
 
 # Understanding Bauhaus: Form, Function, and the Modern Web

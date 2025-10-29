@@ -1,10 +1,10 @@
 ---
-title: "Building Modernist Layouts with CSS Grid"
-date: "2025-06-06"
-description: "How CSS Grid enables us to create layouts inspired by Bauhaus and constructivist design"
-excerpt: "CSS Grid isn't just a layout tool—it's a design philosophy made manifest in code. Learn how to create modernist-inspired layouts that would make Mondrian proud."
-categories: ["Web Development", "Design", "CSS"]
-tags: ["CSS Grid", "Layout", "Modernism", "Frontend"]
+title: "Ecosistemi Marginali: La Vita Segreta delle Note a Piè di Pagina"
+date: "2025-11-19"
+description: "Studio biogeografico delle comunità testuali che abitano i margini inferiori della pagina"
+excerpt: "Mentre il testo principale avanza maestoso, nelle profondità della pagina proliferano ecosistemi di citazioni e digressioni."
+categories: ["Filologia", "Ecologia", "Editoria"]
+tags: ["Note", "Margini", "Citazioni", "Digressioni"]
 ---
 
 # Building Modernist Layouts with CSS Grid

@@ -1,10 +1,10 @@
 ---
-title: "Color Theory in Industrial Design"
-date: "2025-06-03"
-description: "How industrial designers use color to communicate function and emotion"
-excerpt: "Color in industrial design isn't decoration—it's communication. From safety warnings to brand identity, color choices shape how we interact with objects."
-categories: ["Design", "Color Theory"]
-tags: ["Industrial Design", "Color", "Product Design", "Psychology"]
+title: "Antropologia del Lettore Sottolineatore: Grafite e Appropriazione"
+date: "2025-11-26"
+description: "Ricerca etnografica sulle tribù dei sottolineatori e le loro pratiche rituali di appropriazione testuale"
+excerpt: "Dal tratto timido all'annotazione compulsiva, ogni segno a margine è un atto di possesso epistemologico."
+categories: ["Antropologia", "Critica", "Pratiche di Lettura"]
+tags: ["Sottolineatura", "Appropriazione", "Grafite", "Margini"]
 ---
 
 # Color Theory in Industrial Design

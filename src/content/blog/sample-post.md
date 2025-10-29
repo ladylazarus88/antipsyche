@@ -1,10 +1,10 @@
 ---
-title: "The Aesthetic Tension of Modernist Design"
-date: "2025-06-08"
-description: "Exploring the fascinating intersection between Bauhaus functionalism and monumental design"
-excerpt: "An examination of how opposing design philosophies can create compelling visual narratives in contemporary digital spaces."
-categories: ["Design", "Typography", "History"]
-tags: ["Bauhaus", "Modernism", "Web Design", "Visual Culture"]
+title: "Capire il Tappeto: Forma, Funzione e l'Arredamento Moderno"
+date: "2025-10-29"
+description: "Un'analisi profonda di come i principi del tappeto continuino a plasmare l'arredamento contemporaneo"
+excerpt: "Dai bazar persiani ai salotti di oggi, l'approccio radicale del tappeto continua a influenzare come pensiamo agli spazi domestici."
+categories: ["Arredamento", "Storia", "Design Domestico"]
+tags: ["Tappeto", "Teoria dell'Arredamento", "Modernismo", "UI del Salotto"]
 ---
 
 # The Aesthetic Tension of Modernist Design
