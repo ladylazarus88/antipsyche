@@ -58,7 +58,7 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
         {frontmatter.categories && frontmatter.categories.length > 0 && (
           <div class="post-categories">
             {frontmatter.categories.map((category: string) => (
-              <a href={`${base}/categories/${category.toLowerCase()}`} class="category-tag">
+              <a href={`${base}categories/${category.toLowerCase().replace(/[\/\s]+/g, '-')}`} class="category-link">
                 {category}
               </a>
             ))}
