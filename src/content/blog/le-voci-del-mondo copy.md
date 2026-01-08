@@ -10,7 +10,7 @@ tags: ["Letteratura", "Romanzo", "Le voci del mondo", "Schneider"]
 
 # LE VOCI DEL MONDO
 
-![Immagine villaggio austriaco](https://cdn2.picryl.com/photo/1881/12/31/mayburger-salzburg-vom-plainberg-aus-1881-547980-640.jpg)
+![Immagine villaggio austriaco](/public/images/post/le-voci-del-mondo.jpg)
 
 Come potrebbe un uomo dire onestamente di amare la propria donna se, per la vita intera, si limita ad amarla di giorno? Come potrebbe giurare davanti a Dio il suo amore se questi, dormendo, se ne dimentica? Sarebbe, allora, un amore falso, un amore a metà; ma l’amore non conosce le parti, non è analitico, ma sintetico. Perché durante il sonno non si ama; si è come morti, o come in uno stato di sospensione dell’essere. Per tale ragione, la morte è detta sorella del sonno. Dormire vuol dire perder tempo, un tempo di cui ci verrà chiesto il conto in Purgatorio, o all’Inferno. 
 
