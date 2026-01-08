@@ -22,7 +22,7 @@ export const config: SiteConfig = {
   author: {
     name: "Antipsyché",
     bio: "Curatori, traduttori e archeologi di tesori inattesi.",
-    avatar: "/images/avatar.jpg"
+    avatar: "public/images/avatar.jpg"
   },
   social: {
     instagram: "https://instagram.com/antipsyche",
