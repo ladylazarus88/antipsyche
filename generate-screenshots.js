@@ -10,9 +10,9 @@ async function generateScreenshots() {
   const context = await browser.newContext();
   
   // Base URL - GitHub Pages live site
-  const baseURL = 'https://jdrhyne.github.io/volks-typo';
+  const baseURL = 'https://ladylazarus88.github.io/antipsyche';
   
-  console.log('🎨 Generating Volks-Typo theme screenshots for submission...\n');
+  console.log('🎨 Generating theme screenshots for submission...\n');
   
   // Desktop screenshots (1200px width for high quality)
   const desktopPage = await context.newPage();
@@ -23,7 +23,7 @@ async function generateScreenshots() {
   await desktopPage.goto(baseURL);
   await desktopPage.waitForLoadState('networkidle');
   await desktopPage.screenshot({ 
-    path: join(__dirname, 'screenshots/volks-typo-homepage.png'),
+    path: join(__dirname, 'screenshots/antipsyche-homepage.png'),
     fullPage: false
   });
   
@@ -32,7 +32,7 @@ async function generateScreenshots() {
   await desktopPage.goto(`${baseURL}/blog`);
   await desktopPage.waitForLoadState('networkidle');
   await desktopPage.screenshot({ 
-    path: join(__dirname, 'screenshots/volks-typo-blog.png'),
+    path: join(__dirname, 'screenshots/antipsyche-blog.png'),
     fullPage: false
   });
   
@@ -41,7 +41,7 @@ async function generateScreenshots() {
   await desktopPage.goto(`${baseURL}/blog/bauhaus-design-principles/`);
   await desktopPage.waitForLoadState('networkidle');
   await desktopPage.screenshot({ 
-    path: join(__dirname, 'screenshots/volks-typo-post.png'),
+    path: join(__dirname, 'screenshots/antipsyche-post.png'),
     fullPage: false
   });
   
@@ -50,16 +50,16 @@ async function generateScreenshots() {
   await desktopPage.goto(`${baseURL}/about`);
   await desktopPage.waitForLoadState('networkidle');
   await desktopPage.screenshot({ 
-    path: join(__dirname, 'screenshots/volks-typo-about.png'),
+    path: join(__dirname, 'screenshots/antipsyche-about.png'),
     fullPage: false
   });
   
-  // 5. Categories Page
-  console.log('📸 Capturing categories page...');
-  await desktopPage.goto(`${baseURL}/categories`);
+  // 5. Recensioni Page
+  console.log('📸 Capturing recensioni page...');
+  await desktopPage.goto(`${baseURL}/recensioni`);
   await desktopPage.waitForLoadState('networkidle');
   await desktopPage.screenshot({ 
-    path: join(__dirname, 'screenshots/volks-typo-categories.png'),
+    path: join(__dirname, 'screenshots/antipsyche-recensioni.png'),
     fullPage: false
   });
   
@@ -72,7 +72,7 @@ async function generateScreenshots() {
   await mobilePage.goto(baseURL);
   await mobilePage.waitForLoadState('networkidle');
   await mobilePage.screenshot({ 
-    path: join(__dirname, 'screenshots/volks-typo-mobile-home.png'),
+    path: join(__dirname, 'screenshots/antipsyche-mobile-home.png'),
     fullPage: false
   });
   
@@ -81,7 +81,7 @@ async function generateScreenshots() {
   await mobilePage.goto(`${baseURL}/blog/bauhaus-design-principles/`);
   await mobilePage.waitForLoadState('networkidle');
   await mobilePage.screenshot({ 
-    path: join(__dirname, 'screenshots/volks-typo-mobile-post.png'),
+    path: join(__dirname, 'screenshots/antipsyche-mobile-post.png'),
     fullPage: false
   });
   
@@ -93,7 +93,7 @@ async function generateScreenshots() {
   await mobilePage.click('.hamburger-toggle');
   await mobilePage.waitForTimeout(500); // Wait for animation
   await mobilePage.screenshot({ 
-    path: join(__dirname, 'screenshots/volks-typo-mobile-menu.png'),
+    path: join(__dirname, 'screenshots/antipsyche-mobile-menu.png'),
     fullPage: false
   });
   
@@ -112,7 +112,7 @@ async function generateScreenshots() {
   });
   
   await featuredPage.screenshot({ 
-    path: join(__dirname, 'screenshots/volks-typo-featured-main.png'),
+    path: join(__dirname, 'screenshots/antipsyche-featured-main.png'),
     fullPage: false
   });
   
@@ -121,15 +121,15 @@ async function generateScreenshots() {
   console.log('\n✅ All screenshots generated successfully!');
   console.log('📁 Check the screenshots/ directory');
   console.log('\nGenerated files:');
-  console.log('  - volks-typo-homepage.png (Desktop homepage)');
-  console.log('  - volks-typo-blog.png (Blog listing)');
-  console.log('  - volks-typo-post.png (Individual post)');
-  console.log('  - volks-typo-about.png (About page)');
-  console.log('  - volks-typo-categories.png (Categories page)');
-  console.log('  - volks-typo-mobile-home.png (Mobile homepage)');
-  console.log('  - volks-typo-mobile-post.png (Mobile blog post)');
-  console.log('  - volks-typo-mobile-menu.png (Mobile navigation)');
-  console.log('  - volks-typo-featured-main.png (Featured screenshot)\n');
+  console.log('  - antipsyche-homepage.png (Desktop homepage)');
+  console.log('  - antipsyche-blog.png (Blog listing)');
+  console.log('  - antipsyche-post.png (Individual post)');
+  console.log('  - antipsyche-about.png (About page)');
+  console.log('  - antipsyche-recensioni.png (Recensioni page)');
+  console.log('  - antipsyche-mobile-home.png (Mobile homepage)');
+  console.log('  - antipsyche-mobile-post.png (Mobile blog post)');
+  console.log('  - antipsyche-mobile-menu.png (Mobile navigation)');
+  console.log('  - antipsyche-featured-main.png (Featured screenshot)\n');
 }
 
 // Run the script

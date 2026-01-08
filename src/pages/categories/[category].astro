@@ -39,12 +39,12 @@ const { category, posts } = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title={`${category} - Volks-Typo`} description={`All posts in the ${category} category`}>
+<Layout title={`${category} - Antipsyché`} description={`All posts in the ${category} category`}>
   <div class="category-page">
     <header class="page-header">
       <h1 class="page-title">{category}</h1>
       <p class="page-description">
-        {posts.length} article{posts.length === 1 ? '' : 's'} in this category
+        {posts.length} articoli in questa categoria
       </p>
       <hr class="page-rule" />
     </header>
@@ -73,14 +73,14 @@ const base = import.meta.env.BASE_URL;
           )}
           
           <a href={`${base}blog/${post.file.split('/').pop()?.replace('.md', '')}`} class="read-more">
-            Read More →
+            Continua a leggere →
           </a>
         </article>
       ))}
     </div>
 
     <div class="page-navigation">
-      <a href={`${base}categories`} class="back-link">← Back to All Categories</a>
+      <a href={`${base}categories`} class="back-link">← Torna a tutte le categorie</a>
     </div>
   </div>
 </Layout>

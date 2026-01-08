@@ -66,11 +66,11 @@ const reviews = getReviewPosts();
 
 <Layout title="Recensioni | Antipsyché">
   <div class="reviews-page page-container">
-    <header class="page-header">
+    <section class="page-header">
       <h1 class="page-title">Recensioni</h1>
       <p class="page-description">Letture quotidiane.</p>
       <hr class="page-rule" />
-    </header>
+    </section>
 
     <main class="reviews-grid">
       {reviews.map((review, index) => {
@@ -142,16 +142,6 @@ const reviews = getReviewPosts();
 </Layout>
 
 <style is:global>
-  /* ===== VARIABILI CSS ===== */
-  :root {
-    --page-bg: var(--color-background);
-    --row-border: var(--color-border);
-    --tile-border: var(--color-border);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
-  }
-  
   /* ===== LAYOUT BASE ===== */
   .page-container {
     max-width: var(--max-width);

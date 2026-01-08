@@ -36,7 +36,7 @@ const sortedCategories = Object.entries(categoryMap)
   });
 ---
 
-<Layout title="Categorie | Pensiero Aporetico" description="Esplora gli articoli per categoria" showSidebar={true}>
+<Layout title="Categorie | Antipsyché" description="Esplora gli articoli per categoria" showSidebar={true}>
   <div class="categories-page">
     <header class="page-header">
       <h1 class="page-title">Categorie</h1>
@@ -52,7 +52,7 @@ const sortedCategories = Object.entries(categoryMap)
           <a href={`${base}categories/${category.toLowerCase().replace(/[\/\s]+/g, '-')}`} class="category-link">
             <h2 class="category-title">{category}</h2>
             <p class="category-count">
-              {posts.length} article{posts.length === 1 ? '' : 's'}
+              {posts.length} articoli
             </p>
           </a>
         </div>

@@ -1,8 +1,8 @@
 {
-  "name": "home-valentina-pensieroaporetico",
+  "name": "ladylazarus88-blog",
   "type": "module",
   "version": "1.1.3",
-  "description": "An Astro blog theme exploring the aesthetic tension between Bauhaus modernism and WW2-era monumental design",
+  "description": "Litterature explorations and reflections blog",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -14,33 +14,29 @@
     "generate-screenshots": "node generate-screenshots.js",
     "test:features": "playwright test"
   },
-  "author": "@jdrhyne",
+  "author": "@ladylazarus88",
   "license": "MIT",
-  "homepage": "https://github.com/jdrhyne/volks-typo",
+  "homepage": "https://github.com/ladylazarus88/antipsyche",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jdrhyne/volks-typo.git"
+    "url": "git+https://github.com/ladylazarus88/antipsyche.git"
   },
   "bugs": {
-    "url": "https://github.com/jdrhyne/volks-typo/issues"
+    "url": "https://github.com/ladylazarus88/antipsyche/issues"
   },
   "keywords": [
     "astro",
     "blog",
-    "theme",
-    "minimal",
-    "typography"
+    "letteratura",
+    "edizioni",
+    "tipografia"
   ],
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/rss": "^4.0.12",
     "@fontsource/cormorant": "^5.2.8",
     "@fontsource/cormorant-garamond": "^5.2.11",
-    "@fontsource/jetbrains-mono": "^5.0.0",
-    "@fontsource/oswald": "^5.2.6",
-    "@fontsource/roboto-condensed": "^5.2.6",
     "@fontsource/spectral": "^5.2.8",
-    "@fontsource/work-sans": "^5.2.6",
     "astro": "^5.9.1"
   },
   "devDependencies": {

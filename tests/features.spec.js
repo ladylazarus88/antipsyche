@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Volks-Typo Features', () => {
+test.describe('Antipsyché Features', () => {
   test('dark mode toggle works correctly', async ({ page }) => {
     await page.goto('/');
     
@@ -27,9 +27,9 @@ test.describe('Volks-Typo Features', () => {
     const readingTimeElements = page.locator('.post-reading-time');
     await expect(readingTimeElements.first()).toBeVisible();
     
-    // Check format (should contain "min read")
+    // Check format (should contain "min")
     const readingTimeText = await readingTimeElements.first().textContent();
-    expect(readingTimeText).toMatch(/\d+ min read|Less than 1 min read/);
+    expect(readingTimeText).toMatch(/\d+ min|Meno di 1 min/);
   });
 
   test('table of contents appears and works on blog posts', async ({ page }) => {

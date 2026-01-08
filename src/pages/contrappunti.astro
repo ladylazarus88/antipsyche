@@ -38,13 +38,11 @@ const getPostUrl = (post) => {
 
 <Layout title="Contrappunti | Antipsyché" description="Tutti i post di Antipsyché">
   <div class="contrappunti-page">
-    <header class="contrappunti-header">
-      <h1 class="contrappunti-title">Contrappunti</h1>
-      <p class="contrappunti-description">
-        Esplorando testi inediti, traduzioni e l'intersezione tra pensiero critico e culture dimenticate.
-      </p>
-      <hr class="contrappunti-rule" />
-    </header>
+    <section class="page-header">
+      <h1 class="page-title">Contrappunti</h1>
+      <p class="page-description">Intersezioni di idee.</p>
+      <hr class="page-rule" />
+    </section>
 
     {sortedContrappuntiPosts.length > 0 ? (
       <div class="posts-list">
@@ -98,15 +96,6 @@ const getPostUrl = (post) => {
 </Layout>
 
 <style is:global>
-  /* Variabili */
-  :root {
-    --blog-bg: #f8f9fa;
-    --border-color: rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --transition: all 0.2s ease;
-  }
-
   /* Layout 
   .contrappunti-page {
     max-width: 1200;
@@ -116,35 +105,40 @@ const getPostUrl = (post) => {
   }*/
 
   /* Header */
-  
-  .contrappunti-header {
+  .page-header {
     text-align: center;
     margin-bottom: 3rem;
     padding: 0 1rem;
   }
 
-  .contrappunti-title {
+  .page-title {
     font-family: var(--font-heading-primary);
     font-size: clamp(2rem, 5vw, 2.5rem);
-    font-weight: 50;
-    color: #2c3e50;
+    font-weight: 300;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
     line-height: 1.1;
   }
 
-  .contrappunti-description {
+  .page-description {
+    font-family: var(--font-heading-secondary);
     font-size: 1rem;
+    font-weight: 400;
     line-height: 1.5;
-    color: #7f8c8d;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     margin-bottom: 1.5rem;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
   }
 
-  .contrappunti-rule {
+  .page-rule {
     height: 2px;
-    background-color: #8B5F65;
+    background-color: var(--color-accent);
     border: none;
     width: 80px;
     margin: 0 auto;
@@ -298,15 +292,15 @@ const getPostUrl = (post) => {
       max-width: 95%;
     }
     
-    .contrappunti-header {
+    .page-header {
       margin-bottom: 2rem;
     }
     
-    .contrappunti-title {
+    .page-title {
       font-size: 1.75rem;
     }
     
-    .contrappunti-description {
+    .page-description {
       font-size: 0.95rem;
     }
     
@@ -324,11 +318,11 @@ const getPostUrl = (post) => {
   }
 
   @media (max-width: 480px) {
-    .contrappunti-page {
+    .page-page {
       padding: 0.75rem;
     }
     
-    .contrappunti-title {
+    .page-title {
       font-size: 1.5rem;
     }
     
