@@ -1,16 +1,17 @@
 ---
-title: "Le voci del mondo di Robert Schneider2"
+title: "Le voci del mondo"
+author: Robert Schneider 
 date: "2026-01-05"
-image: "images/post/le-voci-del-mondo.jpg"
+image: "https://europa.tips/wordpress/wp-content/uploads/Avrupanin-Ghibli-Ruhu-Tasiyan-9-Masalsi-Koeyuewebp.webp"
 image_alt: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiT_4eQU-_YFRvRK_49NsuCvmVwvffTd0lKQ&s"
 excerpt: "In un remoto villaggio austriaco un ragazzo prodigio non sa né leggere né scrivere ma sente la musica e i suoni del mondo come nessun altro."
-categories: ["Recensioni"]
+categories: ["Recensione"]
 tags: ["Letteratura", "Romanzo", "Le voci del mondo", "Schneider"]
 ---
 
 # LE VOCI DEL MONDO
 
-![Immagine villaggio austriaco](/public/images/post/le-voci-del-mondo.jpg)
+![Immagine villaggio austriaco](https://europa.tips/wordpress/wp-content/uploads/Avrupanin-Ghibli-Ruhu-Tasiyan-9-Masalsi-Koeyuewebp.webp)
 
 Come potrebbe un uomo dire onestamente di amare la propria donna se, per la vita intera, si limita ad amarla di giorno? Come potrebbe giurare davanti a Dio il suo amore se questi, dormendo, se ne dimentica? Sarebbe, allora, un amore falso, un amore a metà; ma l’amore non conosce le parti, non è analitico, ma sintetico. Perché durante il sonno non si ama; si è come morti, o come in uno stato di sospensione dell’essere. Per tale ragione, la morte è detta sorella del sonno. Dormire vuol dire perder tempo, un tempo di cui ci verrà chiesto il conto in Purgatorio, o all’Inferno. 
 

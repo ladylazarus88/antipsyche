@@ -43,7 +43,7 @@ const getReviewPosts = () => {
   });
   
   return Object.values(posts)
-    .filter(post => post.frontmatter.categories?.includes('Recensioni'))
+    .filter(post => post.frontmatter.categories?.includes('Recensione'))
     .map(post => {
       const slug = post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '');
       const title = post.frontmatter.title?.replace(/^Recensione:\s*/i, '');

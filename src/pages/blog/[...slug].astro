@@ -43,13 +43,13 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
   <article class="blog-post">
     <header class="post-header">
       <h1 class="post-title">{frontmatter.title}</h1>
-      
+      <h3 class="post-subtitle">di {frontmatter.author}</h3>
       <div class="post-meta">
         <time class="post-date" datetime={frontmatter.date}>
-          {new Date(frontmatter.date).toLocaleDateString('en-US', {
-            year: 'numeric',
+          {new Date(frontmatter.date).toLocaleDateString('it-IT', {
+            day: 'numeric',
             month: 'long',
-            day: 'numeric'
+            year: 'numeric'
           })}
         </time>
         
@@ -74,8 +74,6 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
       <hr class="monumental-rule" />
     </header>
 
-    <TableOfContents headings={tocHeadings} />
-
     <div class="post-content">
       <Content />
     </div>
@@ -97,6 +95,7 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
       </div>
     </footer>
   </article>
+
 </Layout>
 
 <style>
@@ -117,6 +116,23 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     text-transform: uppercase;
     letter-spacing: 0.05em;
     line-height: 1.1;
+    margin-bottom: calc(var(--grid-unit) * 3);
+  }
+
+  .post-subtitle {
+    font-family: var(--font-heading-secondary);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    text-transform: capitalize;
+    letter-spacing: 0.05em;
+    margin-bottom: calc(var(--grid-unit) * 3);
+  }
+
+  .post-meta {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--grid-unit) * 1.5);
     margin-bottom: calc(var(--grid-unit) * 3);
   }
 
@@ -456,3 +472,24 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
   }
 }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('=== DEBUG IMMAGINI ===');
+    const images = document.querySelectorAll('.post-content img');
+    
+    images.forEach((img, index) => {
+      console.log(`Immagine ${index}:`, img.src);
+      
+      // Verifica se l'immagine si è caricata
+      img.addEventListener('load', () => {
+        console.log(`✓ Immagine ${index} caricata:`, img.naturalWidth, 'x', img.naturalHeight);
+      });
+      
+      img.addEventListener('error', () => {
+        console.error(`✗ Immagine ${index} FALLITA:`, img.src);
+        img.style.border = '3px solid red';
+      });
+    });
+  });
+</script>
