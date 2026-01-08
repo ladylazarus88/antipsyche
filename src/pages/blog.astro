@@ -2,18 +2,6 @@
 import Layout from '../components/Layout.astro';
 const base = import.meta.env.BASE_URL;
 
-// Configurazioni colori identiche alle recensioni
-const PALETTES = [
-  { bg: '#FFF0F5', text: '#333', accent: '#8B5F65' },
-  { bg: '#F0F8FF', text: '#333', accent: '#5C7080' },
-  { bg: '#FFF5EE', text: '#333', accent: '#8B7355' },
-  { bg: '#F5F0FF', text: '#333', accent: '#6A5F7C' }
-];
-
-// Funzione per palette ciclica
-const getPalette = (index) => PALETTES[index % PALETTES.length];
-
-// Import posts
 const mdPostsGlob = import.meta.glob('../content/blog/*.md', { eager: true });
 const mdxPostsGlob = import.meta.glob('../content/blog/*.mdx', { eager: true });
 
@@ -22,10 +10,10 @@ const sortedPosts = allPosts
   .sort((a: any, b: any) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
 ---
 
-<Layout title="Contrappunti | Antipsyché" description="Tutti i post di Antipsyché">
+<Layout title="Blog | Antipsyché" description="Tutti i post di Antipsyché">
   <div class="blog-page">
     <header class="blog-header">
-      <h1 class="blog-title">Contrappunti</h1>
+      <h1 class="blog-title">Blog</h1>
       <p class="blog-description">
         Esplorando testi inediti, traduzioni e l'intersezione tra pensiero critico e culture dimenticate.
       </p>
@@ -34,336 +22,229 @@ const sortedPosts = allPosts
 
     {sortedPosts.length > 0 ? (
       <div class="posts-list">
-        {sortedPosts.map((post: any, index: number) => {
-          const palette = getPalette(index);
-          return (
-            <article class="post-item" style={`
-              --post-bg: ${palette.bg};
-              --post-text: ${palette.text};
-              --post-accent: ${palette.accent};
-            `}>
-              <h2 class="post-title">
-                <a href={`${base}contrappunti/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`}>{post.frontmatter.title}</a>
-              </h2>
+        {sortedPosts.map((post: any) => (
+          <article class="post-item">
+            <h2 class="post-title">
+              <a href={`${base}blog/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`}>{post.frontmatter.title}</a>
+            </h2>
+            
+            <div class="post-meta">
+              <time class="post-date" datetime={post.frontmatter.date}>
+                {new Date(post.frontmatter.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </time>
               
-              <div class="post-meta">
-                <time class="post-date" datetime={post.frontmatter.date}>
-                  {new Date(post.frontmatter.date).toLocaleDateString('it-IT', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </time>
-                
-                {post.frontmatter.categories && (
-                  <div class="post-categories">
-                    {post.frontmatter.categories.map((category: string) => (
-                      <span class="category">{category}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <span class="post-reading-time">5 min read</span>
               
-              {post.frontmatter.excerpt && (
-                <p class="post-excerpt">{post.frontmatter.excerpt}</p>
+              {post.frontmatter.categories && (
+                <div class="post-categories">
+                  {post.frontmatter.categories.map((category: string) => (
+                    <span class="category">{category}</span>
+                  ))}
+                </div>
               )}
-              
-              <a href={`${base}contrappunti/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`} class="read-more">Leggi tutto →</a>
-            </article>
-          );
-        })}
+            </div>
+            
+            {post.frontmatter.excerpt && (
+              <p class="post-excerpt">{post.frontmatter.excerpt}</p>
+            )}
+            
+            <a href={`${base}blog/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`} class="read-more">Read More →</a>
+          </article>
+        ))}
       </div>
     ) : (
       <div class="no-posts">
-        <p>Nessun post disponibile ancora.</p>
+        <p>No posts available yet. Start writing by creating files in <code>src/pages/blog/</code></p>
       </div>
     )}
   </div>
 </Layout>
 
-<style is:global>
-  /* ============================================
-     VARIABILI CSS
-     ============================================ */
-  :root {
-    --blog-bg: #f8f9fa;
-    --border-color: rgba(0, 0, 0, 0.08);
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --transition: all 0.2s ease;
-  }
-
-  /* ============================================
-     PAGINA BLOG
-     ============================================ */
+<style>
   .blog-page {
-    max-width: 700px; /* Ridotto da 800px */
+    max-width: 800px;
     margin: 0 auto;
-    padding: 1.5rem 2rem; /* Ridotto */
-    background: var(--blog-bg);
   }
 
-  /* ============================================
-     HEADER
-     ============================================ */
   .blog-header {
     text-align: center;
-    margin-bottom: 2.5rem; /* Ridotto */
-    padding: 0 0.5rem;
+    margin-bottom: calc(var(--grid-unit) * 8);
   }
 
   .blog-title {
     font-family: var(--font-heading-primary);
-    font-size: 2rem; /* Ridotto da 2.5-3.5rem */
-    font-weight: 700;
-    color: #2c3e50;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--color-accent);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    line-height: 1.2;
-    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    margin-bottom: calc(var(--grid-unit) * 3);
   }
 
   .blog-description {
-    font-size: 1rem; /* Ridotto da 1.25rem */
-    line-height: 1.5;
-    color: #7f8c8d;
-    margin-bottom: 1.5rem;
-    max-width: 500px;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: calc(var(--grid-unit) * 4);
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
   }
 
+
   .blog-rule {
-    height: 2px; /* Ridotto da 4px */
-    background-color: #8B5F65;
+    height: 4px;
+    background-color: var(--color-accent);
     border: none;
-    width: 80px; /* Ridotto da 120px */
+    width: 120px;
     margin: 0 auto;
   }
 
-  /* ============================================
-     LISTA POST
-     ============================================ */
   .posts-list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* Ridotto da 2rem */
+    gap: calc(var(--grid-unit) * 6);
   }
 
-  /* POST ITEM */
   .post-item {
-    background: var(--post-bg);
-    border-radius: 8px; /* Ridotto da 12px */
-    padding: 1.5rem; /* Ridotto da 2.5rem */
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: calc(var(--grid-unit) * 4);
   }
 
-  .post-item:hover {
-    transform: translateY(-2px); /* Ridotto da -4px */
-    box-shadow: var(--shadow-lg);
+  .post-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
   }
 
-  /* Decorative accent */
-  .post-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 3px; /* Ridotto da 6px */
-    height: 100%;
-    background: var(--post-accent);
-    opacity: 0.7;
-  }
-
-  /* ============================================
-     TITOLO POST
-     ============================================ */
   .post-title {
     font-family: var(--font-heading-secondary);
-    font-size: 1.25rem; /* Ridotto da 1.5-2.25rem */
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--post-text);
-    line-height: 1.3;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: calc(var(--grid-unit) * 2);
   }
 
   .post-title a {
-    color: inherit;
+    color: var(--color-text-primary);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .post-title a:hover,
   .post-title a:focus {
-    color: var(--post-accent);
+    color: var(--color-accent);
   }
 
-  /* ============================================
-     META INFO
-     ============================================ */
   .post-meta {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem; /* Ridotto da 1.25rem */
-    margin-bottom: 1rem; /* Ridotto da 1.75rem */
+    flex-direction: column;
+    gap: calc(var(--grid-unit));
+    margin-bottom: calc(var(--grid-unit) * 2);
   }
 
   .post-date {
     font-family: var(--font-mono);
-    font-size: 0.8rem; /* Ridotto da 0.9rem */
-    color: var(--post-accent);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    font-weight: 500;
+    letter-spacing: 0.05em;
   }
 
-  /* ============================================
-     CATEGORIES
-     ============================================ */
+  .post-reading-time {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .post-reading-time::before {
+    content: "•";
+    margin: 0 calc(var(--grid-unit));
+    color: var(--color-border);
+  }
+
   .post-categories {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem; /* Ridotto da 0.75rem */
+    gap: calc(var(--grid-unit) / 2);
   }
 
   .category {
-    background: var(--post-accent);
+    background-color: var(--color-text-primary);
     color: white;
-    padding: 0.2rem 0.6rem; /* Ridotto */
-    font-size: 0.7rem; /* Ridotto da 0.8rem */
+    padding: calc(var(--grid-unit) / 4) calc(var(--grid-unit) / 2);
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-radius: 3px; /* Ridotto da 6px */
-    transition: all 0.2s ease;
+    border-radius: 2px;
   }
 
-  .category:hover {
-    opacity: 0.9;
-    transform: translateY(-1px); /* Ridotto da -2px */
-  }
-
-  /* Dark mode */
+  /* Dark mode category styles */
   :global([data-theme="dark"]) .category {
-    background: color-mix(in srgb, var(--post-accent) 90%, black);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
   }
 
-  /* ============================================
-     EXCERPT
-     ============================================ */
   .post-excerpt {
-    color: color-mix(in srgb, var(--post-text) 70%, transparent);
-    line-height: 1.5;
-    margin-bottom: 1rem; /* Ridotto da 2rem */
-    font-size: 0.95rem; /* Ridotto da 1.1rem */
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: calc(var(--grid-unit) * 2);
+    font-size: 1.1rem;
   }
 
-  /* ============================================
-     READ MORE LINK
-     ============================================ */
   .read-more {
     font-family: var(--font-heading-secondary);
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--post-accent);
+    color: var(--color-accent);
     text-decoration: none;
-    font-size: 0.85rem; /* Ridotto da 0.95rem */
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
   }
 
   .read-more:hover,
   .read-more:focus {
-    color: var(--post-text);
-    gap: 0.5rem;
+    color: var(--color-text-primary);
   }
 
-  .read-more::after {
-    content: '→';
-    transition: transform 0.2s ease;
-  }
-
-  .read-more:hover::after {
-    transform: translateX(2px);
-  }
-
-  /* ============================================
-     NO POSTS
-     ============================================ */
   .no-posts {
     text-align: center;
-    padding: 2rem; /* Ridotto da 4rem */
-    color: #7f8c8d;
+    padding: calc(var(--grid-unit) * 6);
+    color: var(--color-text-muted);
     font-style: italic;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border: 1px dashed #ddd;
-    margin-top: 1rem;
   }
 
-  /* ============================================
-     RESPONSIVE
-     ============================================ */
+  .no-posts code {
+    background-color: var(--color-surface);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+  }
+
   @media (max-width: 768px) {
-    .blog-page {
-      padding: 1rem;
-      max-width: 95%;
-    }
-    
-    .blog-header {
-      margin-bottom: 2rem;
-    }
-    
     .blog-title {
+      font-size: 2.5rem;
+    }
+
+    .blog-description {
+      font-size: 1.125rem;
+    }
+
+    .post-title {
       font-size: 1.75rem;
     }
-    
-    .blog-description {
-      font-size: 0.95rem;
-    }
-    
-    .post-item {
-      padding: 1.25rem;
-    }
-    
-    .post-title {
-      font-size: 1.15rem;
-    }
-    
-    .post-excerpt {
-      font-size: 0.9rem;
-    }
-  }
 
-  @media (max-width: 480px) {
-    .blog-page {
-      padding: 0.75rem;
-    }
-    
-    .blog-title {
-      font-size: 1.5rem;
-    }
-    
-    .post-item {
-      padding: 1rem;
-    }
-    
-    .post-title {
-      font-size: 1.1rem;
-    }
-    
-    .category {
-      padding: 0.15rem 0.4rem;
-      font-size: 0.65rem;
+    .post-meta {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>

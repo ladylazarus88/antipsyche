@@ -34,9 +34,12 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/rss": "^4.0.12",
+    "@fontsource/cormorant": "^5.2.8",
+    "@fontsource/cormorant-garamond": "^5.2.11",
     "@fontsource/jetbrains-mono": "^5.0.0",
     "@fontsource/oswald": "^5.2.6",
     "@fontsource/roboto-condensed": "^5.2.6",
+    "@fontsource/spectral": "^5.2.8",
     "@fontsource/work-sans": "^5.2.6",
     "astro": "^5.9.1"
   },
