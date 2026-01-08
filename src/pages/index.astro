@@ -46,9 +46,7 @@ const latestPosts = getPosts();
     <!-- Ultimi Post Section -->
     <section class="latest-posts-section" id="latest-posts">
       <div class="container">
-        <h2 class="section-title">Ultimi Post</h2>
-        
-        {latestPosts.length > 0 ? (
+          {latestPosts.length > 0 ? (
           <>
             <div class="posts-grid">
               {latestPosts.map(post => (
@@ -95,7 +93,7 @@ const latestPosts = getPosts();
             <!-- Link per vedere tutti i post -->
             <div class="view-all-container">
               <a href={`${base}blog`} class="view-all-link">
-                Vedi tutti i post →
+                Sfoglia la galleria completa dei post
               </a>
             </div>
           </>
