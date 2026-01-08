@@ -381,10 +381,12 @@ const reviews = getReviewPosts();
       height: auto;
       min-height: auto;
       border-radius: 0;
-      box-shadow: none;
-      border: none;
+      box-shadow: rgb(66, 65, 64);
+      border: 20px solid var(--row-border);
       border-top: 4px solid var(--row-accent); /* Bordo colorato in alto per evidenziare la triade */
       border-bottom: 4px solid var(--row-accent); /* Bordo colorato in basso */
+      border-left: 4px solid var(--row-accent); /* Bordo colorato in alto per evidenziare la triade */
+      border-right: 4px solid var(--row-accent); /* Bordo colorato in basso */
       margin-bottom: 0;
       transition: none;
     }
@@ -412,7 +414,7 @@ const reviews = getReviewPosts();
     .tile {
       border-radius: 0;
       border: none;
-      box-shadow: none;
+      box-shadow: rgb(66, 65, 64);
       background: transparent; /* Rendi trasparente per far vedere il colore della riga */
     }
     
@@ -457,7 +459,7 @@ const reviews = getReviewPosts();
     .image-tile img.secondary-image {
       width: 100% !important;
       height: 100% !important;
-      object-fit: cover;
+      object-fit: contain;
       filter: grayscale(20%);
       opacity: 0.9;
     }
@@ -483,7 +485,7 @@ const reviews = getReviewPosts();
     }
     
     .text-tile .tile-content {
-      padding: 1.5rem 1rem;
+      padding: 1rem 1rem;
     }
   }
 
@@ -495,7 +497,7 @@ const reviews = getReviewPosts();
 
   @media (min-width: 1400px) {
     .review-row {
-      --row-height: 400px;
+      --row-height: 800px;
     }
   }
 </style>
