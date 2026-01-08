@@ -7,7 +7,6 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
 
 <header class="site-header">
   <div class="header-content">
-    <!-- Mobile hamburger button - far left on mobile -->
     <button class="hamburger-toggle mobile-only" id="hamburger-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path class="hamburger-line" d="M3 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -20,67 +19,68 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
       <a href={base}>
         <img src={base + "site-title.svg"} alt={config.title} class="title-svg" />
       </a>
+      <span class="site-name">Antipsyché</span>
     </div>
     
     <div class="header-controls">
       <nav class="main-navigation" role="navigation" aria-label="Main navigation">
         <ul class="nav-list">
-          <li><a href={base} class="nav-link">Home</a></li>
-          <li><a href={base + "blog"} class="nav-link">Blog</a></li>
-          <li><a href={base + "categories"} class="nav-link">Categorie</a></li>
+          <li><a href={base + "contrappunti"} class="nav-link">Contrappunti</a></li>
+          <li><a href={base + "recensioni"} class="nav-link">Recensioni</a></li>
           <li><a href={base + "about"} class="nav-link">Chi Siamo</a></li>
+          <li><a href={base + "corpus"} class="nav-link">Corpus</a></li>
         </ul>
       </nav>
       
-      <!-- Mobile controls group - RSS and Search on right -->
       <div class="mobile-controls">
-  <ThemeToggle />
-  
-  <a href={base + "rss.xml"} class="rss-toggle" title="RSS Feed">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <circle cx="5" cy="19" r="2" fill="currentColor"/>
-      <path d="M3 3v2c8.284 0 15 6.716 15 15h2c0-9.389-7.611-17-17-17z" fill="currentColor"/>
-      <path d="M3 9v2c4.963 0 9 4.037 9 9h2c0-6.065-4.935-11-11-11z" fill="currentColor"/>
-    </svg>
-    <span class="visually-hidden">RSS</span>
-  </a>
-  
-  <button class="search-toggle" id="search-toggle" aria-label="Search articles">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
-      <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-  </button>
-</div>
-
-<nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
-  <ul class="mobile-nav-list">
-    <li><a href={base} class="mobile-nav-link">Home</a></li>
-    <li><a href={base + "blog"} class="mobile-nav-link">Blog</a></li>
-    <li><a href={base + "categories"} class="mobile-nav-link">Categorie</a></li>
-    <li><a href={base + "about"} class="mobile-nav-link">Chi Siamo</a></li>
-  </ul>
-</nav>
-
-<div class="search-overlay" id="search-overlay">
-  <div class="search-container">
-    <div class="search-header">
-      <input type="text" class="search-input" id="search-input" placeholder="Search articles..." autocomplete="off">
-      <button class="search-close" id="search-close" aria-label="Close search">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2"/>
-          <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2"/>
-        </svg>
-      </button>
+        <ThemeToggle />
+        <a href={base + "rss.xml"} class="rss-toggle" title="RSS Feed">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="5" cy="19" r="2" fill="currentColor"/>
+            <path d="M3 3v2c8.284 0 15 6.716 15 15h2c0-9.389-7.611-17-17-17z" fill="currentColor"/>
+            <path d="M3 9v2c4.963 0 9 4.037 9 9h2c0-6.065-4.935-11-11-11z" fill="currentColor"/>
+          </svg>
+          <span class="visually-hidden">RSS</span>
+        </a>
+        <button class="search-toggle" id="search-toggle" aria-label="Search articles">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
-    <div class="search-results" id="search-results"></div>
   </div>
-</div>
+
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+    <ul class="mobile-nav-list">
+      <li><a href={base} class="mobile-nav-link">Home</a></li>
+      <li><a href={base + "blog"} class="mobile-nav-link">Contrappunti</a></li>
+      <li><a href={base + "categories"} class="mobile-nav-link">Recensioni</a></li>
+      <li><a href={base + "about"} class="mobile-nav-link">Chi Siamo</a></li>
+    </ul>
+  </nav>
+
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-container">
+      <div class="search-header">
+        <input type="text" class="search-input" id="search-input" placeholder="Search articles..." autocomplete="off">
+        <button class="search-close" id="search-close" aria-label="Close search">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2"/>
+            <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </button>
+      </div>
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+</header>
 
 <script>
   const base = `${import.meta.env.BASE_URL || ''}`;
   
-  // Hamburger menu functionality
+  // Hamburger menu
   function initHamburgerMenu() {
     const hamburgerToggle = document.getElementById('hamburger-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -102,7 +102,6 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
       }
     });
 
-    // Close menu when clicking on a link
     const mobileNavLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
     mobileNavLinks.forEach(link => {
       link.addEventListener('click', () => {
@@ -112,7 +111,6 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
       });
     });
 
-    // Close menu on escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
         mobileMenu.classList.remove('active');
@@ -123,8 +121,8 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
   }
 
   // Search functionality
-  let searchData: any[] = [];
-  let searchOverlay: HTMLElement | null, searchInput: HTMLInputElement | null, searchResults: HTMLElement | null;
+  let searchData = [];
+  let searchOverlay, searchInput, searchResults;
 
   async function initSearch() {
     try {
@@ -135,26 +133,21 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     }
 
     searchOverlay = document.getElementById('search-overlay');
-    searchInput = document.getElementById('search-input') as HTMLInputElement;
+    searchInput = document.getElementById('search-input');
     searchResults = document.getElementById('search-results');
 
-    // Event listeners
     document.getElementById('search-toggle')?.addEventListener('click', openSearch);
     document.getElementById('search-close')?.addEventListener('click', closeSearch);
     searchInput?.addEventListener('input', handleSearch);
     
-    // Close on escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && searchOverlay?.classList.contains('active')) {
         closeSearch();
       }
     });
     
-    // Close on overlay click
-    searchOverlay?.addEventListener('click', (e: Event) => {
-      if (e.target === searchOverlay) {
-        closeSearch();
-      }
+    searchOverlay?.addEventListener('click', (e) => {
+      if (e.target === searchOverlay) closeSearch();
     });
   }
 
@@ -171,25 +164,24 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     if (searchResults) searchResults.innerHTML = '';
   }
 
-  function handleSearch(e: Event) {
-    const target = e.target as HTMLInputElement;
-    const query = target.value.toLowerCase().trim();
+  function handleSearch(e) {
+    const query = e.target.value.toLowerCase().trim();
     
     if (query.length < 2) {
       if (searchResults) searchResults.innerHTML = '';
       return;
     }
 
-    const results = searchData.filter((post: any) => 
+    const results = searchData.filter(post => 
       post.title.toLowerCase().includes(query) ||
       post.excerpt.toLowerCase().includes(query) ||
-      (post.categories && post.categories.some((cat: string) => cat.toLowerCase().includes(query)))
+      (post.categories && post.categories.some(cat => cat.toLowerCase().includes(query)))
     ).slice(0, 10);
 
     displayResults(results, query);
   }
 
-  function displayResults(results: any[], query: string) {
+  function displayResults(results, query) {
     if (results.length === 0) {
       if (searchResults) {
         searchResults.innerHTML = `
@@ -201,7 +193,7 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
       return;
     }
 
-    const resultsHTML = results.map((post: any) => `
+    const resultsHTML = results.map(post => `
       <article class="search-result">
         <h3 class="search-result-title">
           <a href="${base}${post.url.startsWith('/') ? post.url.slice(1) : post.url}">${post.title}</a>
@@ -214,7 +206,7 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
         ${post.excerpt ? `<p class="search-result-excerpt">${post.excerpt}</p>` : ''}
         ${post.categories ? `
           <div class="search-result-categories">
-            ${post.categories.map((cat: string) => `<span class="search-category">${cat}</span>`).join(' ')}
+            ${post.categories.map(cat => `<span class="search-category">${cat}</span>`).join(' ')}
           </div>
         ` : ''}
       </article>
@@ -230,10 +222,36 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     }
   }
 
-  // Initialize when DOM is loaded
+  // Scroll header functionality
+  function initScrollHeader() {
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+    
+    const scrollThreshold = 100;
+    
+    function updateHeader() {
+      header.classList.toggle('scrolled', window.scrollY > scrollThreshold);
+    }
+    
+    updateHeader();
+    
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateHeader();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+  // Initialize everything
   function init() {
     initHamburgerMenu();
     initSearch();
+    initScrollHeader();
   }
 
   if (document.readyState === 'loading') {
@@ -251,6 +269,21 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: padding 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .site-header.scrolled {
+    padding-top: calc(var(--grid-unit) * 0.75) !important;
+    padding-bottom: calc(var(--grid-unit) * 0.75) !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .site-header.scrolled .title-svg {
+    height: 50px;
+  }
+
+  .site-header.scrolled .site-name {
+    font-size: 1.1rem;
   }
 
   .header-content {
@@ -270,11 +303,12 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
   }
 
   .title-svg {
-    height: 55px;
+    height: 100px;
     width: auto;
     max-width: 280px;
-    border: none !important; /* Override global img styles */
-    margin: 0 !important; /* Override global img styles */
+    border: none !important;
+    margin: 0 !important;
+    transition: height 0.3s ease;
   }
 
   .header-controls {
@@ -284,7 +318,44 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     flex-shrink: 0;
   }
 
-  .search-toggle {
+  .main-navigation {
+    flex-shrink: 0;
+  }
+
+  .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: calc(var(--grid-unit) * 3);
+  }
+
+  .nav-link {
+    font-family: var(--font-heading-secondary);
+    font-weight: 350;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-primary);
+    padding: calc(var(--grid-unit) / 2) calc(var(--grid-unit));
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link:focus {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .mobile-controls {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--grid-unit) * 2);
+  }
+
+  .search-toggle,
+  .rss-toggle {
     background: none;
     border: none;
     color: var(--color-text-primary);
@@ -294,12 +365,81 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
   }
 
   .search-toggle:hover,
-  .search-toggle:focus {
+  .search-toggle:focus,
+  .rss-toggle:hover,
+  .rss-toggle:focus {
     color: var(--color-accent);
     outline: none;
+  }
+
+  .mobile-only {
+    display: none !important;
+  }
+
+  .hamburger-toggle {
+    background: none;
+    border: none;
+    color: var(--color-text-primary);
+    padding: calc(var(--grid-unit));
+    cursor: pointer;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hamburger-toggle:hover,
+  .hamburger-toggle:focus {
+    color: var(--color-accent);
+    outline: none;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-background);
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    padding-top: calc(var(--grid-unit) * 12);
+  }
+
+  .mobile-menu.active {
+    transform: translateX(0);
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: calc(var(--grid-unit) * 4) 0;
+  }
+
+  .mobile-nav-link {
+    display: block;
+    padding: calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 4);
+    font-family: var(--font-heading-secondary);
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    transition: all 0.2s ease;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link:focus {
+    color: var(--color-accent);
+    background-color: var(--color-surface);
   }
 
   .search-overlay {
@@ -478,7 +618,6 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     color: white;
   }
 
-  /* Dark mode search category styles */
   :global([data-theme="dark"]) .search-category {
     background-color: var(--color-surface);
     color: var(--color-text-primary);
@@ -503,42 +642,6 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     font-size: 1.1rem;
   }
 
-  .main-navigation {
-    flex-shrink: 0;
-  }
-
-  .nav-list {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: calc(var(--grid-unit) * 3);
-  }
-
-  .nav-link {
-    font-family: var(--font-heading-secondary);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-primary);
-    padding: calc(var(--grid-unit) / 2) calc(var(--grid-unit));
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s ease;
-  }
-
-  .nav-link:hover,
-  .nav-link:focus {
-    color: var(--color-accent);
-    border-bottom-color: var(--color-accent);
-    text-decoration: none;
-  }
-
-  .rss-link {
-    display: flex;
-    align-items: center;
-    gap: calc(var(--grid-unit) / 2);
-  }
-
   .visually-hidden {
     position: absolute;
     width: 1px;
@@ -551,132 +654,18 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     border: 0;
   }
 
-  /* Desktop controls - visible by default */
-  .mobile-controls {
-    display: flex;
-    align-items: center;
-    gap: calc(var(--grid-unit) * 2);
-  }
-
-  /* Hide mobile-only hamburger by default */
-  .mobile-only {
-    display: none !important;
-  }
-
-  .hamburger-toggle {
-    background: none;
-    border: none;
-    color: var(--color-text-primary);
-    padding: calc(var(--grid-unit));
-    cursor: pointer;
-    transition: color 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .rss-toggle {
-    background: none;
-    border: none;
-    color: var(--color-text-primary);
-    padding: calc(var(--grid-unit));
-    cursor: pointer;
-    transition: color 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-  }
-  
-  .github-star-button {
-    background: none;
-    border: 2px solid var(--color-accent);
-    color: var(--color-accent);
-    padding: calc(var(--grid-unit) * 0.75) calc(var(--grid-unit) * 2);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: calc(var(--grid-unit));
-    text-decoration: none;
-    font-family: var(--font-heading-secondary);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.875rem;
-    border-radius: 4px;
-  }
-  
-  .github-star-button:hover,
-  .github-star-button:focus {
-    background-color: var(--color-accent);
-    color: var(--color-background);
-    outline: none;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .github-star-text {
-    display: inline-block;
-  }
-
-  .hamburger-toggle:hover,
-  .hamburger-toggle:focus,
-  .rss-toggle:hover,
-  .rss-toggle:focus {
-    color: var(--color-accent);
-    outline: none;
-  }
-
-  /* Mobile menu - hidden by default */
-  .mobile-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--color-background);
-    z-index: 99;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    overflow-y: auto;
-    padding-top: calc(var(--grid-unit) * 12);
-  }
-
-  .mobile-menu.active {
-    transform: translateX(0);
-  }
-
-  .mobile-nav-list {
-    list-style: none;
-    margin: 0;
-    padding: calc(var(--grid-unit) * 4) 0;
-  }
-
-  .mobile-nav-link {
-    display: block;
-    padding: calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 4);
-    font-family: var(--font-heading-secondary);
-    font-weight: 700;
-    font-size: 1.25rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text-primary);
-    text-decoration: none;
-    border-bottom: 1px solid var(--color-border);
-    transition: all 0.2s ease;
-  }
-
-  .mobile-nav-link:hover,
-  .mobile-nav-link:focus {
-    color: var(--color-accent);
-    background-color: var(--color-surface);
-  }
-
   @media (max-width: 768px) {
     .site-header {
       padding: calc(var(--grid-unit) * 2) 0;
+    }
+
+    .site-header.scrolled {
+      padding-top: calc(var(--grid-unit) * 0.5) !important;
+      padding-bottom: calc(var(--grid-unit) * 0.5) !important;
+    }
+
+    .site-header.scrolled .title-svg {
+      height: 40px;
     }
 
     .header-content {
@@ -687,7 +676,6 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
       padding: 0 calc(var(--grid-unit) * 2);
     }
 
-    /* Show mobile hamburger on far left */
     .mobile-only {
       display: flex !important;
       justify-self: start;
@@ -696,36 +684,29 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     .site-title {
       justify-self: center;
       text-align: center;
-      grid-column: 2; /* Explicitly place in center column */
-    }
-
-    .site-title a {
-      display: inline-block;
+      grid-column: 2;
     }
 
     .title-svg {
-      height: 36px;
-      width: auto;
-      max-width: 180px;
+      height: 80px;
+      max-width: 100px;
     }
-    
+
     .header-controls {
       justify-self: end;
       gap: 0;
-      grid-column: 3; /* Explicitly place in right column */
+      grid-column: 3;
     }
-    
-    /* Hide desktop navigation on mobile */
+
     .main-navigation {
       display: none;
     }
-    
-    /* Show mobile controls on right */
+
     .mobile-controls {
       display: flex !important;
       gap: calc(var(--grid-unit) * 1.5);
     }
-    
+
     .hamburger-toggle,
     .rss-toggle,
     .search-toggle {
@@ -745,50 +726,38 @@ const { base = '' } = Astro.site ? { base: import.meta.env.BASE_URL } : { base: 
     .search-results {
       padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 2.5) calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 2.5);
     }
-    
+
     .search-results-header {
       padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 2.5);
       margin: calc(var(--grid-unit) * -2) calc(var(--grid-unit) * -2.5) calc(var(--grid-unit) * 2) calc(var(--grid-unit) * -2.5);
     }
-    
+
     .search-result-categories {
       gap: calc(var(--grid-unit) * 2);
     }
-    
+
     .search-category {
       padding: calc(var(--grid-unit)) calc(var(--grid-unit) * 2);
     }
-    
+
     .search-result-title {
       margin-bottom: calc(var(--grid-unit) * 2);
     }
-    
+
     .search-result-date {
       margin-bottom: calc(var(--grid-unit) * 3);
     }
-    
+
     .search-result-excerpt {
       margin-bottom: calc(var(--grid-unit) * 4);
     }
-    
-    /* Adjust GitHub button for mobile */
-    .github-star-button {
-      padding: calc(var(--grid-unit) * 0.75);
-      border-width: 1px;
-    }
-    
-    .github-star-text {
-      display: none;
-    }
   }
-  
+
   @media (max-width: 480px) {
-    /* Even smaller mobile adjustments */
     .mobile-controls {
       gap: calc(var(--grid-unit)) !important;
     }
-    
-    .github-star-button,
+
     .rss-toggle,
     .search-toggle {
       padding: calc(var(--grid-unit) * 0.5);

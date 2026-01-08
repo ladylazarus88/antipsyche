@@ -2,7 +2,7 @@
 import Layout from '../components/Layout.astro';
 const base = import.meta.env.BASE_URL;
 
-// Configurazioni colori identiche alle recensioni
+// Configurazioni colori
 const PALETTES = [
   { bg: '#FFF0F5', text: '#333', accent: '#8B5F65' },
   { bg: '#F0F8FF', text: '#333', accent: '#5C7080' },
@@ -10,32 +10,48 @@ const PALETTES = [
   { bg: '#F5F0FF', text: '#333', accent: '#6A5F7C' }
 ];
 
-// Funzione per palette ciclica
-const getPalette = (index) => PALETTES[index % PALETTES.length];
+// Importa tutti i post (md e mdx)
+const getPosts = () => {
+  const md = import.meta.glob('../content/blog/*.md', { eager: true });
+  const mdx = import.meta.glob('../content/blog/*.mdx', { eager: true });
+  return [...Object.values(md), ...Object.values(mdx)];
+};
 
-// Import posts
-const mdPostsGlob = import.meta.glob('../content/blog/*.md', { eager: true });
-const mdxPostsGlob = import.meta.glob('../content/blog/*.mdx', { eager: true });
+const filterContrappunti = (posts) => 
+  posts.filter(post => post.frontmatter.page?.includes('Contrappunti'));
 
-const allPosts = [...Object.values(mdPostsGlob), ...Object.values(mdxPostsGlob)] as any[];
-const sortedPosts = allPosts
-  .sort((a: any, b: any) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
+// Data - CORRETTO: usa contrappuntiPosts
+const allPosts = getPosts();
+const contrappuntiPosts = filterContrappunti(allPosts);
+
+// Ordina SOLO i post filtrati per data
+const sortedContrappuntiPosts = contrappuntiPosts
+  .filter(post => post && post.frontmatter && post.frontmatter.date)
+  .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
+
+// Helper per generare URL del post
+const getPostUrl = (post) => {
+  const filename = post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '') || '';
+  return `${base}blog/${filename}`;
+};
 ---
 
 <Layout title="Contrappunti | Antipsyché" description="Tutti i post di Antipsyché">
-  <div class="blog-page">
-    <header class="blog-header">
-      <h1 class="blog-title">Contrappunti</h1>
-      <p class="blog-description">
+  <div class="contrappunti-page">
+    <header class="contrappunti-header">
+      <h1 class="contrappunti-title">Contrappunti</h1>
+      <p class="contrappunti-description">
         Esplorando testi inediti, traduzioni e l'intersezione tra pensiero critico e culture dimenticate.
       </p>
-      <hr class="blog-rule" />
+      <hr class="contrappunti-rule" />
     </header>
 
-    {sortedPosts.length > 0 ? (
+    {sortedContrappuntiPosts.length > 0 ? (
       <div class="posts-list">
-        {sortedPosts.map((post: any, index: number) => {
-          const palette = getPalette(index);
+        {sortedContrappuntiPosts.map((post, index) => { 
+          const palette = PALETTES[index % PALETTES.length];
+          const postUrl = getPostUrl(post);
+          
           return (
             <article class="post-item" style={`
               --post-bg: ${palette.bg};
@@ -43,7 +59,7 @@ const sortedPosts = allPosts
               --post-accent: ${palette.accent};
             `}>
               <h2 class="post-title">
-                <a href={`${base}contrappunti/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`}>{post.frontmatter.title}</a>
+                <a href={postUrl}>{post.frontmatter.title}</a>
               </h2>
               
               <div class="post-meta">
@@ -57,7 +73,7 @@ const sortedPosts = allPosts
                 
                 {post.frontmatter.categories && (
                   <div class="post-categories">
-                    {post.frontmatter.categories.map((category: string) => (
+                    {post.frontmatter.categories.map((category) => (
                       <span class="category">{category}</span>
                     ))}
                   </div>
@@ -68,7 +84,7 @@ const sortedPosts = allPosts
                 <p class="post-excerpt">{post.frontmatter.excerpt}</p>
               )}
               
-              <a href={`${base}contrappunti/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`} class="read-more">Leggi tutto →</a>
+              <a href={postUrl} class="read-more">Leggi tutto →</a>
             </article>
           );
         })}
@@ -82,50 +98,42 @@ const sortedPosts = allPosts
 </Layout>
 
 <style is:global>
-  /* ============================================
-     VARIABILI CSS
-     ============================================ */
+  /* Variabili */
   :root {
     --blog-bg: #f8f9fa;
     --border-color: rgba(0, 0, 0, 0.08);
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
     --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
     --transition: all 0.2s ease;
   }
 
-  /* ============================================
-     PAGINA BLOG
-     ============================================ */
-  .blog-page {
-    max-width: 700px; /* Ridotto da 800px */
+  /* Layout */
+  .contrappunti-page {
+    max-width: 1200;
     margin: 0 auto;
-    padding: 1.5rem 2rem; /* Ridotto */
+    padding: 1.5rem 2rem;
     background: var(--blog-bg);
   }
 
-  /* ============================================
-     HEADER
-     ============================================ */
-  .blog-header {
+  /* Header */
+  
+  .contrappunti-header {
     text-align: center;
-    margin-bottom: 2.5rem; /* Ridotto */
-    padding: 0 0.5rem;
+    margin-bottom: 3rem;
+    padding: 0 1rem;
   }
 
-  .blog-title {
+  .contrappunti-title {
     font-family: var(--font-heading-primary);
-    font-size: 2rem; /* Ridotto da 2.5-3.5rem */
-    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-weight: 50;
     color: #2c3e50;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    line-height: 1.2;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
   }
 
-  .blog-description {
-    font-size: 1rem; /* Ridotto da 1.25rem */
+  .contrappunti-description {
+    font-size: 1rem;
     line-height: 1.5;
     color: #7f8c8d;
     margin-bottom: 1.5rem;
@@ -134,28 +142,26 @@ const sortedPosts = allPosts
     margin-right: auto;
   }
 
-  .blog-rule {
-    height: 2px; /* Ridotto da 4px */
+  .contrappunti-rule {
+    height: 2px;
     background-color: #8B5F65;
     border: none;
-    width: 80px; /* Ridotto da 120px */
+    width: 80px;
     margin: 0 auto;
   }
 
-  /* ============================================
-     LISTA POST
-     ============================================ */
+  /* Lista Post */
   .posts-list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* Ridotto da 2rem */
+    gap: 1.5rem;
   }
 
-  /* POST ITEM */
+  /* Card Post */
   .post-item {
     background: var(--post-bg);
-    border-radius: 8px; /* Ridotto da 12px */
-    padding: 1.5rem; /* Ridotto da 2.5rem */
+    border-radius: 8px;
+    padding: 1.5rem;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-md);
     transition: var(--transition);
@@ -164,28 +170,25 @@ const sortedPosts = allPosts
   }
 
   .post-item:hover {
-    transform: translateY(-2px); /* Ridotto da -4px */
+    transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
   }
 
-  /* Decorative accent */
   .post-item::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 3px; /* Ridotto da 6px */
+    width: 3px;
     height: 100%;
     background: var(--post-accent);
     opacity: 0.7;
   }
 
-  /* ============================================
-     TITOLO POST
-     ============================================ */
+  /* Titolo */
   .post-title {
-    font-family: var(--font-heading-secondary);
-    font-size: 1.25rem; /* Ridotto da 1.5-2.25rem */
+    font-family: var(--font-heading-primary);
+    font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: var(--post-text);
@@ -198,75 +201,65 @@ const sortedPosts = allPosts
     transition: color 0.2s ease;
   }
 
-  .post-title a:hover,
-  .post-title a:focus {
+  .post-title a:hover {
     color: var(--post-accent);
   }
 
-  /* ============================================
-     META INFO
-     ============================================ */
+  /* Metadati */
   .post-meta {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.75rem; /* Ridotto da 1.25rem */
-    margin-bottom: 1rem; /* Ridotto da 1.75rem */
+    gap: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   .post-date {
     font-family: var(--font-mono);
-    font-size: 0.8rem; /* Ridotto da 0.9rem */
+    font-size: 0.8rem;
     color: var(--post-accent);
     text-transform: uppercase;
     letter-spacing: 0.03em;
     font-weight: 500;
   }
 
-  /* ============================================
-     CATEGORIES
-     ============================================ */
+  /* Categorie */
   .post-categories {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem; /* Ridotto da 0.75rem */
+    gap: 0.5rem;
   }
 
   .category {
     background: var(--post-accent);
     color: white;
-    padding: 0.2rem 0.6rem; /* Ridotto */
-    font-size: 0.7rem; /* Ridotto da 0.8rem */
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-radius: 3px; /* Ridotto da 6px */
+    border-radius: 3px;
     transition: all 0.2s ease;
   }
 
   .category:hover {
     opacity: 0.9;
-    transform: translateY(-1px); /* Ridotto da -2px */
+    transform: translateY(-1px);
   }
 
-  /* Dark mode */
   :global([data-theme="dark"]) .category {
     background: color-mix(in srgb, var(--post-accent) 90%, black);
   }
 
-  /* ============================================
-     EXCERPT
-     ============================================ */
+  /* Estratto */
   .post-excerpt {
     color: color-mix(in srgb, var(--post-text) 70%, transparent);
     line-height: 1.5;
-    margin-bottom: 1rem; /* Ridotto da 2rem */
-    font-size: 0.95rem; /* Ridotto da 1.1rem */
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
   }
 
-  /* ============================================
-     READ MORE LINK
-     ============================================ */
+  /* Link Leggi tutto */
   .read-more {
     font-family: var(--font-heading-secondary);
     font-weight: 600;
@@ -274,34 +267,22 @@ const sortedPosts = allPosts
     letter-spacing: 0.05em;
     color: var(--post-accent);
     text-decoration: none;
-    font-size: 0.85rem; /* Ridotto da 0.95rem */
+    font-size: 0.85rem;
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
     transition: all 0.2s ease;
   }
 
-  .read-more:hover,
-  .read-more:focus {
+  .read-more:hover {
     color: var(--post-text);
     gap: 0.5rem;
   }
 
-  .read-more::after {
-    content: '→';
-    transition: transform 0.2s ease;
-  }
-
-  .read-more:hover::after {
-    transform: translateX(2px);
-  }
-
-  /* ============================================
-     NO POSTS
-     ============================================ */
+  /* Nessun post */
   .no-posts {
     text-align: center;
-    padding: 2rem; /* Ridotto da 4rem */
+    padding: 2rem;
     color: #7f8c8d;
     font-style: italic;
     background: #f8f9fa;
@@ -310,24 +291,22 @@ const sortedPosts = allPosts
     margin-top: 1rem;
   }
 
-  /* ============================================
-     RESPONSIVE
-     ============================================ */
+  /* Responsive */
   @media (max-width: 768px) {
-    .blog-page {
+    .contrappunti-page {
       padding: 1rem;
       max-width: 95%;
     }
     
-    .blog-header {
+    .contrappunti-header {
       margin-bottom: 2rem;
     }
     
-    .blog-title {
+    .contrappunti-title {
       font-size: 1.75rem;
     }
     
-    .blog-description {
+    .contrappunti-description {
       font-size: 0.95rem;
     }
     
@@ -345,11 +324,11 @@ const sortedPosts = allPosts
   }
 
   @media (max-width: 480px) {
-    .blog-page {
+    .contrappunti-page {
       padding: 0.75rem;
     }
     
-    .blog-title {
+    .contrappunti-title {
       font-size: 1.5rem;
     }
     

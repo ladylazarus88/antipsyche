@@ -1,167 +1,144 @@
 ---
 import Layout from '../components/Layout.astro';
-const mdPostsGlob = import.meta.glob('../content/blog/*.md', { eager: true });
-const mdxPostsGlob = import.meta.glob('../content/blog/*.mdx', { eager: true });
+const base = import.meta.env.BASE_URL;
 
-const allPosts = [...Object.values(mdPostsGlob), ...Object.values(mdxPostsGlob)] as any[];
-const sortedPosts = allPosts
-  .sort((a: any, b: any) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())
-  .slice(0, 3);
+// Importa tutti i post in un'unica chiamata
+const getPosts = () => {
+  const posts = import.meta.glob(['../content/blog/*.md', '../content/blog/*.mdx'], { 
+    eager: true 
+  });
+  
+  return Object.values(posts)
+    .filter(post => post.frontmatter && post.frontmatter.date)
+    .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())
+    .slice(0, 3)
+    .map(post => {
+      const slug = post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '');
+      return {
+        ...post,
+        slug,
+        url: `${base}blog/${slug}`,
+        formattedDate: new Date(post.frontmatter.date).toLocaleDateString('it-IT', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      };
+    });
+};
+
+const latestPosts = getPosts();
 ---
 
-<Layout title="Pensiero Aporetico" description="Un archivio che esplora la tensione tra voci marginali e canone letterario. Dove traduzione artigianale incontra pensiero inatteso in dialogo aperto." showSidebar={false}>
+<Layout title="Antipsyché" description="Un archivio che esplora la tensione tra voci marginali e canone letterario. Dove traduzione artigianale incontra pensiero inatteso in dialogo aperto.">
   <div class="landing-page">
     <!-- Hero Section -->
-    <section class="hero">logo
+    <section class="hero">
       <div class="hero-content">
-        <h1 class="hero-title">Pensiero Aporetico</h1>
+        <h1 class="hero-title">Antipsyché</h1>
         <p class="hero-subtitle">Saggi Ritrovati e Traduzioni Inedite</p>
         <p class="hero-description">
           Un progetto nato da Instagram che esplora e traduce testi aporetici: saggi di filosofia e scienze politiche, racconti brevi e opuscoli mai pubblicati in italiano, liberi da diritto d'autore.
         </p>
-        <hr class="hero-rule" />
-        <div class="hero-actions">
-          <a href="#demo" class="btn btn-primary">Articoli</a>
-          <a href="#installation" class="btn btn-secondary">Ebook</a>
-        </div>
       </div>
     </section>
 
-    <!-- Demo Section -->
-    <section class="demo-section" id="demo">
+    <!-- Ultimi Post Section -->
+    <section class="latest-posts-section" id="latest-posts">
       <div class="container">
-        <h2 class="section-title">Archivio in Divenire</h2>
-        <p class="demo-description">
-          Scopri i primi testi tradotti del nostro progetto. Saggi aporetici e racconti brevi che inaugurano una biblioteca di voci altrimenti inaccessibili al pubblico italiano.
-        </p>
+        <h2 class="section-title">Ultimi Post</h2>
         
-        {sortedPosts.length > 0 && (
-          <div class="demo-posts">
-            {sortedPosts.map(post => (
-              <article class="demo-post-card">
-                <h3 class="demo-post-title">
-                  <a href={post.url}>{post.frontmatter.title}</a>
-                </h3>
-                
-                <div class="demo-post-meta">
-                  <time class="demo-post-date" datetime={post.frontmatter.date}>
-                    {new Date(post.frontmatter.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </time>
-                  <span class="demo-post-reading-time">5 min read</span>
-                </div>
-                
-                {post.frontmatter.excerpt && (
-                  <p class="demo-post-excerpt">{post.frontmatter.excerpt}</p>
-                )}
-                
-                {post.frontmatter.categories && (
-                  <div class="demo-post-categories">
-                    {post.frontmatter.categories.map((category: string) => (
-                      <span class="demo-category">{category}</span>
-                    ))}
+        {latestPosts.length > 0 ? (
+          <>
+            <div class="posts-grid">
+              {latestPosts.map(post => (
+                <article class="post-card">
+                  <div class="post-image-container">
+                    {post.frontmatter.image ? (
+                      <div class="post-image">
+                        <img 
+                          src={post.frontmatter.image} 
+                          alt={post.frontmatter.title}
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div class="post-image placeholder">
+                        <div class="placeholder-content">
+                          <span>Immagine</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </article>
-            ))}
+                  
+                  <div class="post-content">
+                    <h3 class="post-title">
+                      <a href={post.url}>{post.frontmatter.title}</a>
+                    </h3>
+                    
+                    <div class="post-meta">
+                      <time class="post-date" datetime={post.frontmatter.date}>
+                        {post.formattedDate}
+                      </time>
+                    </div>
+                    
+                    {post.frontmatter.excerpt && (
+                      <p class="post-excerpt">{post.frontmatter.excerpt}</p>
+                    )}
+                    
+                    <a href={post.url} class="read-link">Leggi →</a>
+                  </div>
+                </article>
+              ))}
+            </div>
+            
+            <!-- Link per vedere tutti i post -->
+            <div class="view-all-container">
+              <a href={`${base}contrappunti`} class="view-all-link">
+                Vedi tutti i post →
+              </a>
+            </div>
+          </>
+        ) : (
+          <div class="no-posts">
+            <p>Nessun post disponibile ancora.</p>
           </div>
         )}
-        
-        <div class="demo-actions">
-          <a href={`${import.meta.env.BASE_URL}blog`} class="btn btn-primary">Vai al Blog</a>
-        </div>
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-      <div class="container">
-        <h2 class="section-title">Filosofia Editoriale</h2>
-        <div class="features-grid">
-          <div class="feature-card">
-            <h3 class="feature-title">Rigore Filologico</h3>
-            <p class="feature-description">Testi selezionati con studio del contesto storico-letterario. Traduzioni che uniscono precisione e fluidità espressiva.</p>
-          </div>
-          <div class="feature-card">
-            <h3 class="feature-title">Traduzione come Atto Critico</h3>
-            <p class="feature-description">Ogni opera è corredata di prefazioni e note che illuminano il contesto e le implicazioni filosofiche.</p>
-          </div>
-          <div class="feature-card">
-            <h3 class="feature-title">Cura lessicale</h3>
-            <p class="feature-description">Scelta linguistica consapevole e coerente con il periodo e lo stile dell'opera originale.</p>
-          </div>
-          <div class="feature-card">
-            <h3 class="feature-title">Estetica della Lettura</h3>
-            <p class="feature-description">Design attentamente studiato: formati, caratteri tipografici e spaziature che rispettano il ritmo della lettura.</p>
-          </div>
-          <div class="feature-card">
-            <h3 class="feature-title">Doppia via editoriale</h3>
-            <p class="feature-description">Pubblicazione digitale immediata con l'ambizione di realizzare edizioni cartacee per opere selezionate.</p>
-          </div>
-          <div class="feature-card">
-            <h3 class="feature-title">Traduzione Artigianale</h3>
-            <p class="feature-description">Approccio meticoloso che bilancia fedeltà filologica e accessibilità per il lettore contemporaneo.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Typography Showcase -->
-    <section class="typography-showcase">
-      <div class="container">
-        <h2 class="section-title">Metodologia</h2>
-        <p class="typography-description">
-          Rimuoviamo le barriere tra testo e lettore, creando un accesso orizzontale al sapere.
-        </p>
-        
-        <div class="typography-samples">
-          <div class="type-sample">
-            <h1 class="sample-h1">QUALITÀ VS. QUANTITÀ</h1>
-            <p class="type-meta">Cura • Raffinatezza • Eleganza</p>
-          </div>
-          
-          <div class="type-sample">
-            <p class="sample-body">Editoria digitale con standard da cartaceo, in attesa di sviluppare la linea editoriale fisica per opere selezionate.</p>
-            <p class="type-meta">Pubblica • Artigianale • Condivisa</p>
-          </div>
-          
-          <div class="type-sample">
-            <code class="sample-code">CULTURA LIBERA</code>
-            <p class="type-meta"> Condivisione • Trasparenza • Libertà </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Installation Section -->
-    <section class="installation" id="installation">
+    <!-- Download Pubblicazioni -->
+    <section class="downloads-section" id="downloads">
       <div class="container">
         <h2 class="section-title">Prime Traduzioni</h2>
-        <div class="install-steps">
-          <div class="step">
-            <h3 class="step-number">01</h3>
-            <div class="step-content">
-              <h4 class="step-title">Ida Hoffman</h4>
-              <pre class="code-block"><code>link per scaricare</code></pre>
+        <div class="downloads-grid">
+          <div class="download-item">
+            <div class="download-header">
+              <span class="download-number">01</span>
+              <h3 class="download-title">Ida Hoffman</h3>
+            </div>
+            <div class="download-content">
+              <div class="link-placeholder">link per scaricare</div>
             </div>
           </div>
           
-          <div class="step">
-            <h3 class="step-number">02</h3>
-            <div class="step-content">
-              <h4 class="step-title">Ernst Bloch</h4>
-              <pre class="code-block"><code>link per scaricare</code></pre>
+          <div class="download-item">
+            <div class="download-header">
+              <span class="download-number">02</span>
+              <h3 class="download-title">Ernst Bloch</h3>
+            </div>
+            <div class="download-content">
+              <div class="link-placeholder">link per scaricare</div>
             </div>
           </div>
           
-          <div class="step">
-            <h3 class="step-number">03</h3>
-            <div class="step-content">
-              <h4 class="step-title">Cento Cooki</h4>
-              <pre class="code-block"><code>link per scaricare</code></pre>
+          <div class="download-item">
+            <div class="download-header">
+              <span class="download-number">03</span>
+              <h3 class="download-title">Cento Cooki</h3>
+            </div>
+            <div class="download-content">
+              <div class="link-placeholder">link per scaricare</div>
             </div>
           </div>
         </div>
@@ -170,21 +147,46 @@ const sortedPosts = allPosts
   </div>
 </Layout>
 
-<style>
-  .landing-page {
-    width: 100%;
+<style is:global>
+  /* ===== VARIABILI CSS PER TUTTE LE PAGINE ===== */
+  :root {
+    /* Spaziature */
+    --content-padding: 1.5rem;
+    --grid-unit: 1rem;
+    
+    /* Colori light theme */
+    --color-accent: #8B5F65;
+    --color-text-primary: #2c3e50;
+    --color-text-secondary: #7f8c8d;
+    --color-text-muted: #95a5a6;
+    --color-background: #f8f9fa;
+    --color-surface: #ffffff;
+    --color-border: #e0e0e0;
+    
+    /* Altri stili */
+    --border-radius: 8px;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--content-padding);
+  /* Dark theme - AGGIUNTO */
+  [data-theme="dark"] {
+    --color-accent: #c9979c;
+    --color-text-primary: #f0f0f0;
+    --color-text-secondary: #b0b0b0;
+    --color-text-muted: #909090;
+    --color-background: #121212;
+    --color-surface: #1a1a1a;
+    --color-border: #333333;
   }
 
+  /* ===== STILI HERO CONDIVISI (per tutte le pagine) ===== */
   .hero {
     text-align: center;
-    padding: calc(var(--grid-unit) * 12) 0 calc(var(--grid-unit) * 8);
+    padding: 4rem 0 3rem;
     background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-background) 100%);
+    width: 100%;
   }
 
   .hero-content {
@@ -195,453 +197,315 @@ const sortedPosts = allPosts
 
   .hero-title {
     font-family: var(--font-heading-primary);
-    font-size: 4.5rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 300;
     color: var(--color-accent);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    line-height: 0.9;
-    margin-bottom: calc(var(--grid-unit) * 2);
+    letter-spacing: 0.3em;
+    line-height: 1;
+    margin-bottom: 1rem;
   }
 
   .hero-subtitle {
     font-family: var(--font-heading-secondary);
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    margin-bottom: calc(var(--grid-unit) * 3);
+    margin-bottom: 1.5rem;
   }
 
   .hero-description {
-    font-size: 1.375rem;
+    font-size: 1rem;
     line-height: 1.6;
     color: var(--color-text-primary);
-    margin-bottom: calc(var(--grid-unit) * 4);
     max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
   }
 
-  .hero-rule {
-    height: 6px;
-    background-color: var(--color-accent);
-    border: none;
-    width: 150px;
-    margin: 0 auto calc(var(--grid-unit) * 4);
+  /* ===== LAYOUT BASE ===== */
+  .landing-page {
+    width: 100%;
+    min-height: 100vh;
   }
 
-  .hero-actions {
-    display: flex;
-    gap: calc(var(--grid-unit) * 2);
-    justify-content: center;
-    flex-wrap: wrap;
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--content-padding);
   }
 
-  .btn {
-    font-family: var(--font-heading-secondary);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 3);
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 0.95rem;
-  }
-
-  .btn-primary {
-    background-color: var(--color-accent);
-    color: white;
-    border: 2px solid var(--color-accent);
-  }
-
-  .btn-primary:hover,
-  .btn-primary:focus {
-    background-color: transparent;
-    color: var(--color-accent);
-    transform: translateY(-2px);
-  }
-
-  .btn-secondary {
-    background-color: transparent;
-    color: var(--color-text-primary);
-    border: 2px solid var(--color-border);
-  }
-
-  .btn-secondary:hover,
-  .btn-secondary:focus {
-    background-color: var(--color-text-primary);
-    color: var(--color-background);
-    transform: translateY(-2px);
-  }
-
-  /* Dark mode button styles */
-  :global([data-theme="dark"]) .btn-primary {
-    background-color: var(--color-accent);
-    color: white;
-    border-color: var(--color-accent);
-  }
-
-  :global([data-theme="dark"]) .btn-primary:hover,
-  :global([data-theme="dark"]) .btn-primary:focus {
-    background-color: transparent;
-    color: var(--color-accent);
-  }
-
-  :global([data-theme="dark"]) .btn-secondary {
-    background-color: transparent;
-    color: var(--color-text-primary);
-    border-color: var(--color-border);
-  }
-
-  :global([data-theme="dark"]) .btn-secondary:hover,
-  :global([data-theme="dark"]) .btn-secondary:focus {
-    background-color: var(--color-accent);
-    color: white;
-    border-color: var(--color-accent);
-  }
-
-  .features {
-    padding: calc(var(--grid-unit) * 8) 0;
+  /* ===== SEZIONE ULTIMI POST ===== */
+  .latest-posts-section {
+    padding: 3rem 0;
   }
 
   .section-title {
     font-family: var(--font-heading-secondary);
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: var(--color-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: calc(var(--grid-unit) * 6);
-    text-align: center;
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: calc(var(--grid-unit) * 4);
-  }
-
-  .feature-card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: calc(var(--grid-unit) * 4);
-    text-align: center;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-  }
-
-  .feature-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--color-accent);
-  }
-
-  .feature-icon {
-    font-size: 3rem;
-    margin-bottom: calc(var(--grid-unit) * 2);
-  }
-
-  .feature-title {
-    font-family: var(--font-heading-secondary);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: calc(var(--grid-unit) * 1.5);
-  }
-
-  .feature-description {
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  /* Typography Showcase */
-  .typography-showcase {
-    padding: calc(var(--grid-unit) * 8) 0;
-    background-color: var(--color-surface);
-  }
-
-  .typography-description {
-    text-align: center;
-    font-size: 1.125rem;
-    color: var(--color-text-secondary);
-    margin-bottom: calc(var(--grid-unit) * 6);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .typography-samples {
-    display: grid;
-    gap: calc(var(--grid-unit) * 6);
-  }
-
-  .type-sample {
-    text-align: center;
-    padding: calc(var(--grid-unit) * 4);
-    background-color: var(--color-background);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-  }
-
-  .sample-h1 {
-    font-family: var(--font-heading-primary);
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: var(--color-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    line-height: 1.1;
-    margin-bottom: calc(var(--grid-unit) * 2);
-  }
-
-  .sample-h2 {
-    font-family: var(--font-heading-secondary);
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--color-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    line-height: 1.2;
-    margin-bottom: calc(var(--grid-unit) * 2);
-  }
-
-  .sample-body {
-    font-family: var(--font-body);
-    font-size: 1.125rem;
-    line-height: 1.6;
-    color: var(--color-text-primary);
-    margin-bottom: calc(var(--grid-unit) * 2);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .sample-code {
-    font-family: var(--font-mono);
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    padding: calc(var(--grid-unit)) calc(var(--grid-unit) * 1.5);
-    border-radius: 4px;
-    display: inline-block;
-    margin-bottom: calc(var(--grid-unit) * 2);
-    color: var(--color-text-primary);
-  }
-
-  .type-meta {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0;
-  }
-
-  .demo-section {
-    padding: calc(var(--grid-unit) * 8) 0;
-  }
-
-  .demo-description {
-    text-align: center;
-    font-size: 1.125rem;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-    margin-bottom: calc(var(--grid-unit) * 6);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .demo-posts {
-    display: grid;
-    gap: calc(var(--grid-unit) * 4);
-    margin-bottom: calc(var(--grid-unit) * 6);
-  }
-
-  .demo-post-card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: calc(var(--grid-unit) * 3);
-    transition: transform 0.2s ease, border-color 0.2s ease;
-  }
-
-  .demo-post-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-accent);
-  }
-
-  .demo-post-title {
-    font-family: var(--font-heading-secondary);
     font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: calc(var(--grid-unit));
-  }
-
-  .demo-post-title a {
-    color: var(--color-text-primary);
-    text-decoration: none;
-  }
-
-  .demo-post-title a:hover,
-  .demo-post-title a:focus {
+    font-weight: 500;
     color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
+    text-align: center;
   }
 
-  .demo-post-meta {
+  .posts-grid {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .post-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .post-image-container {
+    width: 100%;
+    overflow: hidden;
+    background: var(--color-background);
+  }
+
+  .post-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .post-card:hover .post-image img {
+    transform: scale(1.05);
+  }
+
+  .post-image.placeholder {
+    background-color: var(--color-background);
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: calc(var(--grid-unit));
-    margin-bottom: calc(var(--grid-unit) * 1.5);
+    justify-content: center;
   }
 
-  .demo-post-date {
+  .placeholder-content {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .post-content {
+    padding: 1.5rem;
+  }
+
+  .post-title {
+    font-family: var(--font-heading-secondary);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .post-title a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .post-title a:hover {
+    color: var(--color-accent);
+  }
+
+  .post-meta {
+    margin-bottom: 1rem;
+  }
+
+  .post-date {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
-  .demo-post-reading-time {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .demo-post-reading-time::before {
-    content: "•";
-    margin: 0 calc(var(--grid-unit) / 2);
-    color: var(--color-border);
-  }
-
-  .demo-post-excerpt {
+  .post-excerpt {
     color: var(--color-text-secondary);
-    line-height: 1.6;
-    margin-bottom: calc(var(--grid-unit) * 2);
+    line-height: 1.5;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .demo-post-categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: calc(var(--grid-unit) / 2);
+  .read-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s ease;
   }
 
-  .demo-category {
-    background-color: var(--color-text-primary);
-    color: white;
-    padding: calc(var(--grid-unit) / 4) calc(var(--grid-unit) / 2);
-    font-size: 0.75rem;
+  .read-link:hover {
+    transform: translateX(4px);
+  }
+
+  /* Link per vedere tutti i post */
+  .view-all-container {
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .view-all-link {
+    display: inline-block;
+    font-family: var(--font-heading-secondary);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-radius: 2px;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease;
   }
 
-  /* Dark mode demo category styles */
-  :global([data-theme="dark"]) .demo-category {
+  .view-all-link:hover {
+    background-color: var(--color-accent);
+    color: white;
+  }
+
+  /* ===== SEZIONE DOWNLOAD ===== */
+  .downloads-section {
+    padding: 3rem 0;
     background-color: var(--color-surface);
-    color: var(--color-text-primary);
+  }
+
+  .downloads-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .download-item {
+    background: var(--color-background);
     border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
   }
 
-  .demo-actions {
-    text-align: center;
+  .download-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
   }
 
-  .installation {
-    padding: calc(var(--grid-unit) * 8) 0;
-    background-color: var(--color-surface);
-  }
-
-  .install-steps {
-    display: grid;
-    gap: calc(var(--grid-unit) * 4);
-  }
-
-  .step {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: calc(var(--grid-unit) * 2);
-    align-items: start;
-  }
-
-  .step-number {
+  .download-number {
     font-family: var(--font-heading-primary);
-    font-size: 3rem;
+    font-size: 1.5rem;
     font-weight: 900;
     color: var(--color-accent);
-    margin: 0;
   }
 
-  .step-content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .step-title {
+  .download-title {
     font-family: var(--font-heading-secondary);
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--color-text-primary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: calc(var(--grid-unit));
-  }
-
-  .code-block {
-    background-color: var(--color-text-primary);
-    color: var(--color-background);
-    padding: calc(var(--grid-unit) * 2);
-    border-radius: 8px;
-    overflow-x: auto;
     margin: 0;
   }
 
-  .code-block code {
-    font-family: var(--font-mono);
-    background: none;
-    border: none;
-    color: inherit;
+  .download-content {
+    margin-top: 1rem;
   }
 
-  @media (max-width: 768px) {
-    .hero-title {
-      font-size: 3rem;
-    }
+  .link-placeholder {
+    font-family: var(--font-mono);
+    background-color: var(--color-text-primary);
+    color: var(--color-background);
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
 
+  .no-posts {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+    background: var(--color-background);
+    border-radius: var(--border-radius);
+    border: 1px dashed var(--color-border);
+  }
+
+  /* ===== RESPONSIVE DESIGN ===== */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 2rem 0;
+    }
+    
+    .hero-title {
+      font-size: 1.75rem;
+      letter-spacing: 0.2em;
+    }
+    
     .hero-subtitle {
+      font-size: 0.9rem;
+    }
+    
+    .hero-description {
+      font-size: 0.9rem;
+    }
+    
+    .latest-posts-section,
+    .downloads-section {
+      padding: 2rem 0;
+    }
+    
+    .section-title {
       font-size: 1.25rem;
     }
+  }
 
-    .hero-description {
-      font-size: 1.125rem;
+  @media (min-width: 769px) {
+    .posts-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
-
-    .hero-actions {
-      flex-direction: column;
-      align-items: center;
+    
+    .downloads-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
-
-    .features-grid {
-      grid-template-columns: 1fr;
+    
+    .hero-title {
+      font-size: 2.5rem;
     }
-
-    .step {
-      grid-template-columns: 1fr;
-      text-align: center;
+    
+    .hero-subtitle {
+      font-size: 1.1rem;
     }
+  }
 
-    .step-number {
-      font-size: 2rem;
+  @media (min-width: 1024px) {
+    .hero-title {
+      font-size: 3rem;
     }
   }
 </style>
