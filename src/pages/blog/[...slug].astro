@@ -335,10 +335,16 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
   }
 
   .post-content :global(img) {
-    border: 2px solid var(--color-border);
-    margin: calc(var(--grid-unit) * 4) 0;
-    border-radius: 4px;
-  }
+  border: 2px solid var(--color-border);
+  margin: calc(var(--grid-unit) * 4) 0;
+  border-radius: 4px;
+  /* Aggiungi queste proprietà: */
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
   .post-content :global(ul),
   .post-content :global(ol) {
@@ -440,4 +446,13 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
       font-size: 1rem;
     }
   }
+
+  /*media query per mobile */
+@media (max-width: 768px) {
+  .post-content :global(img) {
+    margin: calc(var(--grid-unit) * 2) 0;
+    max-height: 70vh; /* Evita immagini troppo alte su mobile */
+    object-fit: contain; /* Mantiene le proporzioni */
+  }
+}
 </style>
