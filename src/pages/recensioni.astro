@@ -359,41 +359,78 @@ const reviews = getReviewPosts();
     padding: 2rem;
   }
 
-  /* ===== RESPONSIVE DESIGN ===== */
+  /* ===== RESPONSIVE DESIGN - MOBILE ===== */
   @media (max-width: 768px) {
+    /* Togli il padding dal container principale su mobile */
+    .page-container {
+      padding: 0;
+      max-width: 100%;
+    }
+    
     .reviews-page {
-      padding: 1rem 0;
+      padding: 0;
     }
     
     .page-header {
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+      padding: 0 1rem;
     }
     
+    /* Riga senza bordi arrotondati su mobile */
     .review-row {
       height: auto;
-      min-height: 300px;
+      min-height: auto;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      border-top: 4px solid var(--row-accent); /* Bordo colorato in alto per evidenziare la triade */
+      border-bottom: 4px solid var(--row-accent); /* Bordo colorato in basso */
+      margin-bottom: 0;
+      transition: none;
     }
     
+    /* Rimuovi hover effect su mobile */
+    .review-row:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    /* Griglia senza gap e padding */
+    .reviews-grid {
+      gap: 0;
+    }
+    
+    /* Link senza gap e padding */
     .review-link {
       grid-template-columns: 1fr;
-      grid-template-rows: repeat(3, minmax(250px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
+      grid-template-rows: repeat(3, auto);
+      gap: 0;
+      padding: 0;
     }
     
+    /* Tile senza bordi arrotondati, ombre e bordi */
+    .tile {
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      background: transparent; /* Rendi trasparente per far vedere il colore della riga */
+    }
+    
+    /* Tile testo */
     .text-tile .tile-content {
-      padding: 1.5rem;
+      padding: 2rem 1.5rem;
+      background: var(--row-bg); /* Mantieni il colore di sfondo */
     }
     
     .book-title {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
     }
     
-    /* CORREZIONE PER MOBILE: IMMAGINI PIÙ GRANDI */
+    /* Tile immagine - occupa tutto lo spazio disponibile */
     .image-tile {
       position: relative;
-      min-height: 250px;
-      background: var(--color-surface) !important;
+      min-height: 280px; /* Altezza fissa per immagini su mobile */
+      background: var(--row-bg) !important; /* Usa il colore della palette */
     }
     
     .image-tile .tile-content {
@@ -402,37 +439,38 @@ const reviews = getReviewPosts();
       left: 0;
       right: 0;
       bottom: 0;
-      padding: 1rem;
+      padding: 0;
     }
     
     .image-tile img {
-      /* Su mobile le immagini devono riempire il contenitore */
+      /* Immagini che occupano tutto lo spazio */
       width: 100% !important;
       height: 100% !important;
-      max-width: none !important;
-      max-height: none !important;
-      object-fit: contain;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      object-fit: cover; /* Cambiato da contain a cover per riempire tutto */
       display: block;
-      margin: 0 auto;
+      margin: 0;
     }
     
-    /* Assicurati che le immagini secondarie siano visibili */
+    /* Immagini secondarie */
     .image-tile img.secondary-image {
       width: 100% !important;
       height: 100% !important;
-      object-fit: contain;
+      object-fit: cover;
       filter: grayscale(20%);
       opacity: 0.9;
+    }
+    
+    /* Rimuovi hover effect su mobile per immagini */
+    .image-tile:hover img {
+      transform: none;
     }
   }
 
   @media (max-width: 480px) {
-    .review-link {
-      grid-template-rows: repeat(3, minmax(200px, 1fr));
-    }
-    
     .book-title {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
     }
     
     .book-excerpt {
@@ -441,20 +479,12 @@ const reviews = getReviewPosts();
     }
     
     .image-tile {
-      min-height: 200px;
+      min-height: 220px; /* Leggermente più basso su schermi molto piccoli */
     }
     
-    .image-tile .tile-content {
-      padding: 0.5rem;
+    .text-tile .tile-content {
+      padding: 1.5rem 1rem;
     }
-  }
-
-  /* Debug: bordi per vedere dove sono le immagini */
-  .image-tile img:not([src]),
-  .image-tile img[src=""],
-  .image-tile img[src*="undefined"] {
-    border: 2px dashed red !important;
-    background-color: rgba(255, 0, 0, 0.1);
   }
 
   /* Forza il caricamento delle immagini */
