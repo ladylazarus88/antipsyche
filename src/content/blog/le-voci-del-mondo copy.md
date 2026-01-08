@@ -1,7 +1,7 @@
 ---
 title: "Le voci del mondo di Robert Schneider2"
 date: "2026-01-05"
-image: "public/images/post/le-voci-del-mondo.jpg"
+image: "images/post/le-voci-del-mondo.jpg"
 image_alt: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiT_4eQU-_YFRvRK_49NsuCvmVwvffTd0lKQ&s"
 excerpt: "In un remoto villaggio austriaco un ragazzo prodigio non sa né leggere né scrivere ma sente la musica e i suoni del mondo come nessun altro."
 categories: ["Recensioni"]
