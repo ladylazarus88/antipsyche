@@ -4,7 +4,7 @@ export interface SiteConfig {
   author: {
     name: string;
     bio: string;
-    avatar?: string;
+    avatar: string;
   };
   social: {
     github?: string;
@@ -22,7 +22,7 @@ export const config: SiteConfig = {
   author: {
     name: "Antipsyché",
     bio: "Curatori, traduttori e archeologi di tesori inattesi.",
-    avatar: "public/images/avatar.jpg"
+    avatar: "/images/logo6.svg"
   },
   social: {
     instagram: "https://instagram.com/antipsyche",
