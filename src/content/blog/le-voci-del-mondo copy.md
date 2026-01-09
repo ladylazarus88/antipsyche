@@ -1,5 +1,5 @@
 ---
-title: Le voci del mondo
+title: Le voci del mond
 author: Robert Schneider
 date: 2026-01-05
 image: https://europa.tips/wordpress/wp-content/uploads/Avrupanin-Ghibli-Ruhu-Tasiyan-9-Masalsi-Koeyuewebp.webp
