@@ -1,24 +1,58 @@
 {
   "main": {
-    "id": "3fd783d0ac7bbced",
+    "id": "a247455941f8e856",
     "type": "split",
     "children": [
       {
-        "id": "d9507ec96bf2545e",
+        "id": "fa75d2169f042289",
         "type": "tabs",
+        "dimension": 75.74786324786325,
         "children": [
           {
-            "id": "33d48712e7779ab4",
+            "id": "ed8e038c08a408da",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src/content/blog/template-recensione.md",
+                "file": "README.md.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "template-recensione"
+              "title": "README.md"
+            }
+          },
+          {
+            "id": "93a8de0f496db69c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "post/_template.md.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "_template.md"
+            }
+          }
+        ],
+        "currentTab": 1
+      },
+      {
+        "id": "c96068a171353c0a",
+        "type": "tabs",
+        "dimension": 24.252136752136753,
+        "children": [
+          {
+            "id": "a50c5048ff3dc75b",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista grafo"
             }
           }
         ]
@@ -27,15 +61,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "a22472fdd674907c",
+    "id": "ee85af9788b4acbc",
     "type": "split",
     "children": [
       {
-        "id": "8ced1ff2a8ac52b9",
+        "id": "e30dbba24eddcd63",
         "type": "tabs",
         "children": [
           {
-            "id": "ebd17c038f5eeca7",
+            "id": "5cd55ad12e12fae3",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -48,7 +82,7 @@
             }
           },
           {
-            "id": "130b96193dbe42cd",
+            "id": "8055e2132c06dfab",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -61,17 +95,17 @@
                 "sortOrder": "alphabetical"
               },
               "icon": "lucide-search",
-              "title": "Search"
+              "title": "Ricerca"
             }
           },
           {
-            "id": "e1c845c0cef80762",
+            "id": "d078da8f3cddb95b",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
               "state": {},
               "icon": "lucide-bookmark",
-              "title": "Bookmarks"
+              "title": "Segnalibri"
             }
           }
         ]
@@ -81,20 +115,20 @@
     "width": 300
   },
   "right": {
-    "id": "5930fd5891a786bb",
+    "id": "5d22092dd89641c5",
     "type": "split",
     "children": [
       {
-        "id": "40a15d194550bfd8",
+        "id": "49bd20d42829aee1",
         "type": "tabs",
         "children": [
           {
-            "id": "17551a01cf0c58d5",
+            "id": "031eaa3970ad113d",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "src/content/blog/le-voci-del-mondo.md",
+                "file": "README.md.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,25 +138,25 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for le-voci-del-mondo"
+              "title": "Riferimenti a README.md"
             }
           },
           {
-            "id": "0a2be420abefc14b",
+            "id": "8d41e869e7b52751",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "src/content/blog/le-voci-del-mondo.md",
+                "file": "README.md.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from le-voci-del-mondo"
+              "title": "Collegamenti in uscita da README.md"
             }
           },
           {
-            "id": "e15cdfa661934655",
+            "id": "5b1dd495437f7e80",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -133,30 +167,54 @@
                 "searchQuery": ""
               },
               "icon": "lucide-tags",
-              "title": "Tags"
+              "title": "Etichette"
             }
           },
           {
-            "id": "6597e0c00ad72936",
+            "id": "dbc69a4f7148aba0",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Tutte le proprietà"
+            }
+          },
+          {
+            "id": "9cda7d6b4f314dba",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "src/content/blog/le-voci-del-mondo.md",
+                "file": "README.md.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of le-voci-del-mondo"
+              "title": "Struttura di README.md"
+            }
+          },
+          {
+            "id": "ce378a31bb87fe54",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -166,37 +224,23 @@
       "daily-notes:Apri nota del giorno": false,
       "templates:Inserisci modello": false,
       "command-palette:Apri riquadro comandi": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "33d48712e7779ab4",
+  "active": "93a8de0f496db69c",
   "lastOpenFiles": [
-    "antipsyche-post/post/_template.md.md",
-    "antipsyche-post/assets/img",
-    "antipsyche-post/assets/Senza nome",
-    "antipsyche-post/assets",
-    "antipsyche-post/Senza nome",
-    "antipsyche-post/post/letteratura",
-    "antipsyche-post/post/Senza nome",
-    "antipsyche-post/post/recensioni",
-    "antipsyche-post/post/filosofia",
-    "antipsyche-post/post/linguistica",
-    "antipsyche-post/linguistica",
-    "antipsyche-post/post/template.md.md",
-    "antipsyche-post/template.md.md",
-    "antipsyche-post/Senza nome.md",
-    "antipsyche-post/README.md.md",
-    "antipsyche-post/REAMDME.md",
-    "antipsyche-post/readme.md",
-    "antipsyche-post/Benvenuto.md",
-    "public/images/logo6.svg",
-    "src/content/blog/template-recensione.md",
-    "public/images/post/le-voci-del-mondo.jpg",
-    "src/content/blog/le-voci-del-mondo.md",
-    "INSERIRE.md",
-    "node_modules/@astrojs/check/README.md",
-    "tests/features.spec.js-snapshots/homepage-light-chromium-darwin.png",
-    "tests/features.spec.js-snapshots/homepage-dark-chromium-darwin.png",
-    "2026-01-05.md"
+    "post/_template.md.md",
+    "post/racconto-di-natale.md",
+    "README.md.md",
+    "post/linguistica/prova.md",
+    "assets/img",
+    "assets",
+    "post/letteratura",
+    "post/recensioni",
+    "post/filosofia",
+    "post/linguistica",
+    "Benvenuto.md",
+    "post"
   ]
 }
