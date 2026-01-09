@@ -6,7 +6,6 @@
       {
         "id": "fa75d2169f042289",
         "type": "tabs",
-        "dimension": 75.74786324786325,
         "children": [
           {
             "id": "ed8e038c08a408da",
@@ -39,23 +38,6 @@
           }
         ],
         "currentTab": 1
-      },
-      {
-        "id": "c96068a171353c0a",
-        "type": "tabs",
-        "dimension": 24.252136752136753,
-        "children": [
-          {
-            "id": "a50c5048ff3dc75b",
-            "type": "leaf",
-            "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Vista grafo"
-            }
-          }
-        ]
       }
     ],
     "direction": "vertical"
@@ -228,7 +210,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "a50c5048ff3dc75b",
+  "active": "93a8de0f496db69c",
   "lastOpenFiles": [
     "post/_template.md.md",
     "post/racconto-di-natale.md",
