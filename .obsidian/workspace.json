@@ -1,0 +1,185 @@
+{
+  "main": {
+    "id": "3fd783d0ac7bbced",
+    "type": "split",
+    "children": [
+      {
+        "id": "d9507ec96bf2545e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "33d48712e7779ab4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "src/content/blog/template-recensione.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "template-recensione"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "a22472fdd674907c",
+    "type": "split",
+    "children": [
+      {
+        "id": "8ced1ff2a8ac52b9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ebd17c038f5eeca7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Esplora risorse"
+            }
+          },
+          {
+            "id": "130b96193dbe42cd",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "e1c845c0cef80762",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "5930fd5891a786bb",
+    "type": "split",
+    "children": [
+      {
+        "id": "40a15d194550bfd8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "17551a01cf0c58d5",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "src/content/blog/le-voci-del-mondo.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for le-voci-del-mondo"
+            }
+          },
+          {
+            "id": "0a2be420abefc14b",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "src/content/blog/le-voci-del-mondo.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from le-voci-del-mondo"
+            }
+          },
+          {
+            "id": "e15cdfa661934655",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "6597e0c00ad72936",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "src/content/blog/le-voci-del-mondo.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of le-voci-del-mondo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Apri selezione rapida": false,
+      "graph:Apri vista grafo": false,
+      "canvas:Crea nuova lavagna": false,
+      "daily-notes:Apri nota del giorno": false,
+      "templates:Inserisci modello": false,
+      "command-palette:Apri riquadro comandi": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "33d48712e7779ab4",
+  "lastOpenFiles": [
+    "Senza nome.base",
+    "public/images/logo6.svg",
+    "src/content/blog/template-recensione.md",
+    "public/images/post/le-voci-del-mondo.jpg",
+    "src/content/blog/le-voci-del-mondo.md",
+    "INSERIRE.md",
+    "node_modules/@astrojs/check/README.md",
+    "tests/features.spec.js-snapshots/homepage-light-chromium-darwin.png",
+    "tests/features.spec.js-snapshots/homepage-dark-chromium-darwin.png",
+    "2026-01-05.md"
+  ]
+}
