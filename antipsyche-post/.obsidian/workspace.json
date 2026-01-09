@@ -27,13 +27,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "post/_template.md.md",
+                "file": "post/linguistica/prova.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "_template.md"
+              "title": "prova"
             }
           }
         ],
@@ -213,6 +213,7 @@
   "active": "93a8de0f496db69c",
   "lastOpenFiles": [
     "post/_template.md.md",
+    "post/linguistica/prova.md",
     "post/racconto-di-natale.md",
     "README.md.md",
     "post/linguistica/prova.md",
