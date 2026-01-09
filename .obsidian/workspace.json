@@ -11,14 +11,10 @@
             "id": "33d48712e7779ab4",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "src/content/blog/template-recensione.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "template-recensione"
+              "title": "Nuova scheda"
             }
           }
         ]
