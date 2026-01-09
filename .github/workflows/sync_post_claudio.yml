@@ -1,0 +1,85 @@
+name: 📥 Sync Obsidian Posts
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Ogni ora
+  workflow_dispatch:      # Trigger manuale
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-posts.yml'  # Auto-test
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Prendi il TUO repo
+      - name: 📥 Checkout your site
+        uses: actions/checkout@v4
+        
+      # 2. Scarica SOLO i file .md dal repo del collaboratore
+      - name: ⬇️ Download only .md files
+        run: |
+          # Crea cartella temporanea
+          mkdir -p temp_download
+          
+          # Clona SOLO i file .md usando sparse checkout
+          cd temp_download
+          git init
+          git remote add origin https://github.com/ladylazarus88/antipsyche-post.git
+          git sparse-checkout init --cone
+          git sparse-checkout set "*.md"
+          git pull origin main --depth=1
+          cd ..
+          
+          # Copia nella cartella blog
+          mkdir -p src/content/blog
+          cp temp_download/*.md src/content/blog/ 2>/dev/null || true
+          
+          # Pulisci
+          rm -rf temp_download
+          
+          echo "📊 File copiati:"
+          ls -la src/content/blog/ | grep ".md"
+          
+      # 3. Aggiungi frontmatter automatico se manca (per Jekyll/Hugo)
+      - name: 📝 Add missing frontmatter
+        run: |
+          cd src/content/blog
+          for file in *.md; do
+            if [ -f "$file" ]; then
+              # Controlla se ha già frontmatter (--- all'inizio)
+              if ! head -1 "$file" | grep -q "---"; then
+                echo "Aggiungo frontmatter a: $file"
+                # Crea frontmatter base
+                TEMP_FILE=$(mktemp)
+                echo "---" > "$TEMP_FILE"
+                echo "title: \"${file%.md}\"" >> "$TEMP_FILE"
+                echo "date: $(date -r "$file" '+%Y-%m-%d %H:%M:%S %z')" >> "$TEMP_FILE"
+                echo "layout: post" >> "$TEMP_FILE"
+                echo "---" >> "$TEMP_FILE"
+                echo "" >> "$TEMP_FILE"
+                cat "$file" >> "$TEMP_FILE"
+                mv "$TEMP_FILE" "$file"
+              fi
+            fi
+          done
+          
+      # 4. Commit solo se ci sono cambiamenti
+      - name: 💾 Commit and push
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          
+          # Aggiungi i post
+          git add src/content/blog/
+          
+          # Commit solo se ci sono cambiamenti
+          if git diff --cached --quiet; then
+            echo "✅ Nessun cambiamento nei post"
+          else
+            git commit -m "📝 Update posts: $(date +'%Y-%m-%d %H:%M')"
+            echo "🚀 Pushing changes..."
+            git push
+          fi
