@@ -210,8 +210,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "93a8de0f496db69c",
+  "active": "ce378a31bb87fe54",
   "lastOpenFiles": [
+    "antipsyche-post/_template.md",
+    "antipsyche-post/README.md",
+    "antipsyche-post",
     "post/_template.md.md",
     "post/linguistica/prova.md",
     "post/racconto-di-natale.md",
