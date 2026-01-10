@@ -1,0 +1,32 @@
+name: 📥 Sync Posts Claudio
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # Ogni 30 minuti
+  workflow_dispatch:         # Trigger manuale
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        
+      - name: ⬇️ Get posts
+        run: |
+          git clone --depth=1 https://github.com/ladylazarus88/antipsyche-post.git source
+          
+      - name: 📄 Copy to blog
+        run: |
+          mkdir -p src/content/blog
+          cp source/posts/*.md src/content/blog/ 2>/dev/null || true
+          
+      - name: 💾 Save changes
+        run: |
+          git config user.name "Auto-Sync"
+          git config user.email "auto-sync@noreply.github.com"
+          git add src/content/blog/
+          git commit -m "🔄 Posts sync: $(date +'%Y-%m-%d %H:%M')" || echo "No changes"
+          git push
