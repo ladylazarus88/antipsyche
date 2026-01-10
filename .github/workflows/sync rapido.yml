@@ -1,35 +1,29 @@
-name: ⚡ Quick Sync Test
+name: 🧪 Test Commit & Push
 
 on: workflow_dispatch
 
 jobs:
-  sync-test:
+  test:
     runs-on: ubuntu-latest
     steps:
+      # 1. Checkout CON PERMESSI
       - uses: actions/checkout@v4
-        
-      - name: 🔍 Test copy to src/content/blog
-        run: |
-          # Crea struttura
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      # 2. Scarica e copia
+      - run: |
           mkdir -p src/content/blog
-          
-          # Prova a scaricare un file di esempio
-          echo "Provo a scaricare dalla cartella posts/ del collaboratore..."
-          
-          # Usa GitHub API per vedere cosa c'è
-          curl -s "https://api.github.com/repos/ladylazarus88/antipsyche-post/contents/posts" \
-            | jq -r '.[] | "  - \(.name)"'
-            
-          # Clona e copia
           git clone --depth=1 https://github.com/ladylazarus88/antipsyche-post.git tmp
-          
-          if [ -d "tmp/posts" ]; then
-            cp tmp/posts/*.md src/content/blog/ 2>/dev/null || true
-            echo "✅ Copiati $(ls src/content/blog/*.md 2>/dev/null | wc -l) file"
-            ls src/content/blog/
-          else
-            echo "❌ Nessuna cartella posts/ trovata"
-            ls tmp/
-          fi
-          
+          cp tmp/posts/*.md src/content/blog/ 2>/dev/null || true
           rm -rf tmp
+          echo "File copiati:"
+          ls src/content/blog/
+          
+      # 3. COMMIT!
+      - run: |
+          git config user.name "Test Bot"
+          git config user.email "test@github.com"
+          git add src/content/blog/
+          git commit -m "TEST: Add posts $(date)" || echo "No changes"
+          git push
