@@ -2,7 +2,7 @@ import rss from '@astrojs/rss';
 import { config } from '../config';
 
 export async function GET(context) {
-  const posts = import.meta.glob('../content/blog/*.md', { eager: true });
+  const posts = import.meta.glob('../content/blog/*.md', '../../content/blog/claudio/*.md', { eager: true });
   const items = Object.entries(posts).map(([path, post]) => {
     const slug = path.split('/').pop().replace('.md', '');
     return {

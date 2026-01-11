@@ -38,7 +38,7 @@ const CONFIG = {
 
 // FUNZIONE UNICA PER LE RECENSIONI
 const getReviewPosts = () => {
-  const posts = import.meta.glob(['../content/blog/*.md', '../content/blog/*.mdx'], { 
+  const posts = import.meta.glob(['../content/blog/*.md', '../content/blog/*.mdx', '../../content/blog/claudio/*.md', '../../content/blog/claudio/*.mdx'], { 
     eager: true 
   });
   
