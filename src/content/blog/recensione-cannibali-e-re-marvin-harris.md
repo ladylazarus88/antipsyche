@@ -43,11 +43,11 @@ OPZIONALE: immagine di apertura
 
 ![cannibale](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Fotis_kontoglou%2C_parete_dipinta_dalla_casa_dell%27artista%2C_1932%2C_05_olandesi_e_cannibali_dei_caraibi.jpg/1280px-Fotis_kontoglou%2C_parete_dipinta_dalla_casa_dell%27artista%2C_1932%2C_05_olandesi_e_cannibali_dei_caraibi.jpg?20240823113504)
 
-# Pane, re e dei
-## Una storia materiale del potere secondo Marvin Harris
+## Pane, re e dèi
+### Una storia materiale del potere secondo Marvin Harris
 
 
-**Ambiente, risorse e demografia: il materialismo culturale**
+###Ambiente, risorse e demografia: il materialismo culturale###
 
 Il materialismo culturale di Marvin Harris è potente, soverchiante, rigoroso. Per certi aspetti anche controintuitivo, ma così convincente che siamo costretti a chiederci quali siano i limiti di un tale approccio, secondo il quale anche le creazioni più propriamente culturali dell’umano, come i suoi tabù alimentari, sessuali, il cannibalismo, le religioni e i sistemi simbolici più complessi, sono innescati direttamente da cause economiche, demografiche o energetiche. Proteine, intensità delle nascite, condizioni atmosferiche e possibilità di irrigazione sarebbero alla base di qualsiasi altra sovrastruttura più complessa o astratta. 
 
