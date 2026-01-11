@@ -12,8 +12,8 @@ const PALETTES = [
 
 // Importa tutti i post (md e mdx)
 const getPosts = () => {
-  const md = import.meta.glob(['../content/blog/*.md', '../../content/blog/claudio/*.md'], { eager: true });
-  const mdx = import.meta.glob(['../content/blog/*.mdx', '../../content/blog/claudio/*.mdx'], { eager: true });
+  const md = import.meta.glob(['../content/blog/*.md', '../content/blog/claudio/*.md'], { eager: true });
+  const mdx = import.meta.glob(['../content/blog/*.mdx', '../content/blog/claudio/*.mdx'], { eager: true });
 
   return [...Object.values(md), ...Object.values(mdx)];
 };

@@ -3,8 +3,8 @@ import Layout from '../../components/Layout.astro';
 
 export async function getStaticPaths() {
   // Support both .md and .mdx files
-  const allMdPosts = import.meta.glob(['../../content/blog/*.md', '../../content/blog/claudio/*.md'], { eager: true });
-  const allMdxPosts = import.meta.glob(['../../content/blog/*.mdx', '../../content/blog/claudio/*.mdx'], { eager: true });
+  const allMdPosts = import.meta.glob(['../content/blog/*.md', '../content/blog/claudio/*.md'], { eager: true });
+  const allMdxPosts = import.meta.glob(['../content/blog/*.mdx', '../content/blog/claudio/*.mdx'], { eager: true });
 
   const allPosts = [...Object.values(allMdPosts), ...Object.values(allMdxPosts)] as any[];
 
