@@ -1,6 +1,3 @@
 [submodule "src/content/blog/_claudio_posts"]
 	path = src/content/blog/_claudio_posts
 	url = https://github.com/ladylazarus88/antipsyche-post.git
-[submodule "src/content/blog/claudio"]
-	path = src/content/blog/claudio
-	url = https://github.com/ladylazarus88/antipsyche-post.git
