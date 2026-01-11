@@ -1,0 +1,110 @@
+name: 📥 Copy Claudio Posts (No Frontmatter Changes)
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # Ogni 2 ore
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  copy-posts:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Checkout del TUO repo
+      - name: 📥 Checkout your repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      # 2. Scarica SOLO la cartella posts/ dal collaboratore (senza modifiche)
+      - name: ⬇️ Download posts folder (exact copy)
+        run: |
+          echo "=== SCARICO posts/ SENZA MODIFICHE ==="
+          
+          # Crea cartella temporanea
+          mkdir -p temp_claudio
+          cd temp_claudio
+          
+          # Sparse checkout - SOLO la cartella posts/
+          git init
+          git remote add origin https://github.com/ladylazarus88/antipsyche-post.git
+          git config core.sparseCheckout true
+          echo "posts/*" > .git/info/sparse-checkout
+          git pull origin main --depth=1
+          
+          # Verifica che stiamo scaricando i file corretti
+          echo "📊 Contenuto della cartella posts/:"
+          ls -la posts/ 2>/dev/null || echo "❌ Cartella posts/ non trovata"
+          
+          # Conta i file .md
+          MD_COUNT=$(find posts -name "*.md" -type f 2>/dev/null | wc -l)
+          echo "📄 Trovati $MD_COUNT file .md"
+          
+          cd ..
+          
+      # 3. Copia ESATTA in collaborator/ (nessuna modifica)
+      - name: 📄 Exact copy to collaborator folder
+        run: |
+          echo "=== COPIA ESATTA ==="
+          
+          # Rimuovi vecchia cartella e ricrea
+          rm -rf src/content/blog/claudio
+          mkdir -p src/content/blog/claudio
+          
+          # Copia TUTTI i file dalla cartella posts/ mantenendo tutto
+          if [ -d "temp_claudio/posts" ]; then
+            # Copia preservando permessi, timestamp, ecc.
+            cp -p temp_claudio/posts/*.md src/content/blog/claudio/ 2>/dev/null || true
+
+            # Copia anche eventuali altre risorse (immagini, ecc.)
+            # Se il collaboratore ha immagini nella stessa cartella:
+            find temp_claudio/posts -name "*.jpg" -o -name "*.png" -o -name "*.gif" | \
+              while read file; do
+                cp -p "$file" src/content/blog/claudio/
+              done 2>/dev/null || true
+          fi
+          
+          # Verifica che i file siano identici
+          echo "✅ File copiati (mantenendo tutto):"
+          ls -la src/content/blog/claudio/ | head -10
+          
+          # Controllo rapido: mostra prime righe di un file
+          if [ -f "src/content/blog/claudio/*.md" ]; then
+            echo "🔍 Anteprima primo file (prime 5 righe):"
+            head -5 src/content/blog/claudio/*.md | head -5
+          fi
+          
+          # Pulisci
+          rm -rf temp_claudio
+          
+      # 4. Commit e push SOLO se ci sono cambiamenti
+      - name: 💾 Commit if changed
+        run: |
+          echo "=== COMMIT ==="
+          
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Aggiungi la cartella claudio
+          git add src/content/blog/claudio/
+          
+          # Verifica se ci sono CAMBIAMENTI REALI nel contenuto
+          if git diff --cached --quiet; then
+            echo "✅ Nessun cambiamento nei file (contenuto identico)"
+          else
+            # Mostra COSA è cambiato (solo nomi file, non contenuto)
+            echo "📝 File modificati/aggiunti:"
+            git diff --cached --name-only
+            
+            # Crea commit descrittivo SENZA modificare i file
+            CHANGED_COUNT=$(git diff --cached --name-only | wc -l)
+            git commit -m "📥 Aggiornamento post Claudio: $CHANGED_COUNT file ($(date +'%Y-%m-%d %H:%M'))"
+            
+            # Push
+            git push
+            
+            echo "🎉 Copia completata senza modifiche al contenuto!"
+          fi
