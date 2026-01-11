@@ -5,7 +5,7 @@ const base = import.meta.env.BASE_URL;
 // CONFIGURAZIONE UNIFICATA
 const CONFIG = {
   rowHeight: '360px',
-  gap: '1.5rem',
+  gap: 0,
   palettes: [
     { 
       bg: 'var(--palette-1-bg)', 
@@ -135,7 +135,7 @@ const reviews = getReviewPosts();
                         />
                       ) : (
                         <div class="image-placeholder">
-                          {isFirstImage ? 'Copertina' : 'Dettaglio'}
+                          {isFirstImage ? 'Dettaglio' : 'Copertina'}
                         </div>
                       )}
                     </div>
@@ -150,7 +150,6 @@ const reviews = getReviewPosts();
                 if (tileType === 'text') {
                   return (
                     <div class="hgrid-item-body">
-                      <div class="hgrid-item-body-tag">Recensione</div>
                       <div class="hgrid-item-body-author">{review.author}</div>
                       <div class="hgrid-item-body-title">{review.title}</div>
                       <div class="hgrid-item-body-abstract">{review.excerpt}</div>
@@ -159,10 +158,9 @@ const reviews = getReviewPosts();
                 }
                 
                 // Tile immagine per mobile
-                const isFirstImage = tileIndex === 0 && tileType === 'image';
-                const imageSrc = isFirstImage ? review.mainImage : (hasAltImage ? review.altImage : review.mainImage);
-                const imageAlt = isFirstImage ? `Copertina: ${review.title}` : `Dettaglio: ${review.title}`;
-                
+                const imageSrc = review.mainImage;
+                const imageAlt = `Immagine: ${review.title}`;
+
                 return (
                   <div class="hgrid-item-head">
                     {imageSrc ? (
@@ -174,7 +172,7 @@ const reviews = getReviewPosts();
                       />
                     ) : (
                       <div class="image-placeholder">
-                        {isFirstImage ? 'Copertina' : 'Dettaglio'}
+                        Immagine
                       </div>
                     )}
                   </div>
@@ -189,43 +187,6 @@ const reviews = getReviewPosts();
 </Layout>
 
 <style is:global>
-  /* ===== VARIABILI ===== */
-  :root {
-    --palette-1-bg: #1a1a1a;
-    --palette-1-text: #ffffff;
-    --palette-1-accent: #ff6b6b;
-    
-    --palette-2-bg: #2d3436;
-    --palette-2-text: #ffffff;
-    --palette-2-accent: #74b9ff;
-    
-    --palette-3-bg: #ffffff;
-    --palette-3-text: #2d3436;
-    --palette-3-accent: #00b894;
-    
-    --palette-4-bg: #f5f5f5;
-    --palette-4-text: #2d3436;
-    --palette-4-accent: #fd79a8;
-    
-    --max-width: 1200px;
-    --content-padding: 1rem;
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    
-    --color-surface: #ffffff;
-    --color-text-muted: #666666;
-    --color-accent: #3b82f6;
-  }
-
-  /* ===== LAYOUT BASE ===== */
-  .page-container {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 var(--content-padding);
-    width: 100%;
-  }
-
   /* ===== HEADER ===== */
   .reviews-page {
     margin: 0 auto;
@@ -250,7 +211,7 @@ const reviews = getReviewPosts();
   }
 
   .page-description {
-      font-family: var(--font-heading-secondary);
+    font-family: var(--font-heading-secondary, serif);
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -445,11 +406,7 @@ const reviews = getReviewPosts();
 
   /* ===== LAYOUT MOBILE (Stile Adelphi) ===== */
   @media (max-width: 768px) {
-    .page-container {
-      padding: 0;
-      max-width: 100%;
-    }
-    
+
     .reviews-page {
       padding: 0;
     }
@@ -475,8 +432,9 @@ const reviews = getReviewPosts();
     
     /* Modifica la riga per mobile */
     .review-row {
-      height: 40vw;
+      height: auto;
       min-height: 200px;
+      width: auto;
       border-radius: 0;
       box-shadow: none;
       border: none;
@@ -497,7 +455,7 @@ const reviews = getReviewPosts();
     /* Stile Adelphi per mobile */
     .hgrid-split {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       width: 100%;
       height: 100%;
     }
@@ -556,7 +514,7 @@ const reviews = getReviewPosts();
       height: 100%;
       position: relative;
       overflow: hidden;
-      background: color-mix(in srgb, var(--row-bg) 90%, black);
+      background: color-mix(in srgb, var(--row-bg) 90%, var(--color-surface));
     }
     
     .hgrid-item-head img {
@@ -573,26 +531,15 @@ const reviews = getReviewPosts();
     /* Layout alternato per mobile */
     .review-row[data-mobile-layout-index="1"] .hgrid-split,
     .review-row[data-mobile-layout-index="3"] .hgrid-split {
-      flex-direction: row-reverse;
+      flex-direction: column-reverse;
     }
     
-    /* Bordo colorato in alto */
-    .review-row::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--row-accent);
-      z-index: 2;
     }
-  }
 
   @media (max-width: 480px) {
     .review-row {
       height: 45vw;
-      min-height: 180px;
+      min-height: 400px;
     }
     
     .hgrid-item-body {
