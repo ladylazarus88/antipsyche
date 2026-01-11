@@ -148,7 +148,7 @@ h3 {
   font-size: clamp(1.25rem, 3vw, 1.5rem);
   font-weight: 600;
   line-height: 1.3;
-  letter spacing: 0.08em;
+  letter-spacing: 0.08em;
 }
 
 p {
