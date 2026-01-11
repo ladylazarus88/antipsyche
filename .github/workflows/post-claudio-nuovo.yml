@@ -1,0 +1,160 @@
+name: 📥 Claudio Posts Sync (Smart Overwrite)
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Checkout
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      # 2. Scarica post di Claudio
+      - name: ⬇️ Download Claudio posts
+        run: |
+          echo "=== DOWNLOAD POSTS ==="
+          
+          mkdir -p claudio_new
+          
+          # Scarica usando API GitHub (più efficiente)
+          curl -s "https://api.github.com/repos/ladylazarus88/antipsyche-post/contents/posts" \
+            | jq -r '.[] | select(.name | endswith(".md")) | .download_url' > files.txt 2>/dev/null || true
+          
+          if [ -s "files.txt" ]; then
+            while read url; do
+              filename=$(basename "$url")
+              echo "📥 Scarico: $filename"
+              curl -s -L -o "claudio_new/$filename" "$url"
+            done < files.txt
+            rm files.txt
+          else
+            # Fallback: git clone
+            git clone --depth=1 https://github.com/ladylazarus88/antipsyche-post.git temp_repo
+            cp temp_repo/posts/*.md claudio_new/ 2>/dev/null || true
+            rm -rf temp_repo
+          fi
+          
+          echo "✅ Scaricati $(ls claudio_new/*.md 2>/dev/null | wc -l) file"
+          
+      # 3. COPIA INTELLIGENTE (solo se diverso)
+      - name: 📄 Smart copy (only if changed)
+        run: |
+          echo "=== COPIA INTELLIGENTE ==="
+          
+          # Crea cartella se non esiste
+          mkdir -p src/content/blog/claudio
+          
+          # Inizializza contatori
+          COPIED=0
+          SKIPPED=0
+          
+          # Per ogni file scaricato
+          for new_file in claudio_new/*.md; do
+            if [ -f "$new_file" ]; then
+              FILENAME=$(basename "$new_file")
+              OLD_FILE="src/content/blog/claudio/$FILENAME"
+              
+              # Se il file NON esiste nella destinazione: COPIA
+              if [ ! -f "$OLD_FILE" ]; then
+                echo "🆕 NUOVO: $FILENAME"
+                cp "$new_file" "$OLD_FILE"
+                ((COPIED++))
+                
+              # Se il file ESISTE: controlla se è diverso
+              else
+                # Calcola hash MD5 di entrambi i file
+                HASH_NEW=$(md5sum "$new_file" | cut -d' ' -f1)
+                HASH_OLD=$(md5sum "$OLD_FILE" | cut -d' ' -f1)
+                
+                if [ "$HASH_NEW" != "$HASH_OLD" ]; then
+                  echo "🔄 MODIFICATO: $FILENAME (hash diverso)"
+                  cp "$new_file" "$OLD_FILE"
+                  ((COPIED++))
+                else
+                  echo "⏭️  UGUALE: $FILENAME (saltato)"
+                  ((SKIPPED++))
+                fi
+              fi
+            fi
+          done
+          
+          # Rimuovi file che non ci sono più nel sorgente (opzionale)
+          echo "🧹 Verifica file orfani..."
+          for old_file in src/content/blog/claudio/*.md; do
+            if [ -f "$old_file" ]; then
+              FILENAME=$(basename "$old_file")
+              if [ ! -f "claudio_new/$FILENAME" ]; then
+                echo "🗑️  RIMOSSO: $FILENAME (non più nel sorgente)"
+                rm "$old_file"
+                ((COPIED++))
+              fi
+            fi
+          done 2>/dev/null || true
+          
+          echo "📊 RIEPILOGO:"
+          echo "   Copiati/aggiornati: $COPIED file"
+          echo "   Saltati (uguali): $SKIPPED file"
+          
+          # Pulisci
+          rm -rf claudio_new
+          
+      # 4. Commit solo se ci sono reali cambiamenti
+      - name: 💾 Commit only if real changes
+        run: |
+          echo "=== COMMIT INTELLIGENTE ==="
+          
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Sincronizza con remoto
+          git pull origin master --quiet
+          
+          # Aggiungi i file
+          git add src/content/blog/claudio/
+          
+          # Controlla se CI SONO VERI CAMBIAMENTI
+          if git diff --cached --quiet; then
+            echo "✅ Nessun cambiamento reale nei file"
+            echo "   (Tutti i file sono identici al precedente)"
+            exit 0
+          else
+            # Analizza i cambiamenti
+            echo "📝 Cambiamenti rilevati:"
+            git diff --cached --name-only
+            
+            # Conta file modificati vs aggiunti
+            ADDED_FILES=$(git diff --cached --name-status | grep '^A' | wc -l)
+            MODIFIED_FILES=$(git diff --cached --name-status | grep '^M' | wc -l)
+            DELETED_FILES=$(git diff --cached --name-status | grep '^D' | wc -l)
+            
+            echo "📊 Dettaglio:"
+            echo "   Aggiunti: $ADDED_FILES"
+            echo "   Modificati: $MODIFIED_FILES"
+            echo "   Rimossi: $DELETED_FILES"
+            
+            # Commit descrittivo
+            if [ $ADDED_FILES -gt 0 ] && [ $MODIFIED_FILES -eq 0 ]; then
+              MSG="📥 Nuovi post di Claudio: $ADDED_FILES file"
+            elif [ $MODIFIED_FILES -gt 0 ] && [ $ADDED_FILES -eq 0 ]; then
+              MSG="✏️  Post Claudio aggiornati: $MODIFIED_FILES file"
+            else
+              TOTAL=$((ADDED_FILES + MODIFIED_FILES + DELETED_FILES))
+              MSG="🔄 Aggiornamento post Claudio: $TOTAL file"
+            fi
+            
+            git commit -m "$MSG - $(date +'%Y-%m-%d %H:%M')"
+            
+            # Push
+            git push origin master
+            
+            echo "🎉 Commit creato e pushato!"
+            echo "   Messaggio: $MSG"
+          fi
