@@ -72,11 +72,11 @@ const reviews = getReviewPosts();
 
 <Layout title="Recensioni | Antipsyché">
   <div class="reviews-page page-container">
-    <section class="page-header">
+    <header class="page-header">
       <h1 class="page-title">Recensioni</h1>
       <p class="page-description">Letture quotidiane.</p>
       <hr class="page-rule" />
-    </section>
+    </header>
 
     <main class="reviews-grid">
       {reviews.map((review, index) => {
@@ -198,6 +198,11 @@ const reviews = getReviewPosts();
   }
 
   /* ===== HEADER ===== */
+  .reviews-page {
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
   .page-header {
     text-align: center;
     margin-bottom: 3rem;
@@ -459,11 +464,13 @@ const reviews = getReviewPosts();
       width: 100%;
       height: 33vw; /* Altezza proporzionale */
       position: relative;
+      margin-left: -6rem;
+      margin-right: -6rem;
     }
     
     /* Modifica la riga per mobile */
     .review-row {
-      height: auto;
+      height: 50vw; /* Altezza proporzionale per mobile */
       border-radius: 0;
       box-shadow: none;
       border: none;
@@ -483,7 +490,8 @@ const reviews = getReviewPosts();
     /* Stile Adelphi per mobile */
     .hgrid-split {
       display: flex;
-      flex-direction: row;
+      position: relative;
+      flex-direction: column;
       width: 100%;
       height: 100%;
     }
@@ -542,7 +550,9 @@ const reviews = getReviewPosts();
     
     /* Parte immagine */
     .hgrid-item-head {
-      flex: 1;
+      display: flex;
+      flex: 3;
+      height: 50vw;
       position: relative;
       overflow: hidden;
       background: color-mix(in srgb, var(--row-bg) 90%, black);
