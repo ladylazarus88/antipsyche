@@ -1,67 +1,109 @@
-      - name: 💾 Robust commit and push
+name: 📥 Sync Claudio Posts (DEFINITIVE)
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # Ogni 2 ore
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Checkout con tutta la cronologia
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # ESSENZIALE: tutta la cronologia
+          
+      # 2. Scarica i post di Claudio
+      - name: ⬇️ Get Claudio's posts
         run: |
-          set -e  # Esci immediatamente in caso di errore
+          echo "=== SCARICO I POST DI CLAUDIO ==="
           
-          echo "=== GESTIONE ROBUSTA ==="
+          mkdir -p temp_posts
+          cd temp_posts
           
-          # Configura Git
+          git init
+          git remote add origin https://github.com/ladylazarus88/antipsyche-post.git
+          git config core.sparseCheckout true
+          echo "posts/*" > .git/info/sparse-checkout
+          git pull origin main --depth=1
+          
+          echo "📊 File trovati:"
+          find posts -name "*.md" -type f | wc -l
+          
+          cd ..
+          
+      # 3. Copia nella cartella claudio/
+      - name: 📄 Copy to claudio folder
+        run: |
+          echo "=== COPIA IN claudio/ ==="
+          
+          # Ricrea la cartella da zero (pulita)
+          rm -rf src/content/blog/claudio
+          mkdir -p src/content/blog/claudio
+          
+          if [ -d "temp_posts/posts" ]; then
+            # Copia preservando tutto
+            find temp_posts/posts -name "*.md" -type f -exec cp {} src/content/blog/claudio/ \;
+            
+            COUNT=$(ls src/content/blog/claudio/*.md 2>/dev/null | wc -l)
+            echo "✅ Copiati $COUNT file"
+            echo "📁 Primi file:"
+            ls src/content/blog/claudio/ | head -5
+          fi
+          
+          rm -rf temp_posts
+          
+      # 4. SINCRONIZZAZIONE SICURA (IL CUORE DEL WORKFLOW)
+      - name: 💾 Safe sync with pull first
+        run: |
+          echo "=== SINCRONIZZAZIONE SICURA ==="
+          
+          # Configurazione Git
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           
-          # Salva lo stato attuale (per rollback)
-          CURRENT_BRANCH=$(git branch --show-current)
-          CURRENT_COMMIT=$(git rev-parse HEAD)
+          # 1. FETCH degli ultimi cambiamenti remoti
+          echo "🔄 Scarico gli ultimi cambiamenti da GitHub..."
+          git fetch origin
           
-          # Crea un branch temporaneo per sicurezza
-          git checkout -b "auto-sync-$(date +%s)" || true
+          # 2. REBASE sui cambiamenti più recenti (mantiene cronologia pulita)
+          echo "📦 Applico le mie modifiche sui cambiamenti più recenti..."
+          if git rebase origin/main; then
+            echo "✅ Rebase completato"
+          else
+            # Se rebase fallisce (raro), fai merge
+            echo "⚠️  Rebase fallito, provo merge..."
+            git merge origin/main --no-edit
+            echo "✅ Merge completato"
+          fi
           
-          try_push() {
-            echo "🔄 Tentativo di push..."
-            
-            # Torna al main e sincronizza
-            git checkout $CURRENT_BRANCH
-            git pull origin $CURRENT_BRANCH --rebase --autostash
-            
-            # Aggiungi file
-            git add src/content/blog/claudio/
-            
-            if git diff --cached --quiet; then
-              echo "✅ Nessun cambiamento"
-              return 0
-            fi
-            
-            # Commit
-            git commit -m "📥 Sync: $(date +'%Y-%m-%d %H:%M')"
-            
-            # Push
-            git push origin $CURRENT_BRANCH
-            return $?
-          }
+          # 3. Aggiungi i file modificati
+          git add src/content/blog/claudio/
           
-          # Prova fino a 3 volte
-          for i in 1 2 3; do
-            echo "Tentativo $i/3..."
-            if try_push; then
-              echo "🎉 Successo!"
-              break
-            else
-              echo "❌ Tentativo $i fallito, ritento in 10 secondi..."
-              sleep 10
-              
-              # Resetta allo stato originale
-              git checkout $CURRENT_BRANCH
-              git reset --hard $CURRENT_COMMIT
-              git clean -fd
-              
-              # Scarica di nuovo i file
-              git checkout "auto-sync-*" -- src/content/blog/claudio/ 2>/dev/null || true
-            fi
-            
-            if [ $i -eq 3 ]; then
-              echo "❌ Tutti i tentativi falliti. Manual intervention needed."
-              exit 1
-            fi
-          done
+          # 4. Controlla se ci sono REALI cambiamenti
+          if git diff --cached --quiet; then
+            echo "✅ Nessun cambiamento nei file (tutto già aggiornato)"
+            exit 0  # Esci senza errori
+          fi
           
-          # Pulisci branch temporanei
-          git branch -D "auto-sync-*" 2>/dev/null || true
+          # 5. Crea commit descrittivo
+          CHANGED_FILES=$(git diff --cached --name-only | wc -l)
+          git commit -m "📥 Post di Claudio: $CHANGED_FILES file aggiornati ($(date +'%Y-%m-%d %H:%M'))"
+          
+          # 6. PUSH con fallback automatico
+          echo "🚀 Invio i cambiamenti..."
+          if git push origin main; then
+            echo "🎉 Push completato con successo!"
+          else
+            # Fallback: pull e riprova (per sicurezza)
+            echo "🔄 Push fallito, sincronizzo e riprovo..."
+            git pull origin main --rebase
+            git push origin main
+            echo "✅ Push completato dopo sincronizzazione"
+          fi
