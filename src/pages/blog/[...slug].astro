@@ -42,36 +42,87 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
 >
   <article class="blog-post">
     <header class="post-header">
-      <h1 class="post-title">{frontmatter.title}</h1>
-      <h3 class="post-subtitle">di {frontmatter.author}</h3>
-      <div class="post-meta">
-        <time class="post-date" datetime={frontmatter.date}>
-          {new Date(frontmatter.date).toLocaleDateString('it-IT', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          })}
-        </time>
-        
-        <span class="post-reading-time">{readingTime}</span>
-        
-        {frontmatter.categories && frontmatter.categories.length > 0 && (
-          <div class="post-categories">
-            {frontmatter.categories.map((category: string) => (
-              <a href={`${base}categories/${category.toLowerCase().replace(/[\/\s]+/g, '-')}`} class="category-link">
-                {category}
-              </a>
-            ))}
+      <!-- Header orizzontale con copertina a sinistra e dati a destra -->
+      <div class="book-header-container">
+        <!-- Copertina a sinistra -->
+        <div class="book-cover-wrapper">
+          {frontmatter.image ? (
+            <img 
+              src={frontmatter.image_alt} 
+              alt={`Copertina: ${frontmatter.title}`}
+              class="book-cover-image"
+              loading="eager"
+            />
+          ) : (
+            <div class="book-cover-placeholder">
+              <span>Copertina</span>
+            </div>
+          )}
+        </div>
+
+        <!-- Informazioni libro a destra -->
+        <div class="book-info-wrapper">
+          {/* Tag categoria */}
+          {frontmatter.categories && frontmatter.categories.includes('Recensione') && (
+            <div class="book-tag">
+              <span>Recensione</span>
+            </div>
+          )}
+
+          {/* Titolo del libro */}
+          <h1 class="book-title">
+            {frontmatter.title?.replace(/^Recensione:\s*/i, '')}
+          </h1>
+
+          {/* Autore */}
+          <h3 class="book-author">
+            di {frontmatter.author}
+          </h3>
+
+          {/* Estratto/descrizione */}
+          {frontmatter.excerpt && (
+            <p class="book-excerpt">
+              {frontmatter.excerpt}
+            </p>
+          )}
+
+          {/* Metadati */}
+          <div class="book-metadata">
+            <div class="metadata-row">
+              <time class="book-date" datetime={frontmatter.date}>
+                {new Date(frontmatter.date).toLocaleDateString('it-IT', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric'
+                })}
+              </time>
+              
+              <span class="meta-separator">•</span>
+              
+              <span class="book-reading-time">{readingTime}</span>
+            </div>
+
+            {/* Categorie */}
+            {frontmatter.categories && frontmatter.categories.length > 0 && (
+              <div class="categories-row">
+                {frontmatter.categories
+                  .filter(cat => cat !== 'Recensione')
+                  .map((category: string) => (
+                    <a 
+                      href={`${base}categories/${category.toLowerCase().replace(/[\/\s]+/g, '-')}`} 
+                      class="category-tag"
+                    >
+                      {category}
+                    </a>
+                  ))}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
-      
-      {frontmatter.excerpt && (
-        <p class="post-excerpt">{frontmatter.excerpt}</p>
-      )}
-      
-      <!-- Monumental Blood Red Rule -->
-      <hr class="monumental-rule" />
+
+      {/* Linea di separazione */}
+      <hr class="book-header-rule" />
     </header>
 
     <div class="post-content">
@@ -104,6 +155,457 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     margin: 0 auto;
   }
 
+
+/* ===== HEADER ORIZZONTALE - COPERTINA SINISTRA, DATI DESTRA ===== */
+.book-header-container {
+  display: grid;
+  grid-template-columns: minmax(200px, 300px) 1fr;
+  gap: 3rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+/* Copertina libro */
+.book-cover-wrapper {
+  position: relative;
+  width: 100%;
+  background: var(--color-surface);
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  aspect-ratio: 2/3; /* Proporzione standard libro */
+}
+
+.book-cover-wrapper:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.book-cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.book-cover-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-border) 100%);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  aspect-ratio: 2/3;
+}
+
+/* Informazioni libro */
+.book-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+/* Tag recensione */
+.book-tag {
+  margin-bottom: 1.5rem;
+}
+
+.book-tag span {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: var(--color-accent);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  border-radius: 3px;
+}
+
+/* Titolo libro */
+.book-title {
+  font-family: var(--font-heading-primary);
+  font-size: 2.8rem;
+  line-height: 1.1;
+  margin: 0 0 1rem 0;
+  color: var(--color-text-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Autore */
+.book-author {
+  font-family: var(--font-heading-secondary);
+  font-size: 1.8rem;
+  font-style: italic;
+  color: var(--color-text-secondary);
+  margin: 0 0 2rem 0;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+/* Estratto */
+.book-excerpt {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 0 0 2.5rem 0;
+  font-weight: 300;
+}
+
+/* Metadati */
+.book-metadata {
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.metadata-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+
+.meta-separator {
+  color: var(--color-border);
+  opacity: 0.5;
+}
+
+/* Categorie */
+.categories-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.category-tag {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  border-radius: 3px;
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.category-tag:hover {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+/* Linea di separazione */
+.book-header-rule {
+  height: 4px;
+  background: var(--color-accent);
+  border: none;
+  margin: 3rem 0 0 0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .book-header-container {
+    gap: 2.5rem;
+  }
+  
+  .book-title {
+    font-size: 2.4rem;
+  }
+  
+  .book-author {
+    font-size: 1.6rem;
+  }
+  
+  .book-excerpt {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .book-header-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .book-cover-wrapper {
+    max-width: 250px;
+    margin: 0 auto;
+  }
+  
+  .book-title {
+    font-size: 2.1rem;
+    text-align: center;
+  }
+  
+  .book-author {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+  
+  .book-excerpt {
+    font-size: 1.15rem;
+    text-align: center;
+  }
+  
+  .book-tag {
+    text-align: center;
+  }
+  
+  .metadata-row {
+    justify-content: center;
+  }
+  
+  .categories-row {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .book-title {
+    font-size: 1.8rem;
+  }
+  
+  .book-author {
+    font-size: 1.2rem;
+  }
+  
+  .book-excerpt {
+    font-size: 1.05rem;
+  }
+  
+  .metadata-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .meta-separator {
+    display: none;
+  }
+}
+
+/* Dark mode adjustments */
+:global([data-theme="dark"]) .book-cover-wrapper {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .category-tag {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-muted);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .book-cover-placeholder {
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-text-muted) 100%);
+  color: var(--color-surface);
+}
+
+.book-cover-container:hover {
+  transform: translateY(-4px);
+}
+
+.book-cover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-cover-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-border) 100%);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+
+/* Tag recensione */
+.book-tag {
+  margin-bottom: calc(var(--grid-unit) * 1.5);
+}
+
+.book-tag span {
+  display: inline-block;
+  padding: calc(var(--grid-unit) / 2) calc(var(--grid-unit));
+  background: var(--color-accent);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  border-radius: 2px;
+}
+
+/* Titolo libro */
+.book-title {
+  font-family: var(--font-heading-primary);
+  font-size: 2.5rem;
+  line-height: 1.1;
+  margin-bottom: calc(var(--grid-unit));
+  color: var(--color-text-primary);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* Autore */
+.book-author {
+  font-family: var(--font-heading-secondary);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--color-text-secondary);
+  margin-bottom: calc(var(--grid-unit) * 2);
+  font-weight: 400;
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* Estratto */
+.book-excerpt {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  margin-bottom: calc(var(--grid-unit) * 3);
+  font-weight: 300;
+}
+
+
+.meta-separator {
+  color: var(--color-border);
+  opacity: 0.5;
+}
+
+/* Categorie come tag */
+.book-categories-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--grid-unit));
+}
+
+.category-tag-link {
+  display: inline-block;
+  padding: calc(var(--grid-unit) / 4) calc(var(--grid-unit) / 2);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  border-radius: 2px;
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.category-tag-link:hover {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+  text-decoration: none;
+}
+
+/* Linea di separazione */
+.book-header-rule {
+  height: 4px;
+  background: var(--color-accent);
+  border: none;
+  margin: calc(var(--grid-unit) * 3) 0 0 0;
+}
+
+/* ===== RESPONSIVE GRID ===== */
+@media (max-width: 768px) {
+  .he-book-grid {
+    flex-direction: column;
+  }
+  
+  .book-info-section {
+    padding-left: 0;
+    padding-top: calc(var(--grid-unit) * 3);
+  }
+  
+  .book-cover-container {
+    max-width: 250px;
+    margin: 0 auto;
+    padding-bottom: 140%;
+  }
+  
+  .book-title {
+    font-size: 2rem;
+  }
+  
+  .book-author {
+    font-size: 1.25rem;
+  }
+  
+  .book-excerpt {
+    font-size: 1.125rem;
+  }
+  
+  .book-meta-line {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(var(--grid-unit) / 2);
+  }
+  
+  .meta-separator {
+    display: none;
+  }
+  
+  .book-categories-tags {
+    margin-top: calc(var(--grid-unit));
+  }
+}
+
+/* Dark mode adjustments */
+:global([data-theme="dark"]) .book-cover-container {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .category-tag-link {
+  background: var(--color-text-primary);
+  color: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+:global([data-theme="dark"]) .category-tag-link:hover {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+
   .post-header {
     margin-bottom: calc(var(--grid-unit) * 6);
   }
@@ -119,7 +621,7 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     margin-bottom: calc(var(--grid-unit) * 3);
   }
 
-  .post-subtitle {
+  /*.post-subtitle {
     font-family: var(--font-heading-secondary);
     font-size: 1.25rem;
     font-weight: 400;
@@ -141,10 +643,9 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     flex-direction: column;
     gap: calc(var(--grid-unit) * 1.5);
     margin-bottom: calc(var(--grid-unit) * 3);
-  }
+  } */
 
   .post-date {
-    font-family: var(--font-mono);
     font-size: 0.9rem;
     color: var(--color-text-muted);
     text-transform: uppercase;
@@ -211,13 +712,13 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     margin: 0;
   }
 
-  .monumental-rule {
+  /*.monumental-rule {
     height: 6px;
     background-color: var(--color-accent);
     border: none;
     margin: calc(var(--grid-unit) * 4) 0;
     width: 100%;
-  }
+  } */
 
   .post-content {
     font-size: 1.125rem;

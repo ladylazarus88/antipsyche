@@ -4,9 +4,9 @@ export function calculateReadingTime(text: string): string {
   const words = text.trim().split(/\s+/).length;
   const minutes = Math.ceil(words / wordsPerMinute);
   
-  if (minutes < 1) return 'Meno di 1 min';
-  if (minutes === 1) return '1 min';
-  return `${minutes} min`;
+  if (minutes < 1) return 'Tempo di lettura: meno di 1 minuto';
+  if (minutes === 1) return 'Tempo di lettura: 1 minuto';
+  return `Tempo di lettura: ${minutes} minuti`;
 }
 
 export function extractTextFromMarkdown(content: string): string {
