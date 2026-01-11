@@ -31,7 +31,7 @@ jobs:
           git remote add origin https://github.com/ladylazarus88/antipsyche-post.git
           git config core.sparseCheckout true
           echo "posts/*" > .git/info/sparse-checkout
-          git pull origin main --depth=1
+          git pull origin master --depth=1
           
           echo "📊 File trovati:"
           find posts -name "*.md" -type f | wc -l
@@ -69,7 +69,7 @@ jobs:
           git config user.email "actions@github.com"
           
           # ESSENZIALE: Imposta il riferimento al ramo remoto
-          # Questo rende `origin/main` una referenza valida
+          # Questo rende `origin/master` una referenza valida
           git fetch origin
           
           # 1. FETCH degli ultimi cambiamenti remoti
@@ -77,12 +77,12 @@ jobs:
           
           # 2. REBASE sui cambiamenti più recenti
           echo "📦 Applico le mie modifiche sui cambiamenti più recenti..."
-          if git rebase origin/main; then
+          if git rebase origin/master; then
             echo "✅ Rebase completato"
           else
             # Se rebase fallisce (raro), fai merge
             echo "⚠️  Rebase fallito, provo merge..."
-            git merge origin/main --no-edit
+            git merge origin/master --no-edit
             echo "✅ Merge completato"
           fi
           
@@ -101,12 +101,12 @@ jobs:
           
           # 6. PUSH con fallback automatico
           echo "🚀 Invio i cambiamenti..."
-          if git push origin main; then
+          if git push origin master; then
             echo "🎉 Push completato con successo!"
           else
             # Fallback: pull e riprova (per sicurezza)
             echo "🔄 Push fallito, sincronizzo e riprovo..."
-            git pull origin main --rebase
-            git push origin main
+            git pull origin master --rebase
+            git push origin master
             echo "✅ Push completato dopo sincronizzazione"
           fi
