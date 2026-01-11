@@ -2,32 +2,6 @@
 import Layout from '../components/Layout.astro';
 const base = import.meta.env.BASE_URL;
 
-// Importa tutti i post in un'unica chiamata
-const getPosts = () => {
-  const posts = import.meta.glob(['../content/blog/*.md', '../content/blog/*.mdx'], { 
-    eager: true 
-  });
-  
-  return Object.values(posts)
-    .filter(post => post.frontmatter && post.frontmatter.date)
-    .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())
-    .slice(0, 3)
-    .map(post => {
-      const slug = post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '');
-      return {
-        ...post,
-        slug,
-        url: `${base}blog/${slug}`,
-        formattedDate: new Date(post.frontmatter.date).toLocaleDateString('it-IT', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })
-      };
-    });
-};
-
-const latestPosts = getPosts();
 ---
 
 <Layout title="Pubblicazioni | Antipsyché" description="Tutti le pubblicazioni originali di Antipsyché">
