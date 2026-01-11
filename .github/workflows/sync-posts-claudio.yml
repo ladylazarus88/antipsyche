@@ -59,7 +59,7 @@ jobs:
           
           rm -rf temp_posts
           
-      # 4. SINCRONIZZAZIONE SICURA (IL CUORE DEL WORKFLOW)
+            # 4. SINCRONIZZAZIONE SICURA (IL CUORE DEL WORKFLOW)
       - name: 💾 Safe sync with pull first
         run: |
           echo "=== SINCRONIZZAZIONE SICURA ==="
@@ -68,11 +68,14 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           
-          # 1. FETCH degli ultimi cambiamenti remoti
-          echo "🔄 Scarico gli ultimi cambiamenti da GitHub..."
+          # ESSENZIALE: Imposta il riferimento al ramo remoto
+          # Questo rende `origin/main` una referenza valida
           git fetch origin
           
-          # 2. REBASE sui cambiamenti più recenti (mantiene cronologia pulita)
+          # 1. FETCH degli ultimi cambiamenti remoti
+          echo "🔄 Scarico gli ultimi cambiamenti da GitHub..."
+          
+          # 2. REBASE sui cambiamenti più recenti
           echo "📦 Applico le mie modifiche sui cambiamenti più recenti..."
           if git rebase origin/main; then
             echo "✅ Rebase completato"
