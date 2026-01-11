@@ -1,9 +1,7 @@
-name: 📥 Claudio Posts Sync (Smart Overwrite)
+name: 📥 Claudio Posts Sync (Fixed Error Handling)
 
 on:
-  schedule:
-    - cron: '0 */3 * * *'
-  workflow_dispatch:
+  workflow_dispatch:  # Solo manuale per ora, poi aggiungi schedule
 
 permissions:
   contents: write
@@ -24,37 +22,51 @@ jobs:
           
           mkdir -p claudio_new
           
-          # Scarica usando API GitHub (più efficiente)
+          # Scarica con gestione errori
+          set +e  # Non uscire al primo errore
+          
           curl -s "https://api.github.com/repos/ladylazarus88/antipsyche-post/contents/posts" \
-            | jq -r '.[] | select(.name | endswith(".md")) | .download_url' > files.txt 2>/dev/null || true
+            | jq -r '.[] | select(.name | endswith(".md")) | .download_url' > files.txt 2>/dev/null
           
           if [ -s "files.txt" ]; then
+            echo "📥 Scaricamento via API GitHub"
             while read url; do
               filename=$(basename "$url")
-              echo "📥 Scarico: $filename"
-              curl -s -L -o "claudio_new/$filename" "$url"
+              echo "  Downloading: $filename"
+              curl -s -L -o "claudio_new/$filename" "$url" || echo "  ⚠️  Fallito: $filename"
             done < files.txt
-            rm files.txt
+            rm -f files.txt
           else
-            # Fallback: git clone
-            git clone --depth=1 https://github.com/ladylazarus88/antipsyche-post.git temp_repo
+            echo "📥 Scaricamento via git clone (fallback)"
+            git clone --depth=1 https://github.com/ladylazarus88/antipsyche-post.git temp_repo 2>/dev/null || true
             cp temp_repo/posts/*.md claudio_new/ 2>/dev/null || true
-            rm -rf temp_repo
+            rm -rf temp_repo 2>/dev/null || true
           fi
           
-          echo "✅ Scaricati $(ls claudio_new/*.md 2>/dev/null | wc -l) file"
+          set -e  # Ripristina exit on error
           
-      # 3. COPIA INTELLIGENTE (solo se diverso)
-      - name: 📄 Smart copy (only if changed)
+          FILE_COUNT=$(ls claudio_new/*.md 2>/dev/null | wc -l || echo "0")
+          echo "✅ Scaricati $FILE_COUNT file"
+          
+      # 3. COPIA INTELLIGENTE CON GESTIONE ERRORI MIGLIORATA
+      - name: 📄 Smart copy with error handling
         run: |
-          echo "=== COPIA INTELLIGENTE ==="
+          echo "=== COPIA INTELLIGENTE (con error handling) ==="
           
-          # Crea cartella se non esiste
+          # Crea cartella destinazione
           mkdir -p src/content/blog/claudio
           
           # Inizializza contatori
           COPIED=0
           SKIPPED=0
+          ERRORS=0
+          
+          # Verifica se ci sono file da processare
+          if [ $(ls claudio_new/*.md 2>/dev/null | wc -l) -eq 0 ]; then
+            echo "⚠️  Nessun file .md trovato in claudio_new/"
+            echo "📊 RIEPILOGO: 0 file processati"
+            exit 0  # Esci senza errore
+          fi
           
           # Per ogni file scaricato
           for new_file in claudio_new/*.md; do
@@ -62,99 +74,128 @@ jobs:
               FILENAME=$(basename "$new_file")
               OLD_FILE="src/content/blog/claudio/$FILENAME"
               
-              # Se il file NON esiste nella destinazione: COPIA
+              # 1. Se il file NON esiste: COPIA
               if [ ! -f "$OLD_FILE" ]; then
                 echo "🆕 NUOVO: $FILENAME"
-                cp "$new_file" "$OLD_FILE"
-                ((COPIED++))
+                cp "$new_file" "$OLD_FILE" && ((COPIED++)) || ((ERRORS++))
                 
-              # Se il file ESISTE: controlla se è diverso
+              # 2. Se il file ESISTE: controlla hash
               else
-                # Calcola hash MD5 di entrambi i file
-                HASH_NEW=$(md5sum "$new_file" | cut -d' ' -f1)
-                HASH_OLD=$(md5sum "$OLD_FILE" | cut -d' ' -f1)
-                
-                if [ "$HASH_NEW" != "$HASH_OLD" ]; then
-                  echo "🔄 MODIFICATO: $FILENAME (hash diverso)"
-                  cp "$new_file" "$OLD_FILE"
-                  ((COPIED++))
+                # Calcola hash (se md5sum non esiste, usa cmp)
+                if command -v md5sum &> /dev/null; then
+                  HASH_NEW=$(md5sum "$new_file" 2>/dev/null | cut -d' ' -f1 || echo "")
+                  HASH_OLD=$(md5sum "$OLD_FILE" 2>/dev/null | cut -d' ' -f1 || echo "")
+                  
+                  if [ "$HASH_NEW" != "$HASH_OLD" ]; then
+                    echo "🔄 MODIFICATO: $FILENAME (hash diverso)"
+                    cp "$new_file" "$OLD_FILE" && ((COPIED++)) || ((ERRORS++))
+                  else
+                    echo "⏭️  UGUALE: $FILENAME (saltato)"
+                    ((SKIPPED++))
+                  fi
                 else
-                  echo "⏭️  UGUALE: $FILENAME (saltato)"
-                  ((SKIPPED++))
+                  # Fallback: usa cmp per confronto binario
+                  if ! cmp -s "$new_file" "$OLD_FILE"; then
+                    echo "🔄 MODIFICATO: $FILENAME (contenuto diverso)"
+                    cp "$new_file" "$OLD_FILE" && ((COPIED++)) || ((ERRORS++))
+                  else
+                    echo "⏭️  UGUALE: $FILENAME (saltato)"
+                    ((SKIPPED++))
+                  fi
                 fi
               fi
             fi
           done
           
-          # Rimuovi file che non ci sono più nel sorgente (opzionale)
-          echo "🧹 Verifica file orfani..."
-          for old_file in src/content/blog/claudio/*.md; do
-            if [ -f "$old_file" ]; then
-              FILENAME=$(basename "$old_file")
-              if [ ! -f "claudio_new/$FILENAME" ]; then
-                echo "🗑️  RIMOSSO: $FILENAME (non più nel sorgente)"
-                rm "$old_file"
-                ((COPIED++))
-              fi
-            fi
-          done 2>/dev/null || true
+          # Rimozione file orfani (OPZIONALE - commentata per sicurezza)
+          # echo "🧹 Verifica file orfani (disabilitata per sicurezza)..."
+          # for old_file in src/content/blog/claudio/*.md 2>/dev/null; do
+          #   if [ -f "$old_file" ]; then
+          #     FILENAME=$(basename "$old_file")
+          #     if [ ! -f "claudio_new/$FILENAME" ]; then
+          #       echo "🗑️  RIMOSSO: $FILENAME"
+          #       rm "$old_file" && ((COPIED++)) || ((ERRORS++))
+          #     fi
+          #   fi
+          # done
           
-          echo "📊 RIEPILOGO:"
+          echo "📊 RIEPILOGO COPIA:"
           echo "   Copiati/aggiornati: $COPIED file"
           echo "   Saltati (uguali): $SKIPPED file"
+          echo "   Errori: $ERRORS"
           
-          # Pulisci
-          rm -rf claudio_new
+          if [ $ERRORS -gt 0 ]; then
+            echo "⚠️  ATTENZIONE: $ERRORS errori durante la copia"
+          fi
           
-      # 4. Commit solo se ci sono reali cambiamenti
-      - name: 💾 Commit only if real changes
+          # Pulisci cartella temporanea (SENZA uscire se fallisce)
+          echo "🧹 Pulizia cartella temporanea..."
+          rm -rf claudio_new 2>/dev/null || echo "⚠️  Pulizia fallita, ma continuo"
+          
+      # 4. DEBUG: Mostra stato attuale
+      - name: 🔍 Debug current state
+        if: always()  # Esegui SEMPRE, anche se step precedente fallisce
         run: |
-          echo "=== COMMIT INTELLIGENTE ==="
+          echo "=== DEBUG STATO ATTUALE ==="
+          echo "📁 Contenuto di src/content/blog/claudio/:"
+          ls -la src/content/blog/claudio/ 2>/dev/null || echo "Cartella non trovata"
+          
+          echo "📄 Contenuto primo file (prime 5 righe):"
+          head -5 src/content/blog/claudio/*.md 2>/dev/null | head -5 || echo "Nessun file"
+          
+          echo "🔢 Numero file:"
+          ls src/content/blog/claudio/*.md 2>/dev/null | wc -l || echo "0"
+          
+      # 5. Commit solo se cambiamenti REALI
+      - name: 💾 Commit if changes
+        if: success()  # Solo se tutti gli step precedenti hanno successo
+        run: |
+          echo "=== COMMIT ==="
           
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           
-          # Sincronizza con remoto
-          git pull origin master --quiet
+          # Sincronizza
+          echo "🔄 Sincronizzo con repository remoto..."
+          git pull origin master --quiet --no-edit
           
-          # Aggiungi i file
+          # Aggiungi file
+          echo "📝 Aggiungo file alla staging area..."
           git add src/content/blog/claudio/
           
-          # Controlla se CI SONO VERI CAMBIAMENTI
+          # Verifica cambiamenti
           if git diff --cached --quiet; then
             echo "✅ Nessun cambiamento reale nei file"
-            echo "   (Tutti i file sono identici al precedente)"
-            exit 0
+            echo "   (Tutti i file sono identici)"
           else
-            # Analizza i cambiamenti
-            echo "📝 Cambiamenti rilevati:"
+            # Mostra differenze
+            echo "📄 File con cambiamenti:"
             git diff --cached --name-only
             
-            # Conta file modificati vs aggiunti
-            ADDED_FILES=$(git diff --cached --name-status | grep '^A' | wc -l)
-            MODIFIED_FILES=$(git diff --cached --name-status | grep '^M' | wc -l)
-            DELETED_FILES=$(git diff --cached --name-status | grep '^D' | wc -l)
+            # Crea commit
+            CHANGED_COUNT=$(git diff --cached --name-only | wc -l)
+            echo "📊 $CHANGED_COUNT file modificati"
             
-            echo "📊 Dettaglio:"
-            echo "   Aggiunti: $ADDED_FILES"
-            echo "   Modificati: $MODIFIED_FILES"
-            echo "   Rimossi: $DELETED_FILES"
-            
-            # Commit descrittivo
-            if [ $ADDED_FILES -gt 0 ] && [ $MODIFIED_FILES -eq 0 ]; then
-              MSG="📥 Nuovi post di Claudio: $ADDED_FILES file"
-            elif [ $MODIFIED_FILES -gt 0 ] && [ $ADDED_FILES -eq 0 ]; then
-              MSG="✏️  Post Claudio aggiornati: $MODIFIED_FILES file"
-            else
-              TOTAL=$((ADDED_FILES + MODIFIED_FILES + DELETED_FILES))
-              MSG="🔄 Aggiornamento post Claudio: $TOTAL file"
-            fi
-            
-            git commit -m "$MSG - $(date +'%Y-%m-%d %H:%M')"
+            git commit -m "📥 Post Claudio aggiornati: $CHANGED_COUNT file - $(date +'%Y-%m-%d %H:%M')"
             
             # Push
+            echo "🚀 Push..."
             git push origin master
             
             echo "🎉 Commit creato e pushato!"
-            echo "   Messaggio: $MSG"
           fi
+          
+      # 6. Notifica errore finale
+      - name: 🚨 Notify if failed
+        if: failure()
+        run: |
+          echo "❌ WORKFLOW FALLITO!"
+          echo "Ultimo messaggio di successo: '🔄 MODIFICATO: recensione-cannibali-e-re-marvin-harris.md (hash diverso)'"
+          echo ""
+          echo "L'errore è successivo alla copia del file."
+          echo "Problemi possibili:"
+          echo "1. Rimozione file orfani"
+          echo "2. Conteggio finale"
+          echo "3. Pulizia cartella claudio_new"
+          echo ""
+          echo "Controlla i log sopra per vedere dove si ferma."
