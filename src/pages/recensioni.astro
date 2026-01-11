@@ -29,10 +29,16 @@ const CONFIG = {
     }
   ],
   layouts: [
-    ['text', 'image', 'image'],
-    ['image', 'text', 'image'],
-    ['image', 'image', 'text'],
-    ['image', 'text', 'image']
+    ['text', 'image', 'image'],  // Desktop: layout 1
+    ['image', 'text', 'image'],  // Desktop: layout 2
+    ['image', 'image', 'text'],  // Desktop: layout 3
+    ['image', 'text', 'image']   // Desktop: layout 4
+  ],
+   mobileLayouts: [
+    ['image', 'text'],  // Mobile: immagine a sinistra, testo a destra
+    ['text', 'image'],  // Mobile: testo a sinistra, immagine a destra
+    ['image', 'text'],  // Mobile: immagine a sinistra, testo a destra
+    ['text', 'image']   // Mobile: testo a sinistra, immagine a destra
   ]
 };
 
@@ -76,13 +82,15 @@ const reviews = getReviewPosts();
       {reviews.map((review, index) => {
         const palette = CONFIG.palettes[index % CONFIG.palettes.length];
         const layout = CONFIG.layouts[index % CONFIG.layouts.length];
+        const mobileLayout = CONFIG.mobileLayouts[index % CONFIG.mobileLayouts.length];
         const hasAltImage = !!review.altImage;
         let imageIndex = 0;
         
         return (
           <article 
-            class="review-row" 
+            class="review-row"
             data-palette-index={index % 4}
+            data-mobile-layout-index={index % 4}
             style={`
               --row-height: ${CONFIG.rowHeight};
               --row-gap: ${CONFIG.gap};
@@ -91,7 +99,8 @@ const reviews = getReviewPosts();
               --row-accent: ${palette.accent};
             `}
           >
-            <a href={review.url} class="review-link">
+            {/* Layout Desktop (3 colonne) */}
+            <a href={review.url} class="review-link desktop-link">
               {layout.map((tileType) => {
                 if (tileType === 'text') {
                   return (
@@ -108,7 +117,7 @@ const reviews = getReviewPosts();
                   );
                 }
                 
-                // Tile immagine
+                // Tile immagine per desktop
                 const isFirstImage = imageIndex === 0;
                 imageIndex++;
                 const imageSrc = isFirstImage ? review.mainImage : (hasAltImage ? review.altImage : review.mainImage);
@@ -130,6 +139,44 @@ const reviews = getReviewPosts();
                         </div>
                       )}
                     </div>
+                  </div>
+                );
+              })}
+            </a>
+            
+            {/* Layout Mobile (2 colonne stile Adelphi) */}
+            <a href={review.url} class="mobile-link hgrid-split">
+              {mobileLayout.map((tileType, tileIndex) => {
+                if (tileType === 'text') {
+                  return (
+                    <div class="hgrid-item-body">
+                      <div class="hgrid-item-body-tag">Recensione</div>
+                      <div class="hgrid-item-body-author">{review.author}</div>
+                      <div class="hgrid-item-body-title">{review.title}</div>
+                      <div class="hgrid-item-body-abstract">{review.excerpt}</div>
+                    </div>
+                  );
+                }
+                
+                // Tile immagine per mobile
+                const isFirstImage = tileIndex === 0 && tileType === 'image';
+                const imageSrc = isFirstImage ? review.mainImage : (hasAltImage ? review.altImage : review.mainImage);
+                const imageAlt = isFirstImage ? `Copertina: ${review.title}` : `Dettaglio: ${review.title}`;
+                
+                return (
+                  <div class="hgrid-item-head">
+                    {imageSrc ? (
+                      <img 
+                        src={imageSrc} 
+                        alt={imageAlt}
+                        loading="lazy"
+                        class="cover-image"
+                      />
+                    ) : (
+                      <div class="image-placeholder">
+                        {isFirstImage ? 'Copertina' : 'Dettaglio'}
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -194,18 +241,19 @@ const reviews = getReviewPosts();
   .reviews-grid {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 0.5rem;
   }
 
   /* ===== RIGA SINGOLA ===== */
   .review-row {
     background: var(--row-bg);
-    border-radius: 12px;
+    border-radius: 0;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--row-border);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: var(--row-height);
     overflow: hidden;
+    position: relative;
   }
 
   .review-row:hover {
@@ -213,23 +261,33 @@ const reviews = getReviewPosts();
     box-shadow: var(--shadow-lg);
   }
 
-  /* ===== LINK DELLA RIGA ===== */
-  .review-link {
+  /* Layout Desktop */
+  .desktop-link {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--row-gap);
+    gap: 0;
     height: 100%;
-    padding: var(--row-gap);
+    padding: 0rem;
     text-decoration: none;
     color: inherit;
   }
 
-  /* ===== TILE GENERICO ===== */
+  /* Layout Mobile */
+  .mobile-link {
+    display: none; /* Nascosto su desktop */
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* ===== TILE DESKTOP ===== */
   .tile {
-    border-radius: 8px;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
     overflow: hidden;
     background: var(--color-surface);
-    border: 1px solid var(--tile-border);
+    border: 0px solid var(--tile-border);
     box-shadow: var(--shadow-sm);
     transition: box-shadow 0.3s ease;
   }
@@ -244,12 +302,13 @@ const reviews = getReviewPosts();
     display: block;
   }
 
-  /* ===== TILE TESTO ===== */
+  /* TILE TESTO (Desktop) */
   .text-tile .tile-content {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 2rem;
+    background-color: var(--row-bg);
   }
 
   .text-content {
@@ -302,7 +361,7 @@ const reviews = getReviewPosts();
     transform: translateX(4px);
   }
 
-  /* ===== TILE IMMAGINE ===== */
+  /* TILE IMMAGINE (Desktop) */
   .image-tile {
     display: flex;
     align-items: center;
@@ -319,25 +378,38 @@ const reviews = getReviewPosts();
     position: relative;
   }
 
-  /* IMMAGINE PRINCIPALE (DESKTOP) */
   .image-tile img.main-image {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
     display: block;
-    margin: auto;
-    transition: transform 0.4s ease;
+    border-style: none;
+    box-sizing: inherit;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    height: auto;
+    border: 0px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.25s;
+    opacity: 0.85;
+    transition: 0.25s;
   }
 
   .image-tile img.secondary-image {
+    display: block;
+    border-style: none;
+    box-sizing: inherit;
+    display: inline-block;
+    vertical-align: middle;
     max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    filter: grayscale(20%);
-    opacity: 0.9;
-    transition: transform 0.4s ease;
+    height: auto;
+    border: 0px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.25s;
+    opacity: 0.85;
+    transition: 0.25s;
   }
 
   .image-tile:hover img {
@@ -356,12 +428,11 @@ const reviews = getReviewPosts();
     font-weight: 300;
     letter-spacing: 0.05em;
     text-align: center;
-    padding: 2rem;
+    padding: 0rem;
   }
 
-  /* ===== RESPONSIVE DESIGN - MOBILE ===== */
+  /* ===== LAYOUT MOBILE (Stile Adelphi) ===== */
   @media (max-width: 768px) {
-    /* Togli il padding dal container principale su mobile */
     .page-container {
       padding: 0;
       max-width: 100%;
@@ -376,128 +447,180 @@ const reviews = getReviewPosts();
       padding: 0 1rem;
     }
     
-    /* Riga senza bordi arrotondati su mobile */
-    .review-row {
-      height: auto;
-      min-height: auto;
-      border-radius: 0;
-      box-shadow: rgb(66, 65, 64);
-      border: 20px solid var(--row-border);
-      border-top: 4px solid var(--row-accent); /* Bordo colorato in alto per evidenziare la triade */
-      border-bottom: 4px solid var(--row-accent); /* Bordo colorato in basso */
-      border-left: 4px solid var(--row-accent); /* Bordo colorato in alto per evidenziare la triade */
-      border-right: 4px solid var(--row-accent); /* Bordo colorato in basso */
-      margin-bottom: 0;
-      transition: none;
+    /* Nascondi layout desktop su mobile */
+    .desktop-link {
+      display: none;
     }
     
-    /* Rimuovi hover effect su mobile */
+    /* Mostra layout mobile */
+    .mobile-link {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 33vw; /* Altezza proporzionale */
+      position: relative;
+    }
+    
+    /* Modifica la riga per mobile */
+    .review-row {
+      height: auto;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      margin-bottom: 2px;
+      background: var(--row-bg);
+    }
+    
     .review-row:hover {
       transform: none;
       box-shadow: none;
     }
     
-    /* Griglia senza gap e padding */
     .reviews-grid {
       gap: 0;
     }
     
-    /* Link senza gap e padding */
-    .review-link {
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(3, auto);
-      gap: 0;
-      padding: 0;
+    /* Stile Adelphi per mobile */
+    .hgrid-split {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
     }
     
-    /* Tile senza bordi arrotondati, ombre e bordi */
-    .tile {
-      border-radius: 0;
-      border: none;
-      box-shadow: rgb(66, 65, 64);
-      background: transparent; /* Rendi trasparente per far vedere il colore della riga */
+    /* Parte testuale */
+    .hgrid-item-body {
+      fcolor: rgb(0, 0, 0);
+      background-color: rgb(168, 21, 37);
+      box-sizing: inherit;
+      margin: 0px;
+      padding: 10px;
+      flex: 1 1 0%;
+      background-color: transparent;
+      color: white;
+      background-color: transparent;
+      overflow: hidden;
+      border-top: none;
     }
     
-    /* Tile testo */
-    .text-tile .tile-content {
-      padding: 2rem 1.5rem;
-      background: var(--row-bg); /* Mantieni il colore di sfondo */
+    .hgrid-item-body-tag {
+      font-family: var(--font-heading-secondary);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--row-accent);
     }
     
-    .book-title {
-      font-size: 1.5rem;
+    .hgrid-item-body-author {
+      font-style: italic;
+      font-size: 0.9rem;
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+      color: var(--row-text);
     }
     
-    /* Tile immagine - occupa tutto lo spazio disponibile */
-    .image-tile {
+    .hgrid-item-body-title {
+      font-size: 1.1rem;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+      color: var(--row-text);
+      font-weight: 600;
+    }
+    
+    .hgrid-item-body-abstract {
+      font-size: 0.85rem;
+      font-style: italic;
+      line-height: 1.3;
+      opacity: 0.8;
+      color: var(--row-text);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    /* Parte immagine */
+    .hgrid-item-head {
+      flex: 1;
       position: relative;
-      min-height: 280px; /* Altezza fissa per immagini su mobile */
-      background: var(--row-bg) !important; /* Usa il colore della palette */
+      overflow: hidden;
+      background: color-mix(in srgb, var(--row-bg) 90%, black);
     }
     
-    .image-tile .tile-content {
+    .hgrid-item-head img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    
+    .hgrid-item-head img:hover {
+      transform: scale(1.05);
+    }
+    
+    .hgrid-item-head .image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--row-accent);
+      background: color-mix(in srgb, var(--row-accent) 10%, transparent);
+    }
+    
+    /* Layout alternato per mobile */
+    .review-row[data-mobile-layout-index="1"] .mobile-link,
+    .review-row[data-mobile-layout-index="3"] .mobile-link {
+      flex-direction: row-reverse;
+    }
+    
+    .review-row[data-mobile-layout-index="1"] .hgrid-item-body,
+    .review-row[data-mobile-layout-index="3"] .hgrid-item-body {
+      border-right: none;
+      border-left: solid 1px rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Bordo colorato in alto */
+    .review-row::before {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      padding: 0;
-    }
-    
-    .image-tile img {
-      /* Immagini che occupano tutto lo spazio */
-      width: 100% !important;
-      height: 100% !important;
-      max-width: 100% !important;
-      max-height: 100% !important;
-      object-fit: cover; /* Cambiato da contain a cover per riempire tutto */
-      display: block;
-      margin: 0;
-    }
-    
-    /* Immagini secondarie */
-    .image-tile img.secondary-image {
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: contain;
-      filter: grayscale(20%);
-      opacity: 0.9;
-    }
-    
-    /* Rimuovi hover effect su mobile per immagini */
-    .image-tile:hover img {
-      transform: none;
+      height: 3px;
+      background: var(--row-accent);
+      z-index: 2;
     }
   }
 
   @media (max-width: 480px) {
-    .book-title {
-      font-size: 1.3rem;
+    .hgrid-item-body {
+      padding: 0.75rem;
     }
     
-    .book-excerpt {
-      font-size: 0.9rem;
-      -webkit-line-clamp: 2;
+    .hgrid-item-body-title {
+      font-size: 1rem;
     }
     
-    .image-tile {
-      min-height: 220px; /* Leggermente più basso su schermi molto piccoli */
+    .hgrid-item-body-abstract {
+      font-size: 0.8rem;
+      -webkit-line-clamp: 1;
     }
     
-    .text-tile .tile-content {
-      padding: 1rem 1rem;
+    .mobile-link {
+      height: 40vw;
     }
   }
 
-  /* Forza il caricamento delle immagini */
-  .cover-image {
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  @media (min-width: 1400px) {
-    .review-row {
-      --row-height: 800px;
+  /* Desktop: nascondi layout mobile */
+  @media (min-width: 769px) {
+    .mobile-link {
+      display: none;
     }
-  }
+    
+    .desktop-link {
+      display: grid;
+    }
 </style>

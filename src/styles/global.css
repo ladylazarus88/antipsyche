@@ -70,22 +70,22 @@
   --color-surface: #f8f8f8;
   --color-border: #e0e0e0;
   
-  /* Palette colors per recensioni in light mode */
-  --palette-1-bg: #FFF0F5;
-  --palette-1-text: #333333;
-  --palette-1-accent: #8B5F65;
-  
-  --palette-2-bg: #F0F8FF;
-  --palette-2-text: #333333;
-  --palette-2-accent: #5C7080;
-  
-  --palette-3-bg: #FFF5EE;
-  --palette-3-text: #333333;
-  --palette-3-accent: #8B7355;
-  
-  --palette-4-bg: #F5F0FF;
-  --palette-4-text: #333333;
-  --palette-4-accent: #6A5F7C;
+  /* Palette psichedelica */
+--palette-1-bg: #FFF9C4; /* Giallo canarino */
+--palette-1-text: #1A237E;
+--palette-1-accent: #F44336; /* Rosso fuoco */
+
+--palette-2-bg: #C8E6C9; /* Verde brillante */
+--palette-2-text: #311B92;
+--palette-2-accent: #3F51B5; /* Blu reale */
+
+--palette-3-bg: #E1BEE7; /* Viola luminoso */
+--palette-3-text: #004D40;
+--palette-3-accent: #FF5722; /* Arancione intenso */
+
+--palette-4-bg: #BBDEFB; /* Azzurro cielo */
+--palette-4-text: #880E4F;
+--palette-4-accent: #4CAF50; /* Verde smeraldo */
 }
 /* ------------------------------------------------------------------
    RESET & BASE STYLES

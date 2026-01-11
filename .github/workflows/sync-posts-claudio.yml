@@ -87,7 +87,7 @@ jobs:
           fi
           
           # 3. Aggiungi i file modificati
-          git add src/claudio/
+          git add src/content/blog/claudio/
           
           # 4. Controlla se ci sono REALI cambiamenti
           if git diff --cached --quiet; then
