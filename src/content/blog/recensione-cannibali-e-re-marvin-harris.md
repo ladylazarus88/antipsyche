@@ -7,7 +7,8 @@ date: 2026-01-10
 image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Fotis_kontoglou%2C_parete_dipinta_dalla_casa_dell%27artista%2C_1932%2C_05_olandesi_e_cannibali_dei_caraibi.jpg/1280px-Fotis_kontoglou%2C_parete_dipinta_dalla_casa_dell%27artista%2C_1932%2C_05_olandesi_e_cannibali_dei_caraibi.jpg?20240823113504
 image_alt: https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Os_Filhos_de_Pindorama._Cannibalism_in_Brazil_in_1557.jpg/1280px-Os_Filhos_de_Pindorama._Cannibalism_in_Brazil_in_1557.jpg?20151109161152
 excerpt: "Dal grano e dal pane sorgono re e dèi: chi distribuisce l’abbondanza diventa mito, chi controlla il banchetto regna."
-categories: ["Recensione"]
+categories: 
+  - Recensione
 type: recensione
 tags:
   - MarvinHarris
