@@ -2,20 +2,7 @@ import rss from '@astrojs/rss';
 import { config } from '../config';
 
 export async function GET(context) {
-  // 🔴 ERRATO: due pattern come argomenti separati
-  // const posts = import.meta.glob('../content/blog/*.md', '../../content/blog/claudio/*.md', { eager: true });
-  
-  // ✅ CORRETTO: usa un array per i pattern
-  const posts = import.meta.glob(
-    [
-      '../content/blog/*.md',
-      '../content/blog/claudio/*.md',
-      // Aggiungi anche .mdx se ne hai
-      '../content/blog/*.mdx',
-      '../content/blog/claudio/*.mdx'
-    ], 
-    { eager: true }
-  );
+    const posts = import.meta.glob(['../content/blog/*.md', '../content/blog/claudio/*.md', '../content/blog/*.mdx', '../content/blog/claudio/*.mdx'], { eager: true });
   
   const items = Object.entries(posts).map(([path, post]) => {
     // Determina se è un post di Claudio
