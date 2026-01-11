@@ -1,0 +1,105 @@
+name: 📥 Sync Claudio Posts (FIXED FINAL)
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # Ogni 2 ore
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Checkout con tutta la cronologia
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      # 2. Scarica i post di Claudio
+      - name: ⬇️ Get Claudio's posts
+        run: |
+          echo "=== SCARICO I POST DI CLAUDIO ==="
+          
+          mkdir -p temp_posts
+          cd temp_posts
+          
+          git init
+          git remote add origin https://github.com/ladylazarus88/antipsyche-post.git
+          git config core.sparseCheckout true
+          echo "posts/*" > .git/info/sparse-checkout
+          
+          # Prova prima 'main', poi 'master'
+          if git pull origin main --depth=1; then
+            echo "✅ Usato branch 'main'"
+          elif git pull origin master --depth=1; then
+            echo "✅ Usato branch 'master'"
+          else
+            echo "❌ Impossibile scaricare i post"
+            exit 1
+          fi
+          
+          echo "📊 File trovati: $(find posts -name "*.md" -type f 2>/dev/null | wc -l)"
+          cd ..
+          
+      # 3. Copia nella cartella claudio/ (PATH CORRETTO)
+      - name: 📄 Copy to claudio folder
+        run: |
+          echo "=== COPIA IN src/content/blog/claudio/ ==="
+          
+          # Ricrea la cartella
+          rm -rf src/content/blog/claudio
+          mkdir -p src/content/blog/claudio
+          
+          if [ -d "temp_posts/posts" ]; then
+            cp temp_posts/posts/*.md src/content/blog/claudio/ 2>/dev/null || true
+            
+            COUNT=$(ls src/content/blog/claudio/*.md 2>/dev/null | wc -l)
+            echo "✅ Copiati $COUNT file in src/content/blog/claudio/"
+          fi
+          
+          rm -rf temp_posts
+          
+      # 4. SINCRONIZZAZIONE SICURA (SEMPLICE E FUNZIONANTE)
+      - name: 💾 Simple sync (no rebase)
+        run: |
+          echo "=== SINCRONIZZAZIONE SEMPLICE ==="
+          
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # 1. Pulisci TUTTO prima
+          echo "🧹 Pulisco repository..."
+          git stash
+          git checkout master
+          git pull origin master --ff-only
+          
+          # 2. Copia di nuovo i file (per sicurezza)
+          echo "🔄 Verifico i file di Claudio..."
+          if [ ! -d "src/content/blog/claudio" ]; then
+            echo "❌ Cartella claudio non trovata!"
+            exit 1
+          fi
+          
+          # 3. Aggiungi SOLO la cartella corretta
+          echo "📝 Aggiungo: src/content/blog/claudio/"
+          git add src/content/blog/claudio/
+          
+          # 4. Controlla cambiamenti
+          if git diff --cached --quiet; then
+            echo "✅ Nessun cambiamento"
+            exit 0
+          fi
+          
+          # 5. Commit e push
+          CHANGED_FILES=$(git diff --cached --name-only | wc -l)
+          echo "📄 File da committare: $CHANGED_FILES"
+          git commit -m "📥 Post Claudio: $CHANGED_FILES file ($(date +'%Y-%m-%d %H:%M'))"
+          
+          echo "🚀 Push..."
+          git push origin master
+          
+          echo "🎉 FATTO!"
