@@ -47,7 +47,7 @@ OPZIONALE: immagine di apertura
 ### Una storia materiale del potere secondo Marvin Harris
 
 
-###Ambiente, risorse e demografia: il materialismo culturale###
+**Ambiente, risorse e demografia: il materialismo culturale**
 
 Il materialismo culturale di Marvin Harris è potente, soverchiante, rigoroso. Per certi aspetti anche controintuitivo, ma così convincente che siamo costretti a chiederci quali siano i limiti di un tale approccio, secondo il quale anche le creazioni più propriamente culturali dell’umano, come i suoi tabù alimentari, sessuali, il cannibalismo, le religioni e i sistemi simbolici più complessi, sono innescati direttamente da cause economiche, demografiche o energetiche. Proteine, intensità delle nascite, condizioni atmosferiche e possibilità di irrigazione sarebbero alla base di qualsiasi altra sovrastruttura più complessa o astratta. 
 
