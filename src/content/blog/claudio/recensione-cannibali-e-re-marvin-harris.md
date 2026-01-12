@@ -18,7 +18,6 @@ tags:
   - cannibali
   - re
 lang: it
-draft: false
 ---
 
 <!--
