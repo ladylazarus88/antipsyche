@@ -35,7 +35,8 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
 ---
 
 <Layout 
-  title={pageTitle} 
+  title={pageTitle}
+  subtitle={frontmatter.subtitle} 
   description={frontmatter.description || frontmatter.excerpt}
   type="article"
   publishedTime={publishedTime}
@@ -73,6 +74,11 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
           <h1 class="book-title">
             {frontmatter.title?.replace(/^Recensione:\s*/i, '')}
           </h1>
+
+          {/* Sottotitolo del libro */}
+          <h2 class="book-subtitle">
+            {frontmatter.subtitle?.replace(/^Recensione:\s*/i, '')}
+          </h2>
 
           {/* Autore */}
           <h3 class="book-author">
@@ -233,6 +239,16 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     margin: 0 0 1rem 0;
     color: var(--color-text-primary);
     font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .book-subtitle {
+    font-family: var(--font-heading-secondary);
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    line-height: 1.1;
+    margin: 0 0 1rem 0;
+    color: var(--color-text-primary);
+    font-weight: 500;
     letter-spacing: -0.01em;
     text-transform: none; /* Sovrascrive l'uppercase globale */
   }

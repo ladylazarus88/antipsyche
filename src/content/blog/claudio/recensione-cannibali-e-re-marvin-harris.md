@@ -1,5 +1,6 @@
 ---
-title: Cannibali e re. Le origini delle culture
+title: Cannibali e re 
+subtitle: Le origini delle culture
 slug: cannibali-e-re-le-origini-delle-culture
 author: Marvin Harris
 editor: Claudio Oreste Menafra
