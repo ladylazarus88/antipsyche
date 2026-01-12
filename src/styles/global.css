@@ -169,8 +169,7 @@ a {
 a:hover,
 a:focus {
   color: var(--color-text-primary);
-  text-decoration: underline;
-}
+  text-shadow: 0 0 5px var(--color-accent);
 
 /* Transizioni comuni per elementi interattivi */
 a, button, input, 

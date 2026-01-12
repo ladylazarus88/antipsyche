@@ -874,7 +874,7 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
   }
 
   .post-content :global(strong) {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-text-primary);
   }
 
@@ -960,18 +960,32 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     }
 
     .post-content {
-      font-size: 1rem;
+      font-size: 1.3rem;
     }
+
+    .post-content :global(h1) {
+      font-size: 2rem;
+    }
+    .post-content :global(h2) {
+      font-size: 1.75rem;
+    }
+    .post-content :global(h3) {
+      font-size: 1.5rem;
   }
 
   /*media query per mobile */
 @media (max-width: 768px) {
   .post-content :global(img) {
-    margin: calc(var(--grid-unit) * 2) 0;
+    margin: calc(var(--grid-unit) * 3) 0;
     max-height: 70vh; /* Evita immagini troppo alte su mobile */
     object-fit: contain; /* Mantiene le proporzioni */
   }
-}
+  
+  .post-content :global(p) {
+      font-size: 1.3rem;
+      line-height: 1.75;
+  }
+    
 </style>
 
 <script>

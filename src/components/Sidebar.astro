@@ -55,7 +55,7 @@ const categories = [...new Set(allPosts.flatMap((post: any) => post.frontmatter.
               {post.frontmatter.title}
             </a>
             <time class="post-date" datetime={post.frontmatter.date}>
-              {new Date(post.frontmatter.date).toLocaleDateString('en-US', {
+              {new Date(post.frontmatter.date).toLocaleDateString('it-IT', {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric'

@@ -149,8 +149,8 @@ const latestPosts = getPosts();
   /* ===== STILI HERO CONDIVISI (per tutte le pagine) ===== */
   .hero {
     text-align: center;
-    padding: 4rem 0 3rem;
-    background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-background) 100%);
+    padding: 1rem 0 1rem;
+    background: transparent;
     width: 100%;
   }
 
@@ -173,8 +173,8 @@ const latestPosts = getPosts();
 
   .hero-subtitle {
     font-family: var(--font-heading-secondary);
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 4rem;
+    font-weight: 500;
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.2em;
@@ -182,7 +182,7 @@ const latestPosts = getPosts();
   }
 
   .hero-description {
-    font-size: 1rem;
+    font-size: 1.6rem;
     line-height: 1.6;
     color: var(--color-text-primary);
     max-width: 600px;
@@ -198,7 +198,7 @@ const latestPosts = getPosts();
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--content-padding);
+    padding: 0;
   }
 
   /* ===== SEZIONE ULTIMI POST ===== */
@@ -208,10 +208,10 @@ const latestPosts = getPosts();
 
   .section-title {
     font-family: var(--font-heading-secondary);
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 500;
     color: var(--color-accent);
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.1em;
     margin-bottom: 2rem;
     text-align: center;
@@ -225,7 +225,7 @@ const latestPosts = getPosts();
 
   .post-card {
     background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
+    border: 0px;
     border-radius: var(--border-radius);
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -272,13 +272,13 @@ const latestPosts = getPosts();
   }
 
   .post-content {
-    padding: 1.5rem;
+    padding: 0.3rem;
   }
 
   .post-title {
     font-family: var(--font-heading-secondary);
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1.6rem;
+    font-weight: 500;
     margin-bottom: 0.75rem;
     line-height: 1.3;
   }
@@ -308,16 +308,16 @@ const latestPosts = getPosts();
   .post-excerpt {
     color: var(--color-text-secondary);
     line-height: 1.5;
-    font-size: 0.9rem;
+    font-size: 1.3rem;
     margin-bottom: 1.5rem;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: auto;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
   .read-link {
-    font-size: 0.9rem;
+    font-size: 1.3rem;
     font-weight: 500;
     letter-spacing: 0.05em;
     color: var(--color-accent);
@@ -433,11 +433,11 @@ const latestPosts = getPosts();
     }
     
     .hero-subtitle {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
     
     .hero-description {
-      font-size: 0.9rem;
+      font-size: 1.3rem;
     }
     
     .latest-posts-section,

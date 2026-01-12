@@ -15,7 +15,7 @@ const sortedPosts = allPosts
     <header class="blog-header">
       <h1 class="blog-title">Blog</h1>
       <p class="blog-description">
-        Esplorando testi inediti, traduzioni e l'intersezione tra pensiero critico e culture dimenticate.
+        Everything, everywhere, all at once.
       </p>
       <hr class="blog-rule" />
     </header>
@@ -30,15 +30,13 @@ const sortedPosts = allPosts
             
             <div class="post-meta">
               <time class="post-date" datetime={post.frontmatter.date}>
-                {new Date(post.frontmatter.date).toLocaleDateString('en-US', {
+                {new Date(post.frontmatter.date).toLocaleDateString('it-IT', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
                 })}
               </time>
-              
-              <span class="post-reading-time">5 min</span>
-              
+                           
               {post.frontmatter.categories && (
                 <div class="post-categories">
                   {post.frontmatter.categories.map((category: string) => (
@@ -66,42 +64,47 @@ const sortedPosts = allPosts
 
 <style>
   .blog-page {
-    max-width: 800px;
     margin: 0 auto;
+    padding: 2rem 1rem;
   }
 
   .blog-header {
     text-align: center;
-    margin-bottom: calc(var(--grid-unit) * 8);
+    margin-bottom: 3rem;
+    padding: 0 1rem;
   }
 
   .blog-title {
     font-family: var(--font-heading-primary);
-    font-size: 3.5rem;
-    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-weight: 300;
     color: var(--color-accent);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
     line-height: 1.1;
-    margin-bottom: calc(var(--grid-unit) * 3);
   }
 
   .blog-description {
-    font-size: 1.25rem;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-    margin-bottom: calc(var(--grid-unit) * 4);
-    max-width: 600px;
+    font-family: var(--font-heading-secondary);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    max-width: 500px;
     margin-left: auto;
     margin-right: auto;
   }
 
 
   .blog-rule {
-    height: 4px;
+    height: 2px;
     background-color: var(--color-accent);
     border: none;
-    width: 120px;
+    width: 80px;
     margin: 0 auto;
   }
 
@@ -152,20 +155,6 @@ const sortedPosts = allPosts
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-  }
-
-  .post-reading-time {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .post-reading-time::before {
-    content: "•";
-    margin: 0 calc(var(--grid-unit));
-    color: var(--color-border);
   }
 
   .post-categories {

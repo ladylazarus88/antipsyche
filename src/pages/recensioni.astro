@@ -313,7 +313,7 @@ const reviews = getReviewPosts();
 
   .book-author {
     display: block;
-    font-size: 0.8rem;
+    font-size: 1.3rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 0.8rem;
@@ -333,18 +333,18 @@ const reviews = getReviewPosts();
   }
 
   .book-excerpt {
-    font-size: 0.95rem;
+    font-size: 1.3rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
     color: color-mix(in srgb, var(--row-text) 70%, transparent);
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
   .read-more {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     font-weight: 500;
     letter-spacing: 0.05em;
     color: var(--row-accent);
@@ -458,6 +458,12 @@ const reviews = getReviewPosts();
       flex-direction: column;
       width: 100%;
       height: 100%;
+      object-fit: cover;
+      transition: all 0.25s;
+      transition-behavior: normal;
+      transition-duration: 0.25s;
+      transition-timing-function: ease;
+      transition-delay: 0s;
     }
     
     /* Parte testuale */
@@ -474,7 +480,7 @@ const reviews = getReviewPosts();
     
     .hgrid-item-body-tag {
       font-family: var(--font-heading-secondary, serif);
-      font-size: 0.7rem;
+      font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 0.5rem;
@@ -483,29 +489,30 @@ const reviews = getReviewPosts();
     
     .hgrid-item-body-author {
       font-style: italic;
-      font-size: 0.9rem;
+      font-size: 1.4rem;
       line-height: 1.2;
       margin-bottom: 0.35rem;
       color: var(--row-text);
     }
     
     .hgrid-item-body-title {
-      font-size: 1.1rem;
+      font-size: 1.8rem;
       line-height: 1.2;
       margin-bottom: 0.5rem;
       color: var(--row-text);
-      font-weight: 600;
+      font-weight: 200;
     }
     
     .hgrid-item-body-abstract {
-      font-size: 0.85rem;
+      font-size: 1.1rem;
+      font-style: italic;
       line-height: 1.3;
       opacity: 0.8;
       color: var(--row-text);
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
-      overflow: hidden;
+      overflow: visible;
     }
     
     /* Parte immagine */
@@ -547,12 +554,13 @@ const reviews = getReviewPosts();
     }
     
     .hgrid-item-body-title {
-      font-size: 1rem;
+      font-size: 1.8rem;
     }
     
     .hgrid-item-body-abstract {
-      font-size: 0.8rem;
-      -webkit-line-clamp: 2;
+      font-size: 1.1rem;
+      font-style: italic;
+      -webkit-line-clamp: 4;
     }
   }
 
