@@ -109,7 +109,7 @@ html {
 
 body {
   min-height: 100vh;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 300;
   transition: background-color var(--transition-speed) ease, 
               color var(--transition-speed) ease;
@@ -153,7 +153,7 @@ h3 {
 
 p {
   margin-bottom: calc(var(--grid-unit) * 2);
-  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-size: clamp(1.3rem, 2.5vw, 1.6rem);
   /*max-width: 65ch;*/
 }
 
@@ -329,6 +329,7 @@ hr {
   :root {
     --content-padding: calc(var(--grid-unit) * 4);
   }
+
   
   h1 { font-size: 2.5rem; }
   h2 { font-size: 2rem; }

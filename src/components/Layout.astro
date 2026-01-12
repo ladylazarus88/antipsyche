@@ -84,4 +84,10 @@ const { title, description = true, image, type, publishedTime, canonical } = Ast
     min-width: 0;
     padding: calc(var(--grid-unit) * 3) 0;
   }
+
+  @media (max-width: 600px) {
+    .main-content {
+      padding: 0 var(--content-padding-mobile);
+    }
+  }
 </style>
