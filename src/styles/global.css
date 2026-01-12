@@ -169,7 +169,8 @@ a {
 a:hover,
 a:focus {
   color: var(--color-text-primary);
-  text-shadow: 0 0 5px var(--color-accent);
+  text-decoration-style: solid;
+}
 
 /* Transizioni comuni per elementi interattivi */
 a, button, input, 
@@ -255,9 +256,6 @@ hr {
    ------------------------------------------------------------------ */
 
 /* 1. POST CARD */
-.demo-post-card {
-  /* Mantieni le proprietà del container qui se necessario */
-}
 
 .demo-post-card .demo-post-image {
   height: 350px;
