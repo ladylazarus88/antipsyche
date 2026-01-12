@@ -15,7 +15,7 @@ const sortedPosts = allPosts
     <header class="blog-header">
       <h1 class="blog-title">Blog</h1>
       <p class="blog-description">
-        Esplorando testi inediti, traduzioni e l'intersezione tra pensiero critico e culture dimenticate.
+        Everything. Evrywhere. All at once.
       </p>
       <hr class="blog-rule" />
     </header>
@@ -36,9 +36,7 @@ const sortedPosts = allPosts
                   day: 'numeric'
                 })}
               </time>
-              
-              <span class="post-reading-time">5 min</span>
-              
+                            
               {post.frontmatter.categories && (
                 <div class="post-categories">
                   {post.frontmatter.categories.map((category: string) => (
@@ -66,42 +64,47 @@ const sortedPosts = allPosts
 
 <style>
   .blog-page {
-    max-width: 800px;
+    padding: 2rem 1rem;
     margin: 0 auto;
   }
 
   .blog-header {
     text-align: center;
-    margin-bottom: calc(var(--grid-unit) * 8);
+    margin-bottom: 3rem;
+    padding: 0 1rem;
   }
 
   .blog-title {
     font-family: var(--font-heading-primary);
-    font-size: 3.5rem;
-    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-weight: 300;
     color: var(--color-accent);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     line-height: 1.1;
-    margin-bottom: calc(var(--grid-unit) * 3);
+    margin-bottom: 0.5rem;
   }
 
   .blog-description {
-    font-size: 1.25rem;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-    margin-bottom: calc(var(--grid-unit) * 4);
-    max-width: 600px;
+    font-family: var(--font-heading-secondary, serif);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    max-width: 500px;
     margin-left: auto;
     margin-right: auto;
   }
 
 
   .blog-rule {
-    height: 4px;
+    height: 2px;
     background-color: var(--color-accent);
     border: none;
-    width: 120px;
+    width: 80px;
     margin: 0 auto;
   }
 
@@ -175,7 +178,7 @@ const sortedPosts = allPosts
   }
 
   .category {
-    background-color: var(--color-text-primary);
+    background-color: var(--color-accent);
     color: white;
     padding: calc(var(--grid-unit) / 4) calc(var(--grid-unit) / 2);
     font-size: 0.75rem;
@@ -187,7 +190,7 @@ const sortedPosts = allPosts
 
   /* Dark mode category styles */
   :global([data-theme="dark"]) .category {
-    background-color: var(--color-surface);
+    background-color: var(--color-accent);
     color: var(--color-text-primary);
     border: 1px solid var(--color-border);
   }
