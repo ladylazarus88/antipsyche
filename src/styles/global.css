@@ -170,6 +170,7 @@ a:hover,
 a:focus {
   color: var(--color-text-primary);
   text-decoration-style: solid;
+  text-shadow: rgb(124, 120, 120) 0px 0px 2px;
 }
 
 /* Transizioni comuni per elementi interattivi */
