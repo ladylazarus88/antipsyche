@@ -2,21 +2,30 @@
 import Layout from '../components/Layout.astro';
 const base = import.meta.env.BASE_URL;
 
-// Importa tutti i post in un'unica chiamata
+// Configurazione
+const POSTS_PER_PAGE = 6;
+
+// Funzione per ottenere i post
 const getPosts = () => {
-   const posts = import.meta.glob(['../content/blog/*.md', '../content/blog/*.mdx', '../content/blog/claudio/*.md', '../content/blog/claudio/*.mdx'], { 
-    eager: true 
-  });
+  // Importa tutti i post
+  const posts = import.meta.glob([
+    '../content/blog/*.md',
+    '../content/blog/*.mdx',
+    '../content/blog/claudio/*.md',
+    '../content/blog/claudio/*.mdx'
+  ], { eager: true });
   
   return Object.values(posts)
     .filter(post => post.frontmatter && post.frontmatter.date)
     .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())
-    .slice(0, 3)
+    .slice(0, POSTS_PER_PAGE)
     .map(post => {
       const slug = post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '');
       return {
-        ...post,
-        slug,
+        title: post.frontmatter.title,
+        image: post.frontmatter.image,
+        date: post.frontmatter.date,
+        slug: slug,
         url: `${base}blog/${slug}`,
         formattedDate: new Date(post.frontmatter.date).toLocaleDateString('it-IT', {
           year: 'numeric',
@@ -30,62 +39,59 @@ const getPosts = () => {
 const latestPosts = getPosts();
 ---
 
-<Layout title="Antipsyché" description="Un archivio che esplora la tensione tra voci marginali e canone letterario. Dove traduzione artigianale incontra pensiero inatteso in dialogo aperto.">
+<Layout 
+  title="Antipsyché" 
+  description="Un archivio che esplora la tensione tra voci marginali e canone letterario. Dove traduzione artigianale incontra pensiero inatteso in dialogo aperto."
+>
   <div class="landing-page">
     <!-- Hero Section -->
     <section class="hero">
       <div class="hero-content">
         <h1 class="hero-title">Antipsyché</h1>
         <p class="hero-subtitle">Saggi Ritrovati e Traduzioni Inedite</p>
+        <hr class="page-rule" />
         <p class="hero-description">
-          Un progetto nato da Instagram che esplora e traduce testi aporetici: saggi di filosofia e scienze politiche, racconti brevi e opuscoli mai pubblicati in italiano, liberi da diritto d'autore.
+          Un archivio che esplora la tensione tra voci marginali e canone letterario. Dove traduzione artigianale incontra pensiero inatteso in dialogo aperto.
         </p>
+        <hr class="page-rule" />
       </div>
     </section>
 
     <!-- Ultimi Post Section -->
     <section class="latest-posts-section" id="latest-posts">
       <div class="container">
-          {latestPosts.length > 0 ? (
+        {latestPosts.length > 0 ? (
           <>
+            <h2 class="section-title">Ultimi Post</h2>
             <div class="posts-grid">
-              {latestPosts.map(post => (
+              {latestPosts.map((post, index) => (
                 <article class="post-card">
-                  <div class="post-image-container">
-                    {post.frontmatter.image ? (
-                      <div class="post-image">
-                        <img 
-                          src={post.frontmatter.image} 
-                          alt={post.frontmatter.title}
-                          loading="lazy"
-                        />
-                      </div>
-                    ) : (
-                      <div class="post-image placeholder">
-                        <div class="placeholder-content">
-                          <span>Immagine</span>
+                  <a href={post.url} class="post-link">
+                    <div class="post-image-container">
+                      {post.image ? (
+                        <div class="post-image">
+                          <img 
+                            src={post.image} 
+                            alt={post.title}
+                            loading={index < 3 ? "eager" : "lazy"}
+                          />
                         </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div class="post-content">
-                    <h3 class="post-title">
-                      <a href={post.url}>{post.frontmatter.title}</a>
-                    </h3>
-                    
-                    <div class="post-meta">
-                      <time class="post-date" datetime={post.frontmatter.date}>
-                        {post.formattedDate}
-                      </time>
+                      ) : (
+                        <div class="post-image placeholder">
+                          <div class="placeholder-content"></div>
+                        </div>
+                      )}
                     </div>
                     
-                    {post.frontmatter.excerpt && (
-                      <p class="post-excerpt">{post.frontmatter.excerpt}</p>
-                    )}
-                    
-                    <a href={post.url} class="read-link">Leggi →</a>
-                  </div>
+                    <div class="post-content">
+                      <h3 class="post-title">{post.title}</h3>
+                      <div class="post-meta">
+                        <time class="post-date" datetime={post.date}>
+                          {post.formattedDate}
+                        </time>
+                      </div>
+                    </div>
+                  </a>
                 </article>
               ))}
             </div>
@@ -93,7 +99,7 @@ const latestPosts = getPosts();
             <!-- Link per vedere tutti i post -->
             <div class="view-all-container">
               <a href={`${base}blog`} class="view-all-link">
-                Sfoglia la galleria completa dei post
+                Sfoglia la galleria completa
               </a>
             </div>
           </>
@@ -146,23 +152,22 @@ const latestPosts = getPosts();
 </Layout>
 
 <style is:global>
-  /* ===== STILI HERO CONDIVISI (per tutte le pagine) ===== */
+  /* ===== STILI HERO ===== */
   .hero {
     text-align: center;
     padding: 1rem 0 1rem;
-    background: transparent;
     width: 100%;
   }
 
   .hero-content {
     max-width: 800px;
     margin: 0 auto;
-    padding: 0 var(--content-padding);
+    padding: 0 var(--content-padding, 20px);
   }
 
   .hero-title {
     font-family: var(--font-heading-primary);
-    font-size: 2rem;
+    font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 300;
     color: var(--color-accent);
     text-transform: uppercase;
@@ -172,23 +177,35 @@ const latestPosts = getPosts();
   }
 
   .hero-subtitle {
-    font-family: var(--font-heading-secondary);
-    font-size: 4rem;
-    font-weight: 500;
+    font-family: var(--font-heading-secondary, serif);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
     color: var(--color-text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.05em;
     margin-bottom: 1.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .hero-description {
-    font-size: 1.6rem;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
     line-height: 1.6;
     color: var(--color-text-primary);
     max-width: 600px;
     margin: 0 auto;
   }
 
+  .page-rule {
+    height: 2px;
+    background-color: var(--color-accent);
+    border: none;
+    width: 80px;
+    margin: 2rem auto 0;
+    margin-bottom: 2rem;
+  }
   /* ===== LAYOUT BASE ===== */
   .landing-page {
     width: 100%;
@@ -198,7 +215,7 @@ const latestPosts = getPosts();
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 var(--content-padding, 20px);
   }
 
   /* ===== SEZIONE ULTIMI POST ===== */
@@ -207,9 +224,9 @@ const latestPosts = getPosts();
   }
 
   .section-title {
-    font-family: var(--font-heading-secondary);
-    font-size: 2rem;
-    font-weight: 500;
+    font-family: var(--font-heading-secondary, serif);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 100;
     color: var(--color-accent);
     text-transform: none;
     letter-spacing: 0.1em;
@@ -219,32 +236,39 @@ const latestPosts = getPosts();
 
   .posts-grid {
     display: grid;
-    gap: 2rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 2rem;
   }
 
   .post-card {
-    background-color: var(--color-surface);
-    border: 0px;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius, 4px);
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: var(--color-background);
   }
 
   .post-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .post-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
   }
 
   .post-image-container {
-    width: 100%;
+    width: 200%;
     overflow: hidden;
-    background: var(--color-background);
+    aspect-ratio: 16/9;
   }
 
   .post-image {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     overflow: hidden;
   }
 
@@ -252,15 +276,16 @@ const latestPosts = getPosts();
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: grayscale(100%);
   }
-
+  
   .post-card:hover .post-image img {
     transform: scale(1.05);
   }
 
   .post-image.placeholder {
-    background-color: var(--color-background);
+    background-color: var(--color-surface);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -272,81 +297,46 @@ const latestPosts = getPosts();
   }
 
   .post-content {
-    padding: 0.3rem;
+    padding: 1.25rem;
   }
 
   .post-title {
     font-family: var(--font-heading-secondary);
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
     font-weight: 500;
     margin-bottom: 0.75rem;
-    line-height: 1.3;
-  }
-
-  .post-title a {
+    line-height: 1.4;
     color: var(--color-text-primary);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .post-title a:hover {
-    color: var(--color-accent);
   }
 
   .post-meta {
-    margin-bottom: 1rem;
+    margin-top: 0.5rem;
   }
 
   .post-date {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
-  .post-excerpt {
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    display: -webkit-box;
-    -webkit-line-clamp: auto;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .read-link {
-    font-size: 1.3rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    color: var(--color-accent);
-    text-decoration: none;
-    display: inline-block;
-    transition: transform 0.2s ease;
-  }
-
-  .read-link:hover {
-    transform: translateX(4px);
-  }
-
   /* Link per vedere tutti i post */
   .view-all-container {
     text-align: center;
-    padding: 1rem 0;
+    padding: 2rem 0 0;
   }
 
   .view-all-link {
     display: inline-block;
     font-family: var(--font-heading-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
+    font-weight: 300;
     letter-spacing: 0.1em;
     color: var(--color-accent);
     text-decoration: none;
     padding: 0.75rem 1.5rem;
     border: 1px solid var(--color-accent);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius, 4px);
     transition: all 0.2s ease;
   }
 
@@ -363,13 +353,14 @@ const latestPosts = getPosts();
 
   .downloads-grid {
     display: grid;
-    gap: 2rem;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
   }
 
   .download-item {
     background: var(--color-background);
     border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius, 4px);
     padding: 1.5rem;
   }
 
@@ -403,54 +394,37 @@ const latestPosts = getPosts();
 
   .link-placeholder {
     font-family: var(--font-mono);
-    background-color: var(--color-text-primary);
-    color: var(--color-background);
+    background-color: var(--color-surface);
+    color: var(--color-text-muted);
     padding: 1rem;
     border-radius: 4px;
     text-align: center;
     font-size: 0.9rem;
+    border: 1px dashed var(--color-border);
   }
 
   .no-posts {
     text-align: center;
-    padding: 2rem;
+    padding: 3rem;
     color: var(--color-text-muted);
     font-style: italic;
-    background: var(--color-background);
-    border-radius: var(--border-radius);
+    background: var(--color-surface);
+    border-radius: var(--border-radius, 4px);
     border: 1px dashed var(--color-border);
   }
 
   /* ===== RESPONSIVE DESIGN ===== */
-  @media (max-width: 768px) {
-    .hero {
-      padding: 2rem 0;
+  @media (min-width: 640px) {
+    .posts-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
     
-    .hero-title {
-      font-size: 1.75rem;
-      letter-spacing: 0.2em;
-    }
-    
-    .hero-subtitle {
-      font-size: 0.95rem;
-    }
-    
-    .hero-description {
-      font-size: 1.3rem;
-    }
-    
-    .latest-posts-section,
-    .downloads-section {
-      padding: 2rem 0;
-    }
-    
-    .section-title {
-      font-size: 1.25rem;
+    .downloads-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (min-width: 769px) {
+  @media (min-width: 992px) {
     .posts-grid {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -458,19 +432,16 @@ const latestPosts = getPosts();
     .downloads-grid {
       grid-template-columns: repeat(3, 1fr);
     }
-    
-    .hero-title {
-      font-size: 2.5rem;
-    }
-    
-    .hero-subtitle {
-      font-size: 1.1rem;
-    }
   }
 
-  @media (min-width: 1024px) {
-    .hero-title {
-      font-size: 3rem;
+  /* Dark mode adjustments */
+  :global([data-theme="dark"]) {
+    .post-card {
+      background: var(--color-surface);
+    }
+    
+    .download-item {
+      background: rgba(255, 255, 255, 0.03);
     }
   }
 </style>
