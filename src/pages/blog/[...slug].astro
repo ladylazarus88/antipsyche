@@ -32,6 +32,9 @@ const { frontmatter, Content } = post as any;
 const pageTitle = frontmatter.title;
 const base = import.meta.env.BASE_URL;
 const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString() : undefined;
+
+// Determina se è un articolo "Contrappunti"
+const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false;
 ---
 
 <Layout 
@@ -41,100 +44,169 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
   type="article"
   publishedTime={publishedTime}
 >
-  <article class="blog-post">
-    <header class="post-header">
-      <!-- Header orizzontale con copertina a sinistra e dati a destra -->
-      <div class="book-header-container">
-        <!-- Copertina a sinistra -->
-        <div class="book-cover-wrapper">
-          {frontmatter.image ? (
-            <img 
-              src={frontmatter.image_alt} 
-              alt={`Copertina: ${frontmatter.title}`}
-              class="book-cover-image"
-              loading="eager"
-            />
-          ) : (
-            <div class="book-cover-placeholder">
-              <span>Copertina</span>
+  <article class={`blog-post ${isContrappunti ? 'contrappunti-post' : ''}`}>
+    
+    {isContrappunti ? (
+      <!-- HEADER PER CONTRAPPUNTI -->
+      <header class="contrappunti-header">
+    
+        <!-- Contenitore testi centrati -->
+        <div class="contrappunti-text-container">
+          <!-- Titolo -->
+          <h1 class="contrappunti-title">
+            {frontmatter.title}
+          </h1>
+        
+      {frontmatter.editor && (
+        <div class="contrappunti-editor">
+          <span class="metadata-label">A cura di:</span>
+          <span class="editor-name">{frontmatter.editor}</span>
+        </div>
+      )}
+
+    <!-- Metadati Contrappunti -->
+        <div class="contrappunti-metadata">
+          <div class="contrappunti-meta-row">
+            <time class="contrappunti-date" datetime={frontmatter.date}>
+              {new Date(frontmatter.date).toLocaleDateString('it-IT', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}
+            </time>
+          </div>
+        </div>
+  <!-- Immagine principale a larghezza intera -->
+          {frontmatter.image && (
+            <div class="contrappunti-hero-image">
+              <img 
+                src={frontmatter.image} 
+                alt={`Immagine per: ${frontmatter.title}`}
+                class="hero-image"
+                loading="eager"
+              />
             </div>
           )}
+          <!-- Sottotitolo -->
+          {frontmatter.subtitle && (
+            <h2 class="contrappunti-subtitle">
+              {frontmatter.subtitle}
+            </h2>
+          )}
+
+          <!-- Citazione -->
+          {frontmatter.citation && (
+            <div class="contrappunti-citation">
+              <blockquote>
+                {frontmatter.citation}
+              </blockquote>
+            </div>
+          )}   
         </div>
 
-        <!-- Informazioni libro a destra -->
-        <div class="book-info-wrapper">
-          {/* Tag categoria */}
-          {frontmatter.categories && frontmatter.categories.includes('Recensione') && (
-            <div class="book-tag">
-              <span>Recensione</span>
-            </div>
-          )}
-
-          {/* Titolo del libro */}
-          <h1 class="book-title">
-            {frontmatter.title?.replace(/^Recensione:\s*/i, '')}
-          </h1>
-
-          {/* Sottotitolo del libro */}
-          <h2 class="book-subtitle">
-            {frontmatter.subtitle?.replace(/^Recensione:\s*/i, '')}
-          </h2>
-
-          {/* Autore */}
-          <h3 class="book-author">
-            di {frontmatter.author}
-          </h3>
-
-          {/* Estratto/descrizione */}
-          {frontmatter.excerpt && (
-            <p class="book-excerpt">
-              {frontmatter.excerpt}
-            </p>
-          )}
-
-          {/* Metadati */}
-          <div class="book-metadata">
-            <div class="metadata-row">
-              <time class="book-date" datetime={frontmatter.date}>
-                {new Date(frontmatter.date).toLocaleDateString('it-IT', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric'
-                })}
-              </time>
-              
-              <span class="meta-separator">•</span>
-              
-              <span class="book-reading-time">{readingTime}</span>
-            </div>
-
-            {/* Categorie */}
-            {frontmatter.categories && frontmatter.categories.length > 0 && (
-              <div class="categories-row">
-                {frontmatter.categories
-                  .filter(cat => cat !== 'Recensione')
-                  .map((category: string) => (
-                    <a 
-                      href={`${base}categories/${category.toLowerCase().replace(/[\/\s]+/g, '-')}`} 
-                      class="category-tag"
-                    >
-                      {category}
-                    </a>
-                  ))}
+      </header>
+      
+    ) : (
+      <!-- HEADER STANDARD (per recensioni e altri articoli) -->
+      <header class="post-header">
+        <div class="book-header-container">
+          <!-- Copertina a sinistra -->
+          <div class="book-cover-wrapper">
+            {frontmatter.image_copertina ? (
+              <img 
+                src={frontmatter.image_copertina} 
+                alt={`Copertina: ${frontmatter.title}`}
+                class="book-cover-image"
+                loading="eager"
+              />
+            ) : (
+              <div class="book-cover-placeholder">
+                <span>Copertina</span>
               </div>
             )}
           </div>
+
+          <!-- Informazioni libro a destra -->
+          <div class="book-info-wrapper">
+            {/* Tag categoria */}
+            {frontmatter.categories && frontmatter.categories.includes('Recensione') && (
+              <div class="book-tag">
+                <span>Recensione</span>
+              </div>
+            )}
+
+            {/* Titolo del libro */}
+            <h1 class="book-title">
+              {frontmatter.title?.replace(/^Recensione:\s*/i, '')}
+            </h1>
+
+            {/* Sottotitolo del libro */}
+            {frontmatter.subtitle && (
+              <h2 class="book-subtitle">
+                {frontmatter.subtitle}
+              </h2>
+            )}
+
+            {/* Autore */}
+            {frontmatter.author && (
+              <h3 class="book-author">
+                di {frontmatter.author}
+              </h3>
+            )}
+
+            {/* Estratto/descrizione */}
+            {frontmatter.excerpt && (
+              <p class="book-excerpt">
+                {frontmatter.excerpt}
+              </p>
+            )}
+
+            {/* Metadati */}
+            <div class="book-metadata">
+              <div class="metadata-row">
+                <time class="book-date" datetime={frontmatter.date}>
+                  {new Date(frontmatter.date).toLocaleDateString('it-IT', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </time>
+                
+                <span class="meta-separator">•</span>
+                
+                <span class="book-reading-time">{readingTime}</span>
+              </div>
+
+              {/* Categorie */}
+              {frontmatter.categories && frontmatter.categories.length > 0 && (
+                <div class="categories-row">
+                  {frontmatter.categories
+                    .filter(cat => cat !== 'Recensione')
+                    .map((category: string) => (
+                      <a 
+                        href={`${base}categories/${category.toLowerCase().replace(/[\/\s]+/g, '-')}`} 
+                        class="category-tag"
+                      >
+                        {category}
+                      </a>
+                    ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Linea di separazione */}
-      <hr class="book-header-rule" />
-    </header>
+        {/* Linea di separazione */}
+        <hr class="book-header-rule" />
+      </header>
+    )}
 
+    <!-- CONTENUTO ARTICOLO (comune a entrambi) -->
     <div class="post-content">
       <Content />
     </div>
 
+    <!-- FOOTER ARTICOLO (comune a entrambi) -->
     <footer class="post-footer">
       {frontmatter.tags && frontmatter.tags.length > 0 && (
         <div class="post-tags">
@@ -156,12 +228,86 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
 </Layout>
 
 <style>
+  /* STILI COMUNI A TUTTI GLI ARTICOLI */
   .blog-post {
     max-width: 800px;
     margin: 0 auto;
   }
 
-  /* ===== HEADER ORIZZONTALE ===== */
+  .post-content {
+    font-size: clamp(1.2rem, 2.5vw, 1.3rem);
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+
+  .post-content :global(p) {
+    text-align: justify;
+  }
+
+  /* Footer del post */
+  .post-footer {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .post-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tags-label {
+    font-family: var(--font-heading-secondary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-primary);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    background-color: var(--color-text-primary);
+    color: var(--color-surface);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: var(--border-radius);
+  }
+
+  .back-to-blog {
+    font-family: var(--font-heading-secondary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--color-accent);
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed) ease;
+    display: inline-block;
+  }
+
+  .back-to-blog:hover {
+    background-color: var(--color-accent);
+    color: white;
+  }
+
+  /* ===== STILI HEADER STANDARD (recensioni/articoli normali) ===== */
+  .post-header {
+    margin-bottom: 3rem;
+  }
+
   .book-header-container {
     display: grid;
     grid-template-columns: minmax(200px, 300px) 1fr;
@@ -250,7 +396,7 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     color: var(--color-text-primary);
     font-weight: 500;
     letter-spacing: -0.01em;
-    text-transform: none; /* Sovrascrive l'uppercase globale */
+    text-transform: none;
   }
 
   .book-author {
@@ -261,7 +407,7 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     margin: 0 0 2rem 0;
     font-weight: 400;
     line-height: 1.3;
-    text-transform: none; /* Sovrascrive l'uppercase globale */
+    text-transform: none;
   }
 
   .book-excerpt {
@@ -284,7 +430,7 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     font-family: var(--font-mono);
     font-size: 0.9rem;
     color: var(--color-text-muted);
@@ -332,84 +478,170 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     margin: 3rem 0 0 0;
   }
 
-  /* Contenuto specifico post */
-  .post-header {
-    margin-bottom: 3rem;
+  /* ===== STILI HEADER CONTRAPPUNTI ===== */
+  .hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    max-height: 70vh;
   }
 
-  .post-content {
-    font-size: clamp(1.2rem, 2.5vw, 1.3rem);
-    line-height: 1.7;
-    margin-bottom: 3rem;
+  /* Contenitore testi centrati */
+  .contrappunti-text-container {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    text-align: center;
   }
 
-  .post-content :global(p) {
-    text-align: justify;
-  }
-
-  /* Footer del post */
-  .post-footer {
-    border-top: 1px solid var(--color-border);
-    padding-top: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .post-tags {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .tags-label {
-    font-family: var(--font-heading-secondary);
+  /* Titolo Contrappunti */
+  .contrappunti-title {
+    font-family: var(--font-heading-primary);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    text-transform: uppercase;
+    margin: 0 0 1rem 0;
+    color: var(--color-accent);
     font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .contrappunti-subtitle {
+    font-family: var(--font-heading-secondary);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin: 0 0 1rem 0;
+    color: var(--color-text-primary);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+    /* Citazione */
+  .contrappunti-citation {
+    margin: 0rem 0;
+    padding: 0rem;
+  }
+
+  .contrappunti-citation blockquote {
+    font-family: var(--font-heading-secondary);
+    font-size: clamp(1.4rem, 4vw, 1.6rem);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    font-weight: 200;
+    font-style: italic;
+    margin: 0;
+    quotes: "«" "»" "‹" "›";
+  }
+
+  .contrappunti-citation blockquote::before {
+    content: open-quote;
+    color: var(--color-text-secondary);
+    font-size: 2.5rem;
+    line-height: 0;
+    margin-right: 0.5rem;
+    vertical-align: -0.5rem;
+  }
+
+  .contrappunti-citation blockquote::after {
+    content: close-quote;
+    color: var(--color-text-secondary);
+    font-size: 2.5rem;
+    line-height: 0;
+    margin-left: 0.5rem;
+    vertical-align: -0.5rem;
+  }
+
+  /* Metadati Contrappunti */
+  .contrappunti-metadata {
+    margin-top: none;
+    padding-top: none;
+  }
+
+  .contrappunti-editor {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-heading-secondary);
+  }
+
+  .metadata-label {
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin-right: 0.5rem;
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+  }
+
+  .editor-name {
+    font-size: 1.2rem;
     color: var(--color-text-primary);
+    font-style: italic;
   }
 
-  .tag-list {
+  .contrappunti-meta-row {
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tag {
-    background-color: var(--color-text-primary);
-    color: var(--color-surface);
-    padding: 0.25rem 0.5rem;
-    font-size: 0.8rem;
-    font-weight: 600;
+    gap: 1rem;
+    margin-bottom: 0rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-radius: var(--border-radius);
   }
 
-  .back-to-blog {
-    font-family: var(--font-heading-secondary);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-accent);
-    padding: 0.5rem 1rem;
-    border: 2px solid var(--color-accent);
-    border-radius: var(--border-radius);
-    transition: all var(--transition-speed) ease;
+  .contrappunti-categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .contrappunti-category-tag {
     display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-speed) ease;
   }
 
-  .back-to-blog:hover {
-    background-color: var(--color-accent);
+  .contrappunti-category-tag:hover {
+    background: var(--color-accent);
     color: white;
+    border-color: var(--color-accent);
+    text-decoration: none;
+    transform: translateY(-2px);
+  }
+
+  /* Immagine secondaria */
+  .contrappunti-secondary-image {
+    max-width: 400px;
+    margin: 3rem auto 0;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .secondary-image {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   /* ===== RESPONSIVE ===== */
   @media (max-width: 1024px) {
     .book-header-container {
       gap: 2.5rem;
+    }
+    
+    .contrappunti-hero-image {
+      max-height: 60vh;
     }
   }
 
@@ -444,26 +676,55 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
       justify-content: center;
     }
     
-    .post-content :global(img) {
-      max-height: 70vh;
-      object-fit: contain;
+    /* Contrappunti mobile */
+    .contrappunti-hero-image {
+      max-height: 50vh;
     }
-  }
-
-  @media (max-width: 480px) {
-    .metadata-row {
+    
+    .contrappunti-text-container {
+      padding: 0 1rem;
+    }
+    
+    .contrappunti-citation {
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .contrappunti-meta-row {
       flex-direction: column;
-      align-items: center;
       gap: 0.5rem;
     }
     
     .meta-separator {
       display: none;
     }
+    
+    .contrappunti-secondary-image {
+      max-width: 300px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .contrappunti-title {
+      font-size: 2.2rem;
+    }
+    
+    .contrappunti-subtitle {
+      font-size: 1.3rem;
+    }
+    
+    .contrappunti-citation blockquote {
+      font-size: 1.2rem;
+    }
+    
+    .contrappunti-secondary-image {
+      max-width: 250px;
+    }
   }
 
   /* Dark mode adjustments */
-  :global([data-theme="dark"]) .book-cover-wrapper {
+  :global([data-theme="dark"]) .book-cover-wrapper,
+  :global([data-theme="dark"]) .contrappunti-secondary-image {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 
@@ -472,16 +733,23 @@ const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString(
     color: var(--color-surface);
   }
 
-  :global([data-theme="dark"]) .category-tag {
+  :global([data-theme="dark"]) .category-tag,
+  :global([data-theme="dark"]) .contrappunti-category-tag {
     background: rgba(255, 255, 255, 0.05);
     color: var(--color-text-muted);
     border-color: rgba(255, 255, 255, 0.1);
   }
 
-  :global([data-theme="dark"]) .category-tag:hover {
+  :global([data-theme="dark"]) .category-tag:hover,
+  :global([data-theme="dark"]) .contrappunti-category-tag:hover {
     background: var(--color-accent);
     color: white;
     border-color: var(--color-accent);
+  }
+
+  :global([data-theme="dark"]) .contrappunti-citation {
+    background: rgba(255, 255, 255, 0.03);
+    border-left-color: var(--color-accent);
   }
 </style>
 

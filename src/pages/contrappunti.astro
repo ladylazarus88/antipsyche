@@ -19,7 +19,7 @@ const getPosts = () => {
 };
 
 const filterContrappunti = (posts) => 
-  posts.filter(post => post.frontmatter.page?.includes('Contrappunti'));
+  posts.filter(post => post.frontmatter.categories?.includes('Contrappunti'));
 
 // Data - CORRETTO: usa contrappuntiPosts
 const allPosts = getPosts();

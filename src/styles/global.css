@@ -194,10 +194,8 @@ li {
 
 /* Blockquote */
 blockquote {
-  border-left: 4px solid var(--color-border);
   padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 3);
   margin: calc(var(--grid-unit) * 3) 0;
-  background-color: var(--color-surface);
   font-style: italic;
 }
 
@@ -300,6 +298,24 @@ hr {
   color: var(--color-text-primary);
   margin: 0;
   line-height: 1;
+}
+
+.contrappunti-header {
+  margin-bottom: 2rem;
+}
+
+.contrappunti-hero-image {
+  width: object-fit: cover;
+  max-width: none;
+  margin: 0 calc(-1 * var(--content-padding, 20px)) 2rem;
+  overflow: hidden;
+  max-height: 70vh;
+}
+
+.blog-post.contrappunti-post {
+  max-width: none; /* Rimuovi il limite di 800px per contrappunti */
+  margin: 0;
+  padding: 0; /* Aggiungi padding laterale al contenitore */
 }
 
 /* ------------------------------------------------------------------

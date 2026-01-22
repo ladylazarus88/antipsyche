@@ -3,7 +3,7 @@ title: Le voci del mondo
 author: Robert Schneider
 date: 2026-01-05
 image: https://europa.tips/wordpress/wp-content/uploads/Avrupanin-Ghibli-Ruhu-Tasiyan-9-Masalsi-Koeyuewebp.webp
-image_alt: https://www.einaudi.it/content/uploads/2017/09/978880623659HIG.JPG
+image_copertina: https://www.einaudi.it/content/uploads/2017/09/978880623659HIG.JPG
 excerpt: In un remoto villaggio austriaco un ragazzo prodigio non sa né leggere né scrivere ma sente la musica e i suoni del mondo come nessun altro.
 categories:
   - Recensione

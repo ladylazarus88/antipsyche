@@ -62,7 +62,7 @@ const getReviewPosts = () => {
         author: post.frontmatter.author || 'Autore',
         excerpt: post.frontmatter.excerpt?.substring(0, 120) || 'Leggi la recensione completa...',
         mainImage: post.frontmatter.image,
-        altImage: post.frontmatter.image_alt
+        altImage: post.frontmatter.image_copertina
       };
     });
 };
