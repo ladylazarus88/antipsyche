@@ -9,10 +9,10 @@ const POSTS_PER_PAGE = 6;
 const getPosts = () => {
   // Importa tutti i post
   const posts = import.meta.glob([
-    '../content/blog/*.md',
-    '../content/blog/*.mdx',
-    '../content/blog/claudio/*.md',
-    '../content/blog/claudio/*.mdx'
+    '../content/blog/quaderni/*.md',
+    '../content/blog/quaderni/*.mdx',
+    '../content/blog/contrappunti/*.md',
+    '../content/blog/contrappunti/*.mdx'
   ], { eager: true });
   
   return Object.values(posts)

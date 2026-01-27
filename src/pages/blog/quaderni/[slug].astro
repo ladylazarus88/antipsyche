@@ -6,7 +6,7 @@ import { calculateReadingTime, extractTextFromMarkdown } from '../../../utils/re
 
 export async function getStaticPaths() {
   // Importa SOLO i file delle recensioni
-  const recensioniGlob = import.meta.glob(['../../../content/blog/recensioni/*.md', '../../../content/blog/recensioni/*.mdx'], { eager: true });
+  const recensioniGlob = import.meta.glob(['../../../content/blog/quaderni/*.md', '../../../content/blog/quaderni/*.mdx'], { eager: true });
   
   const allRecensioni = Object.values(recensioniGlob) as any[];
   
@@ -65,7 +65,7 @@ const payoffColor = generatePastelColor(frontmatter.title || '');
   publishedTime={publishedTime}
 >
   <article class="blog-post recensione-post">
-    <!-- HEADER PER RECENSIONI -->
+    <!-- HEADER PER QUADERNI -->
     <header class="post-header">
       <div class="book-header-container">
         <!-- Copertina -->
@@ -101,9 +101,17 @@ const payoffColor = generatePastelColor(frontmatter.title || '');
           )}
 
           {frontmatter.author && (
-            <h3 class="book-author">
-              di {frontmatter.author}
-            </h3>
+            <div class="book-author">
+              <span class="metadata-label"> di </span>
+              <span class="author-name">{frontmatter.author}</span>
+            </div>
+          )}
+
+          {frontmatter.editor && (
+            <div class="quaderni-editor">
+              <span class="metadata-label">A cura di:</span>
+              <span class="editor-name">{frontmatter.editor}</span>
+            </div>
           )}
 
           {frontmatter.excerpt && (
@@ -145,16 +153,6 @@ const payoffColor = generatePastelColor(frontmatter.title || '');
         </div>
       </div>
 
-      {/* PAYOFF CON CITAZIONE */}
-      {frontmatter.citation && (
-        <div class="book-gui-payoff" style={`background-color: ${payoffColor};`}>
-          <p>
-            <span class="payoff-text">{frontmatter.citation}</span>
-            <img src={`${base}/site-title.svg`} alt="Logo del sito" class="payoff-logo">
-          </p>
-        </div>
-      )}
-
       <hr class="book-header-rule" />
     </header>
 
@@ -163,6 +161,16 @@ const payoffColor = generatePastelColor(frontmatter.title || '');
       <Content />
     </div>
 
+    {/* PAYOFF CON CITAZIONE */}
+      {frontmatter.citation && (
+        <div class="book-gui-payoff" style={`background-color: ${payoffColor};`}>
+          <p>
+            <span class="payoff-text">«{frontmatter.citation}»</span>
+            <img src={`${base}/site-title.svg`} alt="Logo del sito" class="payoff-logo">
+          </p>
+        </div>
+      )}
+      
     <!-- FOOTER -->
     <footer class="post-footer">
       {frontmatter.tags && frontmatter.tags.length > 0 && (
@@ -279,11 +287,18 @@ const payoffColor = generatePastelColor(frontmatter.title || '');
   .book-author {
     font-family: var(--font-heading-secondary);
     font-size: clamp(1.2rem, 3vw, 1.8rem);
-    font-style: italic;
-    color: var(--color-text-secondary);
+    text-transform: none;
+    color: var(--color-text-primary);
     margin: 0 0 2rem 0;
     font-weight: 400;
     line-height: 1.3;
+  }
+
+  .quaderni-editor {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-heading-primary);
+    font-size: 1.2rem;
+    color: var(--color-text-secondary);
   }
 
   .book-excerpt {
@@ -292,7 +307,6 @@ const payoffColor = generatePastelColor(frontmatter.title || '');
     color: var(--color-text-secondary);
     margin: 0 0 2.5rem 0;
     font-weight: 300;
-    font-style: italic;
   }
 
   .book-metadata {
@@ -358,37 +372,44 @@ const payoffColor = generatePastelColor(frontmatter.title || '');
   .book-gui-payoff {
     color: #000000;
     text-align: center;
+    padding: var(--y-half, 3.125rem) 0;
+    margin: 3rem 0;
     position: relative;
-    padding: var(--y-half, 3.125rem) var(--content-padding, 1.5rem);
-    margin: 0 calc(-1 * var(--content-padding, 1.5rem)) 3rem;
-    overflow: hidden;
-    width: calc(100% + 2 * var(--content-padding, 1.5rem));
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
     box-sizing: border-box;
   }
 
   .book-gui-payoff p {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     margin: 0 auto;
-    flex-wrap: wrap;
-    max-width: 1200px;
+    max-width: 800px;
+    font-style: italic;
   }
 
   .book-gui-payoff .payoff-text {
     font-family: var(--font-heading-secondary);
-    font-style: italic;
     font-size: 1.4rem;
-    font-weight: 400;
+    font-weight: 200;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    text-align: center;
+    margin-bottom: 0.5rem;
   }
 
   .book-gui-payoff .payoff-logo {
     height: 40px;
     width: auto;
     opacity: 0.9;
+    margin-top: 0.5rem;
+    border: none;
   }
 
   .post-content {
@@ -487,51 +508,30 @@ const payoffColor = generatePastelColor(frontmatter.title || '');
       justify-content: center;
     }
     
+    @media (max-width: 768px) {
     .book-gui-payoff {
-      margin-left: calc(-1 * var(--content-padding, 1.5rem));
-      margin-right: calc(-1 * var(--content-padding, 1.5rem));
-      padding: 2rem var(--content-padding, 1.5rem);
-    }
-
-    .book-gui-payoff p {
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .book-gui-payoff .payoff-text {
-      font-size: 1.2rem;
-    }
-
-    .book-gui-payoff .payoff-logo {
-      height: 30px;
-    }
-  }
-
-  @media (max-width: 768px) {
-  .book-gui-payoff {
-      margin: 0 calc(-1 * var(--content-padding, 1rem)) 2rem;
       padding: 2rem var(--content-padding, 1rem);
-      width: calc(100% + 2 * var(--content-padding, 1rem));
-    }
-
-    .book-gui-payoff p {
-      flex-direction: column;
-      gap: 1rem;
+      margin: 2rem 0;
+      margin-left: -50vw;
+      margin-right: -50vw;
     }
 
     .book-gui-payoff .payoff-text {
       font-size: 1.2rem;
-      text-align: center;
     }
 
     .book-gui-payoff .payoff-logo {
       height: 30px;
+      margin-top: 0.75rem;
     }
   }
 
   @media (max-width: 480px) {
     .book-gui-payoff {
       padding: 1.5rem var(--content-padding, 0.75rem);
+      margin: 1.5rem 0;
+      margin-left: -50vw;
+      margin-right: -50vw;
     }
 
     .book-gui-payoff .payoff-text {
@@ -540,6 +540,20 @@ const payoffColor = generatePastelColor(frontmatter.title || '');
 
     .book-gui-payoff .payoff-logo {
       height: 25px;
+      margin-top: 1rem;
     }
   }
+      
+      .book-title {
+        font-size: clamp(1.8rem, 6vw, 2.4rem);
+      }
+      
+      .book-subtitle {
+        font-size: clamp(1.4rem, 5vw, 1.8rem);
+      }
+      
+      .book-author {
+        font-size: clamp(1.1rem, 4vw, 1.5rem);
+      }
+    }
 </style>

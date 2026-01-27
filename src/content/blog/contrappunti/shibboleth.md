@@ -8,7 +8,7 @@ image: https://media.snl.no/media/174630/standard_compressed_Paul_Celan_1938.jpg
 image_two: 
 excerpt: L'evoluzione del concetto di schibboleth, dal testo biblico a Paul Celan.
 categories:
-  - Contrappunti
+  - Linguistica
 tags:
   - Poesia
   - Schibboleth

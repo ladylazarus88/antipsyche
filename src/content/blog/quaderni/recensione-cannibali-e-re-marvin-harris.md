@@ -22,27 +22,6 @@ lang: it
 draft: false
 ---
 
-<!--
-ISTRUZIONI RAPIDE
-
-- title: titolo dell’articolo
-- author: autore dell’opera trattata. SOLO PER LE RECENSIONI.
-- editor: chi scrive
-- slug: riscrivi-il-titolo-tutto-minuscolo-senza-accenti-con-trattini
-- date: YYYY-MM-DD
-- excerpt: 1–2 frasi, max 300 caratteri
-- image: URL
-- image_alt: URL
-- categories: scegi fra "Recensione" | "Contrappunti". SE È INSERITO CORRETTAMENTE VEDRAI UNA x A LATO.
-- type: scegli fra "recensione" | "saggio" | "articolo" | "introduzione". 
-- tags: libere. PREMI SEMPRE INVIO DOPO OGNI INSERIMENTO. NON SONO "STRINGHE", MA "LISTE". SE SONO INSERITI CORRETTAMENTE VEDRAI UNA x A LATO.
--->
-
-<!--
-OPZIONALE: immagine di apertura
-![Descrizione](URL)
--->
-
 ![cannibale](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Fotis_kontoglou%2C_parete_dipinta_dalla_casa_dell%27artista%2C_1932%2C_05_olandesi_e_cannibali_dei_caraibi.jpg/1280px-Fotis_kontoglou%2C_parete_dipinta_dalla_casa_dell%27artista%2C_1932%2C_05_olandesi_e_cannibali_dei_caraibi.jpg?20240823113504)
 
 ## Pane, re e dèi

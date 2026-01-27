@@ -5,23 +5,28 @@ import { extractHeadings, filterHeadingsForTOC } from '../../utils/table-of-cont
 import { calculateReadingTime, extractTextFromMarkdown } from '../../utils/reading-time';
 
 export async function getStaticPaths() {
-  // Support both .md and .mdx files
-  const mdPostsGlob = import.meta.glob(['../../content/blog/*.md', '../../content/blog/claudio/*.md'], { eager: true });
-  const mdxPostsGlob = import.meta.glob(['../../content/blog/*.mdx', '../../content/blog/claudio/*.mdx'], { eager: true });
+  // Importa SOLO i file dei QUADERNI
+  const quaderniGlob = import.meta.glob(['../../../content/blog/quaderni/*.md', '../../../content/blog/quaderni/*.mdx'], { eager: true });
   
-  const allPosts = [...Object.values(mdPostsGlob), ...Object.values(mdxPostsGlob)] as any[];
+  const allQuaderni = Object.values(quaderniGlob) as any[];
   
-  return allPosts.map((post: any) => {
-    // For import.meta.glob, access raw content through compiledContent or body
-    const rawContent = post.body || post.rawContent?.() || '';
+  return allQuaderni.map((quaderno: any) => {
+    const rawContent = quaderno.body || quaderno.rawContent?.() || '';
     const plainText = extractTextFromMarkdown(rawContent);
     const readingTime = calculateReadingTime(plainText);
     const allHeadings = extractHeadings(rawContent);
     const tocHeadings = filterHeadingsForTOC(allHeadings);
     
     return {
-      params: { slug: post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '') },
-      props: { post, readingTime, tocHeadings }
+      params: { 
+        slug: quaderno.file.split('/').pop()?.replace(/\.(md|mdx)$/, '') 
+      },
+      props: { 
+        post: quaderno, 
+        readingTime, 
+        tocHeadings,
+        tipo: 'quaderni'
+      }
     };
   });
 }
@@ -33,8 +38,6 @@ const pageTitle = frontmatter.title;
 const base = import.meta.env.BASE_URL;
 const publishedTime = frontmatter.date ? new Date(frontmatter.date).toISOString() : undefined;
 
-// Determina se è un articolo "Contrappunti"
-const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false;
 ---
 
 <Layout 
@@ -44,30 +47,30 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
   type="article"
   publishedTime={publishedTime}
 >
-  <article class={`blog-post ${isContrappunti ? 'contrappunti-post' : ''}`}>
+  <article class={`blog-post ${isQuaderni ? 'quaderni-post' : ''}`}>
     
-    {isContrappunti ? (
-      <!-- HEADER PER CONTRAPPUNTI -->
-      <header class="contrappunti-header">
+    {isQuaderni ? (
+      <!-- HEADER PER Quaderni -->
+      <header class="quaderni-header">
     
         <!-- Contenitore testi centrati -->
-        <div class="contrappunti-text-container">
+        <div class="quaderni-text-container">
           <!-- Titolo -->
-          <h1 class="contrappunti-title">
+          <h1 class="quaderni-title">
             {frontmatter.title}
           </h1>
         
       {frontmatter.editor && (
-        <div class="contrappunti-editor">
+        <div class="quaderni-editor">
           <span class="metadata-label">A cura di:</span>
           <span class="editor-name">{frontmatter.editor}</span>
         </div>
       )}
 
-    <!-- Metadati Contrappunti -->
-        <div class="contrappunti-metadata">
-          <div class="contrappunti-meta-row">
-            <time class="contrappunti-date" datetime={frontmatter.date}>
+    <!-- Metadati Quaderni -->
+        <div class="quaderni-metadata">
+          <div class="quaderni-meta-row">
+            <time class="quaderni-date" datetime={frontmatter.date}>
               {new Date(frontmatter.date).toLocaleDateString('it-IT', {
                 day: 'numeric',
                 month: 'long',
@@ -78,7 +81,7 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
         </div>
   <!-- Immagine principale a larghezza intera -->
           {frontmatter.image && (
-            <div class="contrappunti-hero-image">
+            <div class="quaderni-hero-image">
               <img 
                 src={frontmatter.image} 
                 alt={`Immagine per: ${frontmatter.title}`}
@@ -89,14 +92,14 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
           )}
           <!-- Sottotitolo -->
           {frontmatter.subtitle && (
-            <h2 class="contrappunti-subtitle">
+            <h2 class="quaderni-subtitle">
               {frontmatter.subtitle}
             </h2>
           )}
 
           <!-- Citazione -->
           {frontmatter.citation && (
-            <div class="contrappunti-citation">
+            <div class="quaderni-citation">
               <blockquote>
                 {frontmatter.citation}
               </blockquote>
@@ -403,11 +406,11 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     font-family: var(--font-heading-secondary);
     font-size: clamp(1.2rem, 3vw, 1.8rem);
     font-style: italic;
+    text-rendering: initial;
     color: var(--color-text-secondary);
     margin: 0 0 2rem 0;
     font-weight: 400;
     line-height: 1.3;
-    text-transform: none;
   }
 
   .book-excerpt {
@@ -478,7 +481,7 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     margin: 3rem 0 0 0;
   }
 
-  /* ===== STILI HEADER CONTRAPPUNTI ===== */
+  /* ===== STILI HEADER QUADERNI ===== */
   .hero-image {
     width: 100%;
     height: auto;
@@ -488,14 +491,14 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
   }
 
   /* Contenitore testi centrati */
-  .contrappunti-text-container {
+  .quaderni-text-container {
     max-width: 800px;
     margin: 0 auto 3rem;
     text-align: center;
   }
 
-  /* Titolo Contrappunti */
-  .contrappunti-title {
+  /* Titolo Quaderni */
+  .quaderni-title {
     font-family: var(--font-heading-primary);
     font-size: clamp(2.5rem, 6vw, 4rem);
     text-transform: uppercase;
@@ -506,7 +509,7 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     text-transform: uppercase;
   }
 
-  .contrappunti-subtitle {
+  .quaderni-subtitle {
     font-family: var(--font-heading-secondary);
     font-size: clamp(2rem, 5vw, 2.8rem);
     margin: 0 0 1rem 0;
@@ -517,12 +520,12 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
   }
 
     /* Citazione */
-  .contrappunti-citation {
+  .quaderni-citation {
     margin: 0rem 0;
     padding: 0rem;
   }
 
-  .contrappunti-citation blockquote {
+  .quaderni-citation blockquote {
     font-family: var(--font-heading-secondary);
     font-size: clamp(1.4rem, 4vw, 1.6rem);
     line-height: 1.4;
@@ -533,7 +536,7 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     quotes: "«" "»" "‹" "›";
   }
 
-  .contrappunti-citation blockquote::before {
+  .quaderni-citation blockquote::before {
     content: open-quote;
     color: var(--color-text-secondary);
     font-size: 2.5rem;
@@ -542,7 +545,7 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     vertical-align: -0.5rem;
   }
 
-  .contrappunti-citation blockquote::after {
+  .quaderni-citation blockquote::after {
     content: close-quote;
     color: var(--color-text-secondary);
     font-size: 2.5rem;
@@ -551,13 +554,13 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     vertical-align: -0.5rem;
   }
 
-  /* Metadati Contrappunti */
-  .contrappunti-metadata {
+  /* Metadati Quaderni */
+  .quaderni-metadata {
     margin-top: none;
     padding-top: none;
   }
 
-  .contrappunti-editor {
+  .quaderni-editor {
     margin-bottom: 0.75rem;
     font-family: var(--font-heading-secondary);
   }
@@ -577,7 +580,7 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     font-style: italic;
   }
 
-  .contrappunti-meta-row {
+  .quaderni-meta-row {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -591,14 +594,14 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     letter-spacing: 0.05em;
   }
 
-  .contrappunti-categories {
+  .quaderni-categories {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 0.75rem;
   }
 
-  .contrappunti-category-tag {
+  .quaderni-category-tag {
     display: inline-block;
     padding: 0.4rem 0.8rem;
     background: var(--color-surface);
@@ -611,7 +614,7 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     transition: all var(--transition-speed) ease;
   }
 
-  .contrappunti-category-tag:hover {
+  .quaderni-category-tag:hover {
     background: var(--color-accent);
     color: white;
     border-color: var(--color-accent);
@@ -620,7 +623,7 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
   }
 
   /* Immagine secondaria */
-  .contrappunti-secondary-image {
+  .quaderni-secondary-image {
     max-width: 400px;
     margin: 3rem auto 0;
     border-radius: var(--border-radius);
@@ -639,8 +642,8 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
     .book-header-container {
       gap: 2.5rem;
     }
-    
-    .contrappunti-hero-image {
+
+    .quaderni-hero-image {
       max-height: 60vh;
     }
   }
@@ -676,21 +679,21 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
       justify-content: center;
     }
     
-    /* Contrappunti mobile */
-    .contrappunti-hero-image {
+    /* Quaderni mobile */
+    .quaderni-hero-image {
       max-height: 50vh;
     }
     
-    .contrappunti-text-container {
+    .quaderni-text-container {
       padding: 0 1rem;
     }
     
-    .contrappunti-citation {
+    .quaderni-citation {
       padding: 1.5rem;
       margin: 2rem 0;
     }
     
-    .contrappunti-meta-row {
+    .quaderni-meta-row {
       flex-direction: column;
       gap: 0.5rem;
     }
@@ -699,32 +702,32 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
       display: none;
     }
     
-    .contrappunti-secondary-image {
+    .quaderni-secondary-image {
       max-width: 300px;
     }
   }
 
   @media (max-width: 480px) {
-    .contrappunti-title {
+    .quaderni-title {
       font-size: 2.2rem;
     }
-    
-    .contrappunti-subtitle {
+
+    .quaderni-subtitle {
       font-size: 1.3rem;
     }
-    
-    .contrappunti-citation blockquote {
+
+    .quaderni-citation blockquote {
       font-size: 1.2rem;
     }
-    
-    .contrappunti-secondary-image {
+
+    .quaderni-secondary-image {
       max-width: 250px;
     }
   }
 
   /* Dark mode adjustments */
   :global([data-theme="dark"]) .book-cover-wrapper,
-  :global([data-theme="dark"]) .contrappunti-secondary-image {
+  :global([data-theme="dark"]) .quaderni-secondary-image {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 
@@ -734,20 +737,20 @@ const isContrappunti = frontmatter.categories?.includes('Contrappunti') || false
   }
 
   :global([data-theme="dark"]) .category-tag,
-  :global([data-theme="dark"]) .contrappunti-category-tag {
+  :global([data-theme="dark"]) .quaderni-category-tag {
     background: rgba(255, 255, 255, 0.05);
     color: var(--color-text-muted);
     border-color: rgba(255, 255, 255, 0.1);
   }
 
   :global([data-theme="dark"]) .category-tag:hover,
-  :global([data-theme="dark"]) .contrappunti-category-tag:hover {
+  :global([data-theme="dark"]) .quaderni-category-tag:hover {
     background: var(--color-accent);
     color: white;
     border-color: var(--color-accent);
   }
 
-  :global([data-theme="dark"]) .contrappunti-citation {
+  :global([data-theme="dark"]) .quaderni-citation {
     background: rgba(255, 255, 255, 0.03);
     border-left-color: var(--color-accent);
   }

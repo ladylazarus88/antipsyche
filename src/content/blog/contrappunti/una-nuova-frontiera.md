@@ -8,7 +8,7 @@ image: https://cache.getarchive.net/Prod/thumb/cdn2/L3Bob3RvLzE5MTcvMTIvMzEvdGhl
 image_two: 
 excerpt: Autocensura femminile e dominio maschile negli spazi digitali.
 categories:
-  - Contrappunti
+  - Femminismo
 tags:
   - Femminismo
   - Schibboleth

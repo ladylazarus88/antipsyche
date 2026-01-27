@@ -3,7 +3,7 @@ import { config } from '../config';
 
 export async function GET(context) {
   const posts = import.meta.glob(
-    ['../content/blog/*.md', '../content/blog/claudio/*.md'],
+    ['../content/blog/quaderni/*.md', '../content/blog/contrappunti/*.md'],
     { eager: true }
   );
 

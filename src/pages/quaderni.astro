@@ -44,12 +44,11 @@ const CONFIG = {
 
 // FUNZIONE UNICA PER LE RECENSIONI
 const getReviewPosts = () => {
-  const posts = import.meta.glob(['../content/blog/recensioni/*.md', '../content/blog/recensioni/*.mdx', '../content/blog/claudio/recensioni/*.md', '../content/blog/claudio/recensioni/*.mdx'], { 
+  const posts = import.meta.glob(['../content/blog/quaderni/*.md', '../content/blog/quaderni/*.mdx'], { 
     eager: true 
   });
   
   return Object.values(posts)
-    .filter(post => post.frontmatter.categories?.includes('Recensione'))
     .map(post => {
       const slug = post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '');
       const title = post.frontmatter.title?.replace(/^Recensione:\s*/i, '');
@@ -58,7 +57,7 @@ const getReviewPosts = () => {
         ...post,
         slug,
         title,
-        url: `${base}blog/recensioni/${slug}`,
+        url: `${base}blog/quaderni/${slug}`,
         author: post.frontmatter.author || 'Autore',
         excerpt: post.frontmatter.excerpt?.substring(0, 120) || 'Leggi la recensione completa...',
         mainImage: post.frontmatter.image,
@@ -70,7 +69,7 @@ const getReviewPosts = () => {
 const reviews = getReviewPosts();
 ---
 
-<Layout title="Recensioni | Antipsyché">
+<Layout title="Quaderni | Antipsyché">
   <div class="reviews-page page-container">
     <header class="page-header">
       <h1 class="page-title">Recensioni</h1>

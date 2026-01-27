@@ -1,6 +1,7 @@
 ---
 title: Le voci del mondo
 author: Robert Schneider
+editor: Claudio Oreste Menafra
 date: 2026-01-05
 image: https://europa.tips/wordpress/wp-content/uploads/Avrupanin-Ghibli-Ruhu-Tasiyan-9-Masalsi-Koeyuewebp.webp
 image_copertina: https://www.einaudi.it/content/uploads/2017/09/978880623659HIG.JPG
