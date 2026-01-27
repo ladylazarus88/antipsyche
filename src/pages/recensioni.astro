@@ -44,7 +44,7 @@ const CONFIG = {
 
 // FUNZIONE UNICA PER LE RECENSIONI
 const getReviewPosts = () => {
-  const posts = import.meta.glob(['../content/blog/*.md', '../content/blog/*.mdx', '../content/blog/claudio/*.md', '../content/blog/claudio/*.mdx'], { 
+  const posts = import.meta.glob(['../content/blog/recensioni/*.md', '../content/blog/recensioni/*.mdx', '../content/blog/claudio/recensioni/*.md', '../content/blog/claudio/recensioni/*.mdx'], { 
     eager: true 
   });
   
@@ -58,7 +58,7 @@ const getReviewPosts = () => {
         ...post,
         slug,
         title,
-        url: `${base}blog/${slug}`,
+        url: `${base}blog/recensioni/${slug}`,
         author: post.frontmatter.author || 'Autore',
         excerpt: post.frontmatter.excerpt?.substring(0, 120) || 'Leggi la recensione completa...',
         mainImage: post.frontmatter.image,

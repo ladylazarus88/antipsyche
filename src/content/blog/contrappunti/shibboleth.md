@@ -2,7 +2,7 @@
 title: Schibboleth
 subtitle: L'evoluzione del concetto di schibboleth, dal testo biblico a Paul Celan.
 editor: Anonimo
-citation: una voce dall'oltretomba
+citation: In shibboleth, c'è una sospensione di significato, quasi l'opposto dell'epokhe fenomenologico, che preserva il significato.
 date: 2026-01-22
 image: https://media.snl.no/media/174630/standard_compressed_Paul_Celan_1938.jpg
 image_two: 

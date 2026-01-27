@@ -8,6 +8,7 @@ date: 2026-01-10
 image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Fotis_kontoglou%2C_parete_dipinta_dalla_casa_dell%27artista%2C_1932%2C_05_olandesi_e_cannibali_dei_caraibi.jpg/1280px-Fotis_kontoglou%2C_parete_dipinta_dalla_casa_dell%27artista%2C_1932%2C_05_olandesi_e_cannibali_dei_caraibi.jpg?20240823113504
 image_copertina: https://media.anobii.com/covers/01e13f8f625d100ab3/175/264/2.5/hardcover/png/0
 excerpt: "Dal grano e dal pane sorgono re e dèi: chi distribuisce l’abbondanza diventa mito, chi controlla il banchetto regna."
+citation: Per molti versi l’ascesa dello Stato ha rappresentato la discesa del mondo dalla libertà alla schiavitù.
 categories: 
   - Recensione
 type: recensione

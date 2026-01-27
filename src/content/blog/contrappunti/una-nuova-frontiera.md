@@ -2,7 +2,7 @@
 title: Una nuova frontiera
 subtitle: Un’analisi del continuum del dominio maschile e dell’autocensura femminile negli spazi digitali
 editor: Anonimo
-citation: una voce dall'oltretomba
+citation: Ogni spazio, online o offline, deve essere un luogo di sicurezza, dignità e uguaglianza, per tutte.
 date: 2026-01-22
 image: https://cache.getarchive.net/Prod/thumb/cdn2/L3Bob3RvLzE5MTcvMTIvMzEvdGhlLWVtcGxveW1lbnQtb2Ytd29tZW4tb24tdGhlLWhvbWUtZnJvbnQtMTkxNC0xOTE4LXEyNzk4MC02MzUwY2UtNjQwLmpwZw%3D%3D/960/712/jpg
 image_two: 

@@ -5,6 +5,7 @@ date: 2026-01-05
 image: https://europa.tips/wordpress/wp-content/uploads/Avrupanin-Ghibli-Ruhu-Tasiyan-9-Masalsi-Koeyuewebp.webp
 image_copertina: https://www.einaudi.it/content/uploads/2017/09/978880623659HIG.JPG
 excerpt: In un remoto villaggio austriaco un ragazzo prodigio non sa né leggere né scrivere ma sente la musica e i suoni del mondo come nessun altro.
+citation: Come potrebbe un uomo affermare di amare la propria donna per la vita intera, se si limita ad amarla di giorno, e forse anche allora per la breve durata di un pensiero? Era falso, perché chi dorme non ama.
 categories:
   - Recensione
 tags:
