@@ -18,11 +18,11 @@ tags:
   - Novecento
 ---
 
-**SHIBBOLETH: UNA DEFINIZIONE PRELIMINARE**
+### UNA DEFINIZIONE PRELIMINARE
 
 Nel linguaggio contemporaneo, il termine *shibboleth* rappresenta un elemento linguistico che segnala in maniera inequivocabile l’appartenenza o l’estraneità di una persona a un determinato gruppo sociale. In altri termini, è parola o espressione-chiave che discrimina con certezza chi sta dentro da chi sta fuori. Per usare un’immagine tratta dalla matematica, lo shibboleth è una proprietà necessaria e formalmente oggettiva che bisogna possedere per far parte di un insieme. Potremmo definirlo termine liminare o terra di confine, una sorta di 38esimo parallelo della linguistica.
 
-**ORIGINI ED EVOLUZIONE**
+### ORIGINI ED EVOLUZIONE
 
 La parola è ebraica, veterotestamentaria, e il contesto geografico nel quale emerge per la prima volta con tale rilievo simbolico e speculativo è proprio su un confine, il fiume Giordano, che segnava il limite fra il territorio di Efraim e quello di Gad, due delle dodici tribù d’Israele.
 
@@ -43,7 +43,7 @@ Ogni raggruppamento sociale può avere uno shibboleth che, lungi dal porsi sempl
 
 Il passaggio ulteriore vede la rivendicazione dello shibboleth da parte delle correnti minoritarie a rimarcare la propria identità di gruppo, non più definita nella sfera privata ma in un sistema fortemente collettivo.
 
-**AUTOAFFERMAZIONE IN PAUL CELAN**
+### AUTOAFFERMAZIONE IN PAUL CELAN
 
 Paul Celan è da molti ritenuto il più influente poeta in lingua tedesca del secondo Novecento. Lui, ebreo della Bucovina, apolide sin dalla nascita, scampato all’olocausto nazista, si esprime nella lingua dei suoi aguzzini per trascendere con la lingua stessa la realtà materiale e storica in cui agisce, in senso meramente evenemenziale, per decostruire - destrutturare - e ristrutturare il mondo in senso intimo e autonomo.
 
