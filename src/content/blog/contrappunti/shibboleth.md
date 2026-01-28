@@ -5,8 +5,9 @@ editor: Anonimo
 citation: In shibboleth, c'è una sospensione di significato, quasi l'opposto dell'epokhe fenomenologico, che preserva il significato.
 date: 2026-01-22
 image: https://media.snl.no/media/174630/standard_compressed_Paul_Celan_1938.jpg
-image_two: 
+image_two: https://substackcdn.com/image/fetch/$s_!0K8v!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe137a273-c7b2-441e-ab8a-3aa6c38bab22_1200x908.jpeg
 excerpt: L'evoluzione del concetto di schibboleth, dal testo biblico a Paul Celan.
+page: contrappunti
 categories:
   - Linguistica
 tags:

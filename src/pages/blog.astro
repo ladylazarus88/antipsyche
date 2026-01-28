@@ -2,10 +2,13 @@
 import Layout from '../components/Layout.astro';
 const base = import.meta.env.BASE_URL;
 
-const mdPostsGlob = import.meta.glob(['../content/blog/quaderni/*.md', '../content/blog/contrappunti/*.md'], { eager: true });
-  const mdxPostsGlob = import.meta.glob(['../content/blog/quaderni/*.mdx', '../content/blog/contrappunti/*.mdx'], { eager: true });
+const mdPostsQuaderniGlob = import.meta.glob(['../content/blog/quaderni/*.md'], { eager: true });
+const mdxPostsQuaderniGlob = import.meta.glob(['../content/blog/quaderni/*.mdx'], { eager: true });
+const mdPostsContrappuntiGlob = import.meta.glob(['../content/blog/contrappunti/*.md'], { eager: true });
+const mdxPostsContrappuntiGlob = import.meta.glob(['../content/blog/contrappunti/*.mdx'], { eager: true });
 
-const allPosts = [...Object.values(mdPostsGlob), ...Object.values(mdxPostsGlob)] as any[];
+
+const allPosts = [...Object.values(mdPostsQuaderniGlob), ...Object.values(mdxPostsQuaderniGlob), ...Object.values(mdPostsContrappuntiGlob), ...Object.values(mdxPostsContrappuntiGlob)] as any[];
 const sortedPosts = allPosts
   .sort((a: any, b: any) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
 ---
@@ -25,7 +28,7 @@ const sortedPosts = allPosts
         {sortedPosts.map((post: any) => (
           <article class="post-item">
             <h2 class="post-title">
-              <a href={`${base}blog/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`}>{post.frontmatter.title}</a>
+              <a href={`${base}blog/${post.frontmatter.page}/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`}>{post.frontmatter.title}</a>
             </h2>
             
             <div class="post-meta">
@@ -50,7 +53,7 @@ const sortedPosts = allPosts
               <p class="post-excerpt">{post.frontmatter.excerpt}</p>
             )}
             
-            <a href={`${base}blog/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`} class="read-more">Leggi →</a>
+            <a href={`${base}blog/${post.frontmatter.page}/${post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`} class="read-more">Leggi →</a>
           </article>
         ))}
       </div>
@@ -64,8 +67,9 @@ const sortedPosts = allPosts
 
 <style>
   .blog-page {
-    padding: 2rem 1rem;
     margin: 0 auto;
+    padding: 2rem 1rem;
+    max-width: 1400px;
   }
 
   .blog-header {
@@ -81,12 +85,12 @@ const sortedPosts = allPosts
     color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    line-height: 1.1;
     margin-bottom: 0.5rem;
+    line-height: 1.1;
   }
 
   .blog-description {
-    font-family: var(--font-heading-secondary, serif);
+    font-family: var(--font-heading-secondary);
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -101,11 +105,12 @@ const sortedPosts = allPosts
 
 
   .blog-rule {
-    height: 2px;
-    background-color: var(--color-accent);
+    height: 1px;
     border: none;
-    width: 80px;
     margin: 0 auto;
+    flex: 1;
+    max-width: 100px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
   }
 
   .posts-list {

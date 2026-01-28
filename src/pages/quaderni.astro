@@ -224,11 +224,12 @@ const reviews = getReviewPosts();
   }
 
   .page-rule {
-    height: 2px;
-    background-color: var(--color-accent);
+    height: 1px;
     border: none;
-    width: 80px;
     margin: 0 auto;
+    flex: 1;
+    max-width: 100px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
   }
 
   /* ===== GRIGLIA PRINCIPALE ===== */

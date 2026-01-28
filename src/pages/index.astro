@@ -154,15 +154,15 @@ const latestPosts = getPosts();
 <style is:global>
   /* ===== STILI HERO ===== */
   .hero {
-    text-align: center;
-    padding: 1rem 0 1rem;
-    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    max-width: 1400px;
   }
 
   .hero-content {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 var(--content-padding, 20px);
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 0 1rem;
   }
 
   .hero-title {
@@ -185,26 +185,34 @@ const latestPosts = getPosts();
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
   }
 
   .hero-description {
-    font-size: clamp(1.2rem, 2vw, 1.6rem);
-    line-height: 1.6;
-    color: var(--color-text-primary);
-    max-width: 600px;
-    margin: 0 auto;
+    font-family: var(--font-heading-secondary);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .page-rule {
-    height: 2px;
-    background-color: var(--color-accent);
+    height: 1px;
     border: none;
-    width: 80px;
-    margin: 2rem auto 0;
-    margin-bottom: 2rem;
+    margin: 0 auto;
+    flex: 1;
+    max-width: 100px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
   }
   /* ===== LAYOUT BASE ===== */
   .landing-page {
@@ -213,7 +221,7 @@ const latestPosts = getPosts();
   }
 
   .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 var(--content-padding, 20px);
   }

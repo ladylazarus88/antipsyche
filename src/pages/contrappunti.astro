@@ -2,24 +2,14 @@
 import Layout from '../components/Layout.astro';
 const base = import.meta.env.BASE_URL;
 
-// Configurazioni colori
-const PALETTES = [
-  { bg: '#FFF0F5', text: '#333', accent: '#8B5F65' },
-  { bg: '#F0F8FF', text: '#333', accent: '#5C7080' },
-  { bg: '#FFF5EE', text: '#333', accent: '#8B7355' },
-  { bg: '#F5F0FF', text: '#333', accent: '#6A5F7C' }
-];
-
 // Importa SOLO i post dei contrappunti
 const getContrappuntiPosts = () => {
-  // Cerca i file nella cartella contrappunti
   const md = import.meta.glob('../content/blog/contrappunti/*.md', { eager: true });
   const mdx = import.meta.glob('../content/blog/contrappunti/*.mdx', { eager: true });
-
   return [...Object.values(md), ...Object.values(mdx)];
 };
 
-// Data - CORRETTO: prende solo i contrappunti dalla nuova struttura
+// Data
 const contrappuntiPosts = getContrappuntiPosts();
 
 // Ordina i post per data
@@ -27,61 +17,123 @@ const sortedContrappuntiPosts = contrappuntiPosts
   .filter(post => post && post.frontmatter && post.frontmatter.date)
   .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
 
-// Helper per generare URL del post (nuova struttura: /blog/contrappunti/nome-post)
+// Helper per generare URL del post
 const getPostUrl = (post) => {
   const filename = post.file.split('/').pop()?.replace(/\.(md|mdx)$/, '') || '';
   return `${base}blog/contrappunti/${filename}`;
 };
+
+// Funzione per dividere i post in gruppi per il grid
+const groupPostsForGrid = (posts) => {
+  const groups = [];
+  let currentGroup = [];
+  
+  // Pattern per il layout Adelphi: variabile per creare interesse visivo
+  const pattern = [3, 2, 1, 3, 2, 1, 2, 3]; // Pattern variabile
+  
+  for (let i = 0; i < posts.length; i++) {
+    const patternIndex = i % pattern.length;
+    const groupSize = Math.min(pattern[patternIndex], posts.length - i);
+    
+    if (currentGroup.length === 0) {
+      for (let j = 0; j < groupSize; j++) {
+        currentGroup.push(posts[i + j]);
+      }
+      i += groupSize - 1;
+      groups.push(currentGroup);
+      currentGroup = [];
+    }
+  }
+  
+  return groups;
+};
+
+// Crea i gruppi per il grid
+const postGroups = groupPostsForGrid(sortedContrappuntiPosts);
+
+// Default image se non specificata
+const defaultImage = `${base}images/default-contrappunto.jpg`;
+
+// PALETTE DI COLORI PASTELLO ELEGANTI
+// 8 colori pastello con opacità 0.85 per leggera trasparenza
+const PASTEL_PALETTE = [
+  'rgba(173, 216, 230, 0.65)', // Azzurro pastello (Light Blue)
+  'rgba(221, 160, 221, 0.65)', // Viola pastello (Plum)
+  'rgba(152, 251, 152, 0.65)', // Verde pastello (Light Green)
+  'rgba(255, 182, 193, 0.65)', // Rosa pastello (Light Pink)
+  'rgba(240, 230, 140, 0.65)', // Giallo pastello (Khaki)
+  'rgba(176, 224, 230, 0.65)', // Turchese pastello (Powder Blue)
+  'rgba(216, 191, 216, 0.65)', // Lavanda pastello (Thistle)
+  'rgba(255, 222, 173, 0.65)',  // Pesca pastello (Peach Puff)
+];
+
+// Contatore globale per ciclare tra i colori
+let colorIndex = 0;
+const getNextColor = () => {
+  const color = PASTEL_PALETTE[colorIndex % PASTEL_PALETTE.length];
+  colorIndex++;
+  return color;
+};
+
+// Reset counter per ogni render
+colorIndex = 0;
 ---
 
 <Layout title="Contrappunti | Antipsyché" description="Tutti gli articoli d'opinione di Antipsyché">
   <div class="contrappunti-page">
     <section class="page-header">
-      <h1 class="page-title">Riflessioni</h1>
+      <h1 class="page-title">Contrappunti</h1>
       <p class="page-description">Intersezioni di idee.</p>
       <hr class="page-rule" />
     </section>
 
     {sortedContrappuntiPosts.length > 0 ? (
-      <div class="posts-list">
-        {sortedContrappuntiPosts.map((post, index) => { 
-          const palette = PALETTES[index % PALETTES.length];
-          const postUrl = getPostUrl(post);
+      <div class="hgrid">
+        {postGroups.map((group, groupIndex) => {
+          const groupSize = group.length;
+          const groupClass = `hgrid-line hgrid-line-${groupSize}`;
           
           return (
-            <article class="post-item" style={`
-              --post-bg: ${palette.bg};
-              --post-text: ${palette.text};
-              --post-accent: ${palette.accent};
-            `}>
-              <h2 class="post-title">
-                <a href={postUrl}>{post.frontmatter.title}</a>
-              </h2>
-              
-              <div class="post-meta">
-                <time class="post-date" datetime={post.frontmatter.date}>
-                  {new Date(post.frontmatter.date).toLocaleDateString('it-IT', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </time>
-                
-                {post.frontmatter.categories && (
-                  <div class="post-categories">
-                    {post.frontmatter.categories.map((category) => (
-                      <span class="category">{category}</span>
-                    ))}
-                  </div>
-                )}
+            <div class={groupClass}>
+              <div class="hgrid-group">
+                {group.map((post, postIndex) => { 
+                  const postUrl = getPostUrl(post);
+                  const categories = post.frontmatter.categories || [];
+                  const tag = categories[0] || "Articolo";
+                  const author = post.frontmatter.author || "";
+                  const title = post.frontmatter.title || "";
+                  const excerpt = post.frontmatter.excerpt || "";
+                  const image = post.frontmatter.image_two || defaultImage;
+                  const backgroundColor = getNextColor();
+                  
+                  return (
+                    <div class="hgrid-item">
+                      <a href={postUrl} class="hgrid-split">
+                        <div class="hgrid-item-head">
+                          <div class="image-container">
+                            <img 
+                              src={image} 
+                              alt={title}
+                              loading={groupIndex < 2 ? "eager" : "lazy"}
+                              width="400"
+                              height="400"
+                            />
+                          </div>
+                        </div>
+                        <div class="hgrid-item-body" style={`background-color: ${backgroundColor};`}>
+                          <div class="hgrid-item-body-tag">{tag}</div>
+                          {author && (
+                            <div class="hgrid-item-body-author">{author}</div>
+                          )}
+                          <div class="hgrid-item-body-title">{title}</div>
+                          <div class="hgrid-item-body-abstract">{excerpt}</div>
+                        </div>
+                      </a>
+                    </div>
+                  );
+                })}
               </div>
-              
-              {post.frontmatter.excerpt && (
-                <p class="post-excerpt">{post.frontmatter.excerpt}</p>
-              )}
-              
-              <a href={postUrl} class="read-more">Leggi tutto →</a>
-            </article>
+            </div>
           );
         })}
       </div>
@@ -94,13 +146,221 @@ const getPostUrl = (post) => {
 </Layout>
 
 <style is:global>
-  
+  :root {
+    --hgrid-gap: 2px;
+    --image-ratio: 1/1;
+  }
+
+  .hgrid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hgrid-gap);
+    margin: 2rem 0;
+  }
+
+  .hgrid-line {
+    position: relative;
+    width: 100%;
+  }
+
+  .hgrid-line::before {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
+
+  .hgrid-line-1::before {
+    padding-bottom: 100%;
+  }
+
+  .hgrid-line-2::before {
+    padding-bottom: 50%;
+  }
+
+  .hgrid-line-3::before {
+    padding-bottom: 33.33333333333333333333333%;
+    padding-bottom: calc(calc(100% - calc(var(--hgrid-gap)*2))/3);
+  }
+
+  .hgrid-line-4::before {
+    padding-bottom: 25%;
+  }
+
+  .hgrid-group {
+    display: flex;
+    gap: var(--hgrid-gap);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .hgrid-item {
+    flex-grow: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e0e0;
+    position: relative;
+    width: 100%;
+  }
+
+  .hgrid-item::before {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
+
+  /* Base font size */
+  .hgrid .hgrid-line {
+    font-size: 1em;
+  }
+
+  .hgrid .hgrid-line.hgrid-line-1 .hgrid-item {
+    font-size: 3em;
+  }
+
+  .hgrid .hgrid-line.hgrid-line-2 .hgrid-item {
+    font-size: 1.5em;
+  }
+
+  .hgrid .hgrid-line.hgrid-line-3 .hgrid-item {
+    font-size: 1em;
+  }
+
+  .hgrid .hgrid-line.hgrid-line-4 .hgrid-item {
+    font-size: 0.75em;
+  }
+
+  /* Split box */
+  .hgrid-split {
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: all 0.25s;
+    text-decoration: none;
+  }
+
+  .hgrid-split:hover {
+    opacity: 0.95;
+    transition: all 0.25s;
+  }
+
+  .hgrid-split .hgrid-item-head,
+  .hgrid-split .hgrid-item-body {
+    flex: 1;
+  }
+
+  .hgrid-split .hgrid-item-head {
+    background-color: #f5f5f5;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hgrid-split .hgrid-item-body {
+    /* Il background-color viene impostato inline per ogni elemento */
+    overflow: hidden;
+    border-top: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .hgrid-split:hover .hgrid-item-body {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .hgrid-split:hover .hgrid-item-body .hgrid-item-body-tag,
+  .hgrid-split:hover .hgrid-item-body .hgrid-item-body-author,
+  .hgrid-split:hover .hgrid-item-body .hgrid-item-body-title,
+  .hgrid-split:hover .hgrid-item-body .hgrid-item-body-abstract {
+    color: #333 !important;
+  }
+
+  /* Container per immagini con dimensioni fisse */
+  .image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: var(--image-ratio);
+    transition: all 0.25s;
+  }
+
+  .hgrid-split:hover .image-container img {
+    transform: scale(1.05);
+    opacity: 0.9;
+    transition: all 0.25s;
+  }
+
+  .hgrid-split .hgrid-item-body .hgrid-item-body-tag {
+    font-family: var(--font-alt);
+    font-size: 0.75em;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  .hgrid-split .hgrid-item-body .hgrid-item-body-author {
+    font-style: italic;
+    font-size: 1.3em;
+    line-height: 1.2;
+    margin-bottom: 0.35em;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .hgrid-split .hgrid-item-body .hgrid-item-body-title {
+    font-size: 1.7em;
+    line-height: 1.2;
+    margin-bottom: 0.5em;
+    font-weight: 700;
+    color: white;
+    font-family: var(--font-heading-primary);
+    transition: color 0.3s ease;
+  }
+
+  .hgrid-split .hgrid-item-body .hgrid-item-body-abstract {
+    font-size: 1em;
+    font-style: italic;
+    line-height: 1.3;
+    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: var(--font-body);
+    transition: color 0.3s ease;
+  }
+
+  /* Header styles */
   .contrappunti-page {
     margin: 0 auto;
     padding: 2rem 1rem;
+    max-width: 1400px;
   }
 
-  /* Header */
   .page-header {
     text-align: center;
     margin-bottom: 3rem;
@@ -133,140 +393,12 @@ const getPostUrl = (post) => {
   }
 
   .page-rule {
-    height: 2px;
-    background-color: var(--color-accent);
+    height: 1px;
     border: none;
-    width: 80px;
     margin: 0 auto;
-  }
-
-  /* Lista Post */
-  .posts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  /* Card Post */
-  .post-item {
-    background: var(--post-bg);
-    border-radius: 8px;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .post-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .post-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 3px;
-    height: 100%;
-    background: var(--post-accent);
-    opacity: 0.7;
-  }
-
-  /* Titolo */
-  .post-title {
-    font-family: var(--font-heading-primary);
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--post-text);
-    line-height: 1.3;
-  }
-
-  .post-title a {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .post-title a:hover {
-    color: var(--post-accent);
-  }
-
-  /* Metadati */
-  .post-meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-  }
-
-  .post-date {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--post-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    font-weight: 500;
-  }
-
-  /* Categorie */
-  .post-categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .category {
-    background: var(--post-accent);
-    color: white;
-    padding: 0.2rem 0.6rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-radius: 3px;
-    transition: all 0.2s ease;
-  }
-
-  .category:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-
-  :global([data-theme="dark"]) .category {
-    background: color-mix(in srgb, var(--post-accent) 90%, black);
-  }
-
-  /* Estratto */
-  .post-excerpt {
-    color: color-mix(in srgb, var(--post-text) 70%, transparent);
-    line-height: 1.5;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-  }
-
-  /* Link Leggi tutto */
-  .read-more {
-    font-family: var(--font-heading-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--post-accent);
-    text-decoration: none;
-    font-size: 0.85rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    transition: all 0.2s ease;
-  }
-
-  .read-more:hover {
-    color: var(--post-text);
-    gap: 0.5rem;
+    flex: 1;
+    max-width: 100px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
   }
 
   /* Nessun post */
@@ -281,58 +413,151 @@ const getPostUrl = (post) => {
     margin-top: 1rem;
   }
 
-  /* Responsive */
-  @media (max-width: 768px) {
+  /* Variazioni di font-size per il layout desktop */
+  @media (max-width: 1300px) {
+    .hgrid .hgrid-line {
+      font-size: 1em;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .hgrid .hgrid-line {
+      font-size: 0.90em;
+    }
+    
+    .hgrid-split .hgrid-item-body {
+      padding: 1.25rem;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .hgrid .hgrid-line {
+      font-size: 0.80em;
+    }
+    
+    .hgrid-split .hgrid-item-body {
+      padding: 1rem;
+    }
+    
+    .hgrid-split .hgrid-item-body-title {
+      font-size: 1.5em;
+    }
+  }
+
+  @media (max-width: 1050px) {
+    .hgrid .hgrid-line {
+      font-size: 0.75em;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .hgrid .hgrid-line {
+      font-size: 0.70em;
+    }
+    
+    .hgrid-split .hgrid-item-body-abstract {
+      font-size: 0.9em;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hgrid .hgrid-line {
+      font-size: 0.65em;
+    }
+
+    .hgrid-split .hgrid-item-body {
+      padding: 0.75rem;
+    }
+    
+    .hgrid-split .hgrid-item-body-title {
+      font-size: 1.3em;
+    }
+    
+    .hgrid-split .hgrid-item-body-author {
+      font-size: 1.1em;
+    }
+  }
+
+  @media (max-width: 821px) {
+    .hgrid {
+      margin-top: 0.69rem;
+    }
+    
+    .hgrid .hgrid-line {
+      font-size: 0.60em;
+    }
+    
     .contrappunti-page {
       padding: 1rem;
-      max-width: 95%;
     }
     
     .page-header {
       margin-bottom: 2rem;
     }
-    
-    .page-title {
-      font-size: 1.75rem;
+  }
+
+  @media (max-width: 600px) {
+    /* Per mobile, convertiamo il grid in layout a colonna singola */
+    .hgrid-line::before {
+      padding-bottom: 0 !important;
+      display: none;
     }
     
-    .page-description {
-      font-size: 0.95rem;
+    .hgrid-group {
+      position: relative;
+      flex-direction: column;
+      height: auto;
+      gap: 1px;
     }
     
-    .post-item {
-      padding: 1.25rem;
+    .hgrid-item {
+      height: 400px;
+      margin-bottom: 2px;
     }
     
-    .post-title {
-      font-size: 1.15rem;
+    .hgrid-item::before {
+      display: none;
     }
     
-    .post-excerpt {
-      font-size: 0.9rem;
+    .hgrid-split {
+      position: relative;
+      height: 400px;
+    }
+    
+    .hgrid-split .hgrid-item-head {
+      flex: 0 0 50%;
+    }
+    
+    .hgrid-split .hgrid-item-body {
+      flex: 0 0 50%;
+    }
+    
+    .hgrid-split .hgrid-item-body-title {
+      font-size: 1.5em;
     }
   }
 
+  /* Per schermi molto piccoli */
   @media (max-width: 480px) {
-    .page-page {
-      padding: 0.75rem;
+    .hgrid-item {
+      height: 350px;
     }
     
-    .page-title {
-      font-size: 1.5rem;
+    .hgrid-split {
+      height: 350px;
     }
     
-    .post-item {
-      padding: 1rem;
+    .hgrid-split .hgrid-item-body-title {
+      font-size: 1.3em;
     }
     
-    .post-title {
-      font-size: 1.1rem;
+    .hgrid-split .hgrid-item-body-author {
+      font-size: 1em;
     }
     
-    .category {
-      padding: 0.15rem 0.4rem;
-      font-size: 0.65rem;
+    .hgrid-split .hgrid-item-body-abstract {
+      font-size: 0.85em;
+      line-height: 1.2;
     }
   }
 </style>

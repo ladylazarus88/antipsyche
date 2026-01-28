@@ -9,6 +9,7 @@ image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Fotis_kontoglou
 image_copertina: https://media.anobii.com/covers/01e13f8f625d100ab3/175/264/2.5/hardcover/png/0
 excerpt: "Dal grano e dal pane sorgono re e dèi: chi distribuisce l’abbondanza diventa mito, chi controlla il banchetto regna."
 citation: Per molti versi l’ascesa dello Stato ha rappresentato la discesa del mondo dalla libertà alla schiavitù.
+page: quaderni
 categories: 
   - Recensione
 type: recensione
