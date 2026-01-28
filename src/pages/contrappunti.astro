@@ -10,7 +10,7 @@ const PALETTES = [
   { bg: '#F5F0FF', text: '#333', accent: '#6A5F7C' }
 ];
 
-// Importa SOLO i post dei contrappunti dalla nuova struttura
+// Importa SOLO i post dei contrappunti
 const getContrappuntiPosts = () => {
   // Cerca i file nella cartella contrappunti
   const md = import.meta.glob('../content/blog/contrappunti/*.md', { eager: true });
@@ -37,7 +37,7 @@ const getPostUrl = (post) => {
 <Layout title="Contrappunti | Antipsyché" description="Tutti gli articoli d'opinione di Antipsyché">
   <div class="contrappunti-page">
     <section class="page-header">
-      <h1 class="page-title">Contrappunti</h1>
+      <h1 class="page-title">Riflessioni</h1>
       <p class="page-description">Intersezioni di idee.</p>
       <hr class="page-rule" />
     </section>
