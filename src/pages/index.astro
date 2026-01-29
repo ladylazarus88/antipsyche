@@ -25,8 +25,9 @@ const getPosts = () => {
         title: post.frontmatter.title,
         image: post.frontmatter.image,
         date: post.frontmatter.date,
+        page: post.frontmatter.page,
         slug: slug,
-        url: `${base}blog/${slug}`,
+        url: `${base}blog/${post.frontmatter.page}/${slug}`,
         formattedDate: new Date(post.frontmatter.date).toLocaleDateString('it-IT', {
           year: 'numeric',
           month: 'long',
@@ -47,22 +48,87 @@ const latestPosts = getPosts();
     <!-- Hero Section -->
     <section class="hero">
       <div class="hero-content">
+        <img 
+          src={`${base}public/images/cover-antipsyche.png`} 
+          alt="Logo Antipsyché" 
+          width=auto
+          height=auto 
+          loading="eager"
+        />
         <h1 class="hero-title">Antipsyché</h1>
-        <p class="hero-subtitle">Saggi Ritrovati e Traduzioni Inedite</p>
-        <hr class="page-rule" />
-        <p class="hero-description">
-          Un archivio che esplora la tensione tra voci marginali e canone letterario. Dove traduzione artigianale incontra pensiero inatteso in dialogo aperto.
-        </p>
+        <p class="hero-subtitle">Casa Editrice Indipendente</p>
         <hr class="page-rule" />
       </div>
     </section>
 
-    <!-- Ultimi Post Section -->
+    <!-- Traduzioni -->
+    <section class="downloads-section" id="downloads">
+        <div class="container">
+          <h2 class="section-title">Primi autori tradotti</h2>
+          <div class="downloads-grid">
+            <div class="download-item">
+              <div class="download-header">
+                <span class="download-number">01</span>
+                <h3 class="download-title">Ida Hoffman</h3>
+              </div>
+              <div class="Immagine-download-content">
+                <div class="image-container">
+                  <img 
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjFie9yzC12bXPyVPVsmFjsv5Mxb_JEL78pQ&s" 
+                    alt="Ida Hoffman" 
+                  />
+                </div>
+              </div>
+              <div class="download-content">
+                <div class="link-placeholder">link per scaricare</div>
+              </div>
+            </div>
+            
+            <div class="download-item">
+              <div class="download-header">
+                <span class="download-number">02</span>
+                <h3 class="download-title">Ernst Bloch</h3>
+              </div>
+              <div class="Immagine-download-content">
+                <div class="image-container">
+                  <img 
+                    src="https://res.cloudinary.com/suhrkamp/images/c_limit,q_auto,f_auto,w_395/v1741953846/9880/ernst-bloch_426_copyright-Peter-Zollna.webp" 
+                    alt="Ernst Bloch" 
+                  />
+                </div>
+              </div>
+              <div class="download-content">
+                <div class="link-placeholder">link per scaricare</div>
+              </div>
+            </div>
+            
+            <div class="download-item">
+              <div class="download-header">
+                <span class="download-number">03</span>
+                <h3 class="download-title">Miklós Szentkuthy</h3>
+              </div>
+              <div class="Immagine-download-content">
+                <div class="image-container">
+                  <img 
+                    src="https://dia.hu/sites/default/files/styles/no_mask/public/szentkuthy.miklos.jpg?itok=oirDQwH6" 
+                    alt="Miklós Szentkuthy" 
+                  />
+                </div>
+              </div>
+              <div class="download-content">
+                <div class="link-placeholder">link per scaricare</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+   
+    <!-- Ultimi post -->
     <section class="latest-posts-section" id="latest-posts">
       <div class="container">
         {latestPosts.length > 0 ? (
           <>
-            <h2 class="section-title">Ultimi Post</h2>
+            <h2 class="section-title">Ultimi Articoli</h2>
             <div class="posts-grid">
               {latestPosts.map((post, index) => (
                 <article class="post-card">
@@ -111,43 +177,7 @@ const latestPosts = getPosts();
       </div>
     </section>
 
-    <!-- Download Pubblicazioni -->
-    <section class="downloads-section" id="downloads">
-      <div class="container">
-        <h2 class="section-title">Prime Traduzioni</h2>
-        <div class="downloads-grid">
-          <div class="download-item">
-            <div class="download-header">
-              <span class="download-number">01</span>
-              <h3 class="download-title">Ida Hoffman</h3>
-            </div>
-            <div class="download-content">
-              <div class="link-placeholder">link per scaricare</div>
-            </div>
-          </div>
-          
-          <div class="download-item">
-            <div class="download-header">
-              <span class="download-number">02</span>
-              <h3 class="download-title">Ernst Bloch</h3>
-            </div>
-            <div class="download-content">
-              <div class="link-placeholder">link per scaricare</div>
-            </div>
-          </div>
-          
-          <div class="download-item">
-            <div class="download-header">
-              <span class="download-number">03</span>
-              <h3 class="download-title">Cento Cooki</h3>
-            </div>
-            <div class="download-content">
-              <div class="link-placeholder">link per scaricare</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    
   </div>
 </Layout>
 
@@ -191,21 +221,6 @@ const latestPosts = getPosts();
     margin-right: auto;
   }
 
-  .hero-description {
-    font-family: var(--font-heading-secondary);
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1.5rem;
-    margin-top: 1.5rem;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .page-rule {
     height: 1px;
     border: none;
@@ -229,6 +244,7 @@ const latestPosts = getPosts();
   /* ===== SEZIONE ULTIMI POST ===== */
   .latest-posts-section {
     padding: 3rem 0;
+    margin-top: 0rem;
   }
 
   .section-title {
@@ -236,7 +252,7 @@ const latestPosts = getPosts();
     font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: 100;
     color: var(--color-accent);
-    text-transform: none;
+    text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 2rem;
     text-align: center;
@@ -370,13 +386,18 @@ const latestPosts = getPosts();
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius, 4px);
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   .download-header {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    flex-shrink: 0;
   }
 
   .download-number {
@@ -384,31 +405,74 @@ const latestPosts = getPosts();
     font-size: 1.5rem;
     font-weight: 900;
     color: var(--color-accent);
+    flex-shrink: 0;
   }
 
   .download-title {
-    font-family: var(--font-heading-secondary);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-text-primary);
+    font-family: var(--font-heading-primary);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-text-accent);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin: 0;
+    text-align: center;
+    flex: 1;
+  }
+
+  .Immagine-download-content {
+    text-align: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0; /* Importante per il flexbox con aspect-ratio */
+  }
+
+  /* Contenitore per l'immagine con dimensioni fisse */
+  .image-container {
+    width: 100%;
+    max-width: 200px; /* Larghezza massima standard */
+    margin: 0 auto;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/3; /* Standard per immagini di libri (200x300 = 2:3) */
+    object-fit: cover; /* Ritaglia l'immagine per riempire il container */
+    object-position: center; /* Centra l'immagine */
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .image-container img:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   .download-content {
-    margin-top: 1rem;
+    margin-top: auto; /* Spinge il contenuto in basso */
+    flex-shrink: 0;
   }
 
   .link-placeholder {
     font-family: var(--font-mono);
     background-color: var(--color-surface);
     color: var(--color-text-muted);
-    padding: 1rem;
+    padding: 0.8rem 1rem;
     border-radius: 4px;
     text-align: center;
     font-size: 0.9rem;
     border: 1px dashed var(--color-border);
+    transition: all 0.2s ease;
+  }
+
+  .link-placeholder:hover {
+    background-color: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
   }
 
   .no-posts {
@@ -423,14 +487,10 @@ const latestPosts = getPosts();
 
   /* ===== RESPONSIVE DESIGN ===== */
   @media (min-width: 640px) {
-    .posts-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    
     .downloads-grid {
-      grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
-  }
 
   @media (min-width: 992px) {
     .posts-grid {
@@ -439,6 +499,27 @@ const latestPosts = getPosts();
     
     .downloads-grid {
       grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .image-container {
+      max-width: 180px; /* Riduci leggermente su schermi più grandi */
+    }
+  }
+
+  @media (min-width: 1200px) {
+  .image-container {
+    max-width: 220px; /* Aumenta leggermente su schermi molto grandi */
+  }
+}
+
+/* Per schermi piccoli */
+  @media (max-width: 480px) {
+    .download-item {
+      padding: 1rem;
+    }
+    
+    .image-container {
+      max-width: 160px;
     }
   }
 
