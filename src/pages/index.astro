@@ -24,6 +24,7 @@ const getPosts = () => {
       return {
         title: post.frontmatter.title,
         image: post.frontmatter.image,
+        excerpt: post.frontmatter.excerpt,
         date: post.frontmatter.date,
         page: post.frontmatter.page,
         slug: slug,
@@ -121,6 +122,13 @@ const latestPosts = getPosts();
             </div>
           </div>
         </div>
+
+        <!-- Link per vedere tutti i post -->
+        <div class="view-all-container">
+          <a href={`${base}corpus`} class="view-all-link">
+            Vedi tutte le pubblicazioni
+          </a>
+        </div>
       </section>
    
     <!-- Ultimi post -->
@@ -151,6 +159,7 @@ const latestPosts = getPosts();
                     
                     <div class="post-content">
                       <h3 class="post-title">{post.title}</h3>
+                      <p class="post-excerpt">{post.excerpt}</p>
                       <div class="post-meta">
                         <time class="post-date" datetime={post.date}>
                           {post.formattedDate}
@@ -269,7 +278,11 @@ const latestPosts = getPosts();
     border-radius: var(--border-radius, 4px);
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    background: var(--color-background);
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 2px 2px 2 var(--color-border);
   }
 
   .post-card:hover {
@@ -280,28 +293,36 @@ const latestPosts = getPosts();
   .post-link {
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: flex;
+    flex-direction: column;
     height: 100%;
   }
 
   .post-image-container {
-    width: 200%;
+    width: 150%;
     overflow: hidden;
     aspect-ratio: 16/9;
+    background-origin: padding-box;
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .post-image {
     width: 100%;
-    height: 100%;
+    height: auto;
     overflow: hidden;
+    align-items: center;
+    justify-content: center;
   }
 
   .post-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: fit-content;
+    height: fit-content;
+    object-fit: contain;
     transition: transform 0.3s ease, filter 0.3s ease;
-    filter: grayscale(100%);
   }
   
   .post-card:hover .post-image img {
@@ -313,6 +334,7 @@ const latestPosts = getPosts();
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid var(--color-border);
   }
 
   .placeholder-content {
@@ -322,19 +344,36 @@ const latestPosts = getPosts();
 
   .post-content {
     padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 
   .post-title {
-    font-family: var(--font-heading-secondary);
+    font-family: var(--font-heading-primary);
     font-size: clamp(1.1rem, 2vw, 1.4rem);
-    font-weight: 500;
+    font-weight: 300;
     margin-bottom: 0.75rem;
     line-height: 1.4;
     color: var(--color-text-primary);
+    flex: 1;
+  }
+
+  .post-excerpt {
+    font-family: var(--font-heading-secondary, serif);
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+    color: var(--color-text-muted);
+    flex: 2;
   }
 
   .post-meta {
-    margin-top: 0.5rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    justify-content: flex-start;
   }
 
   .post-date {
@@ -343,6 +382,8 @@ const latestPosts = getPosts();
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
   /* Link per vedere tutti i post */
@@ -434,6 +475,7 @@ const latestPosts = getPosts();
     width: 100%;
     max-width: 200px; /* Larghezza massima standard */
     margin: 0 auto;
+    border-radius: 4px;
   }
 
   .image-container img {
